@@ -1,0 +1,55 @@
+{
+  "name": "@repo/root",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "ultracite check",
+    "format": "ultracite fix --unsafe",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "build:web": "bun -F ./apps/web build",
+    "build:backend": "bun -F ./apps/backend build",
+    "build:docker:web": "docker build -f apps/web/Dockerfile -t web-image .",
+    "build:docker:backend": "docker build -f apps/backend/Dockerfile -t backend-image .",
+    "db:push": "bun -F ./packages/db push",
+    "db:migrate": "bun -F ./packages/db migrate",
+    "db:gen": "bun -F ./packages/db generate",
+    "db:studio": "bun -F ./packages/db studio",
+    "auth:gen": "bun -F ./packages/auth generate",
+    "docker:up": "docker compose -f infra/docker/docker-compose.dev.yml up -d",
+    "docker:down": "docker compose -f infra/docker/docker-compose.dev.yml down -v",
+    "docker:reset": "bun docker:down && bun docker:up"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.11",
+    "@repo/tsconfig": "workspace:*",
+    "@types/bun": "^1.3.5",
+    "@types/node": "^24.10.4",
+    "@typescript/native-preview": "^7.0.0-dev.20260104.1",
+    "lefthook": "^2.0.13",
+    "turbo": "^2.7.2",
+    "typescript": "^5.9.3",
+    "ultracite": "^7.0.6"
+  },
+  "packageManager": "bun@1.3.5",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*",
+      "tooling/*"
+    ],
+    "catalog": {
+      "@t3-oss/env-core": "^0.13.10",
+      "drizzle-orm": "^1.0.0-beta.8-c55bf0f",
+      "@types/pg": "^8.16.0",
+      "better-auth": "^1.4.10",
+      "elysia": "^1.4.21",
+      "zod": "^4.3.5",
+      "@types/bun": "^1.3.5"
+    }
+  }
+}

@@ -18,7 +18,6 @@ This should be the one YOU decide has the highest priority - not necessarily the
 4. Append your progress to the progress.txt file. \
 Use this to leave a note for the next person working in the codebase. \
 5. Make a git commit of that feature. \
-6. When working on backend features, WRITE TESTS before that fails, and then implement the feature for it to pass. \
 ONLY WORK ON A SINGLE FEATURE. \
 If, while implementing the feature, you notice the PRD is complete, output <promise>COMPLETE</promise>. \
 ")

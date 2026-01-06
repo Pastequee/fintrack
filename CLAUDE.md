@@ -1,4 +1,4 @@
-# AGENTS.md - AI Coding Guidelines
+# AI Coding Guidelines
 
 This document provides guidelines for AI agents working on this codebase.
 
@@ -124,59 +124,6 @@ import { todoInsertSchema } from '@repo/db/types'
 - Return status codes using `status()` helper
 - Use `status('Not Found')`, `status('Forbidden')`, etc.
 - Never EVER throw an error, handle every controlled error except for unexpected errors like DB crash or network crash and so on
-
-### Testing
-
-Backend tests use Bun's built-in test runner (`bun test`).
-
-**Test Structure:**
-- Test files should be co-located with the code they test (e.g., `controller.test.ts` next to `controller.ts`)
-- Or organized in a `__tests__` directory within each feature folder
-- Use descriptive test names that explain what is being tested
-
-**Running Tests:**
-```bash
-# Run all backend tests
-bun test
-
-# Run tests in watch mode
-bun test --watch
-
-# Run specific test file
-bun test path/to/test.test.ts
-```
-
-**Test Patterns:**
-- Test services independently (mock database if needed)
-- Test controllers with mocked services
-- Use `describe` blocks to group related tests
-- Use `test` or `it` for individual test cases
-- Use `expect` assertions from Bun's test API
-
-**Example Test:**
-```typescript
-import { describe, test, expect, beforeEach } from 'bun:test'
-import { TodosService } from './service'
-
-describe('TodosService', () => {
-  test('getUserTodos returns todos for a user', async () => {
-    const userId = 'test-user-id'
-    const todos = await TodosService.getUserTodos(userId)
-    
-    expect(todos).toBeArray()
-    expect(todos.every(todo => todo.userId === userId)).toBe(true)
-  })
-})
-```
-
-**Best Practices:**
-- Keep tests focused and test one thing at a time
-- Use meaningful test descriptions
-- Clean up test data after each test (use `beforeEach`/`afterEach` if needed)
-- Mock external dependencies (database, APIs) when testing business logic
-- Test both success and error cases
-
----
 
 ## Frontend Patterns
 

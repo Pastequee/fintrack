@@ -1,5 +1,6 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod'
 import { type accounts, roles, type sessions, type users, type verifications } from './schemas/auth'
+import { incomePeriod, incomes } from './schemas/incomes'
 import { todoStatus, todos } from './schemas/todos'
 
 const omits = { id: true, createdAt: true, updatedAt: true } as const
@@ -14,6 +15,17 @@ export type TodoUpdate = Partial<TodoInsert>
 export const todoSchema = createSelectSchema(todos)
 export const todoInsertSchema = createInsertSchema(todos).omit({ ...omits, userId: true })
 export const todoUpdateSchema = createUpdateSchema(todos).omit({ ...omits, userId: true })
+
+// incomes.ts
+export const IncomePeriod = [...incomePeriod.enumValues] as const
+export type IncomePeriod = (typeof IncomePeriod)[number]
+
+export type Income = typeof incomes.$inferSelect
+export type IncomeInsert = typeof incomes.$inferInsert
+export type IncomeUpdate = Partial<IncomeInsert>
+export const incomeSchema = createSelectSchema(incomes)
+export const incomeInsertSchema = createInsertSchema(incomes).omit({ ...omits, userId: true })
+export const incomeUpdateSchema = createUpdateSchema(incomes).omit({ ...omits, userId: true })
 
 // auth.ts
 export const UserRole = [...roles.enumValues] as const

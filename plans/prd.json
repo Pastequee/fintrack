@@ -32,7 +32,7 @@
       "Validate period values (monthly, yearly, etc.)",
       "Filter incomes by user"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

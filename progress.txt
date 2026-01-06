@@ -1,0 +1,19 @@
+## 2026-01-06: Income Management Backend
+
+Implemented income management backend feature (PRD item #3):
+
+### Added files:
+- packages/db/src/schemas/incomes.ts - income table schema with period enum (daily/weekly/monthly/yearly)
+- apps/backend/src/routers/income/service.ts - CRUD service for incomes
+- apps/backend/src/routers/income/controller.ts - REST endpoints (GET/POST/PATCH/DELETE /incomes)
+
+### Modified files:
+- packages/db/src/schemas/index.ts - export incomes
+- packages/db/src/types.ts - Income types + zod schemas
+- packages/db/src/relations.ts - user-income relation
+- apps/backend/src/index.ts - register incomesRouter
+
+### Notes for next dev:
+- Period validation via pgEnum (drizzle handles invalid values)
+- User filtering enforced in controller via auth middleware
+- Next feature: Income UI (PRD item #4) or Personal expense backend (PRD item #5)

@@ -23,6 +23,7 @@ export const Navbar = () => {
 					</div>
 				</LoggedOut>
 				<LoggedIn>
+					<NavbarLink to="/incomes">Incomes</NavbarLink>
 					{isAdmin && <NavbarLink to="/admin/users">Admin</NavbarLink>}
 					<NavbarLink to="/account">Account</NavbarLink>
 				</LoggedIn>

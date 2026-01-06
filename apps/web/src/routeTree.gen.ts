@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MultiRouteImport } from './routes/multi'
+import { Route as IncomesRouteImport } from './routes/incomes'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,6 +21,11 @@ import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 const MultiRoute = MultiRouteImport.update({
   id: '/multi',
   path: '/multi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IncomesRoute = IncomesRouteImport.update({
+  id: '/incomes',
+  path: '/incomes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRoute = AccountRouteImport.update({
@@ -55,6 +61,7 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
@@ -73,6 +81,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/account': typeof AccountRoute
+  '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
@@ -83,17 +92,26 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/incomes'
     | '/multi'
     | '/login'
     | '/register'
     | '/admin/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/account' | '/multi' | '/login' | '/register' | '/admin/users'
+  to:
+    | '/'
+    | '/account'
+    | '/incomes'
+    | '/multi'
+    | '/login'
+    | '/register'
+    | '/admin/users'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/account'
+    | '/incomes'
     | '/multi'
     | '/_auth/login'
     | '/_auth/register'
@@ -104,6 +122,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AccountRoute: typeof AccountRoute
+  IncomesRoute: typeof IncomesRoute
   MultiRoute: typeof MultiRoute
   AdminUsersRoute: typeof AdminUsersRoute
 }
@@ -115,6 +134,13 @@ declare module '@tanstack/react-router' {
       path: '/multi'
       fullPath: '/multi'
       preLoaderRoute: typeof MultiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/incomes': {
+      id: '/incomes'
+      path: '/incomes'
+      fullPath: '/incomes'
+      preLoaderRoute: typeof IncomesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -180,6 +206,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AccountRoute: AccountRoute,
+  IncomesRoute: IncomesRoute,
   MultiRoute: MultiRoute,
   AdminUsersRoute: AdminUsersRoute,
 }

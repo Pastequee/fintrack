@@ -44,7 +44,7 @@
       "Add delete income confirmation",
       "Display formatted period (e.g., '€2000/month')"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

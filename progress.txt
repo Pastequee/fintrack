@@ -17,3 +17,27 @@ Implemented income management backend feature (PRD item #3):
 - Period validation via pgEnum (drizzle handles invalid values)
 - User filtering enforced in controller via auth middleware
 - Next feature: Income UI (PRD item #4) or Personal expense backend (PRD item #5)
+
+## 2026-01-06: Income Management UI
+
+Implemented income management UI (PRD item #4):
+
+### Added files:
+- apps/web/src/lib/queries/incomes.queries.ts - query options for fetching incomes
+- apps/web/src/lib/mutations/incomes.mutations.ts - mutations for create/update/delete
+- apps/web/src/components/income/income-list.tsx - list of incomes
+- apps/web/src/components/income/income-item.tsx - single income row with edit/delete
+- apps/web/src/components/income/add-income-form.tsx - form to add new income
+- apps/web/src/components/income/edit-income-dialog.tsx - dialog to edit income
+- apps/web/src/components/income/income-list-card.tsx - card wrapper for income UI
+- apps/web/src/routes/incomes.tsx - /incomes route page
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added incomes query keys
+- apps/web/src/components/navigation/navbar.tsx - added Incomes link for logged-in users
+
+### Notes for next dev:
+- Period displayed as €X/mo, €X/week etc via formatAmount helper
+- Edit dialog supports optional end_date
+- No delete confirmation modal (inline delete like todos) - simple UX
+- Next feature: Personal expense backend (PRD item #5)

@@ -9,7 +9,7 @@
       "Implement logout endpoint",
       "Add authentication middleware"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",
@@ -21,7 +21,7 @@
       "Handle auth errors display",
       "Redirect to dashboard on success"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

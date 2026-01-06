@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun typecheck:*)",
+      "Bash(bun test:*)",
+      "Bash(bun docker:up:*)",
+      "Bash(bun db:push:*)",
+      "Bash(bun dev)",
+      "Bash(curl:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}

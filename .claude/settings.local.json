@@ -10,7 +10,10 @@
       "Bash(ls:*)",
       "Bash(bun test:backend:*)",
       "Bash(bun run:*)",
-      "Bash(NODE_ENV=development bun test:*)"
+      "Bash(NODE_ENV=development bun test:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

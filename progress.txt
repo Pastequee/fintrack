@@ -188,3 +188,32 @@ Implemented invitation backend (PRD item #10):
 - Accept fails if user already in a household
 - Status transitions: pending -> accepted/declined/expired
 - Next feature: Household management UI (PRD item #11)
+
+## 2026-01-11: Household Management UI
+
+Implemented household UI (PRD item #11):
+
+### Added files:
+- apps/web/src/lib/queries/households.queries.ts - query options for household and invitations
+- apps/web/src/lib/mutations/households.mutations.ts - mutations for create/update/leave/invite
+- apps/web/src/components/household/member-item.tsx - member row component
+- apps/web/src/components/household/member-list.tsx - members list
+- apps/web/src/components/household/invite-form.tsx - email invite form
+- apps/web/src/components/household/pending-invitation-item.tsx - pending invite row
+- apps/web/src/components/household/pending-invitations.tsx - pending invites list
+- apps/web/src/components/household/split-mode-toggle.tsx - split mode selector
+- apps/web/src/components/household/leave-household-button.tsx - leave w/ confirmation
+- apps/web/src/components/household/create-household-form.tsx - create household form
+- apps/web/src/components/household/household-settings.tsx - main settings card
+- apps/web/src/routes/household.tsx - /household route
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added households/invitations query keys
+- apps/web/src/components/navigation/navbar.tsx - added Household link
+
+### Notes for next dev:
+- Split mode toggle updates household immediately (no save button)
+- Leave button uses AlertDialog confirmation
+- Create form shown when user has no household
+- Pending invitations fetched via separate query
+- Next feature: Household invitation flow UI (PRD item #12)

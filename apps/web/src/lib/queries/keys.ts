@@ -19,6 +19,14 @@ export const keys = {
 		list: () => [...keys.pockets.all, 'list'] as const,
 		item: (id: string) => [...keys.pockets.all, 'item', id] as const,
 	},
+	households: {
+		all: ['households'] as const,
+		me: () => [...keys.households.all, 'me'] as const,
+	},
+	invitations: {
+		all: ['invitations'] as const,
+		list: () => [...keys.invitations.all, 'list'] as const,
+	},
 	admin: {
 		all: ['admin'] as const,
 		users: {

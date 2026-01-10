@@ -142,6 +142,10 @@ src/
   routes/             # TanStack Start file-based routes
 ```
 
+### Tanstack router typegen
+
+You can generate the router's types by running `bunx @tanstack/router-cli generate`. It will update the routeTree.gen.ts file
+
 ### Data Fetching (Eden + TanStack Query)
 
 Use the Eden client with query/mutation option factories:

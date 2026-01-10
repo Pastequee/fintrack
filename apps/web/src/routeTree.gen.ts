@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PocketsRouteImport } from './routes/pockets'
 import { Route as MultiRouteImport } from './routes/multi'
 import { Route as IncomesRouteImport } from './routes/incomes'
+import { Route as HouseholdRouteImport } from './routes/household'
 import { Route as ExpensesRouteImport } from './routes/expenses'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
@@ -33,6 +34,11 @@ const MultiRoute = MultiRouteImport.update({
 const IncomesRoute = IncomesRouteImport.update({
   id: '/incomes',
   path: '/incomes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HouseholdRoute = HouseholdRouteImport.update({
+  id: '/household',
+  path: '/household',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExpensesRoute = ExpensesRouteImport.update({
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/expenses': typeof ExpensesRoute
+  '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/pockets': typeof PocketsRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
   '/expenses': typeof ExpensesRoute
+  '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/pockets': typeof PocketsRoute
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/account': typeof AccountRoute
   '/expenses': typeof ExpensesRoute
+  '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/pockets': typeof PocketsRoute
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/expenses'
+    | '/household'
     | '/incomes'
     | '/multi'
     | '/pockets'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/expenses'
+    | '/household'
     | '/incomes'
     | '/multi'
     | '/pockets'
@@ -134,6 +145,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/account'
     | '/expenses'
+    | '/household'
     | '/incomes'
     | '/multi'
     | '/pockets'
@@ -147,6 +159,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AccountRoute: typeof AccountRoute
   ExpensesRoute: typeof ExpensesRoute
+  HouseholdRoute: typeof HouseholdRoute
   IncomesRoute: typeof IncomesRoute
   MultiRoute: typeof MultiRoute
   PocketsRoute: typeof PocketsRoute
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       path: '/incomes'
       fullPath: '/incomes'
       preLoaderRoute: typeof IncomesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/household': {
+      id: '/household'
+      path: '/household'
+      fullPath: '/household'
+      preLoaderRoute: typeof HouseholdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/expenses': {
@@ -247,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AccountRoute: AccountRoute,
   ExpensesRoute: ExpensesRoute,
+  HouseholdRoute: HouseholdRoute,
   IncomesRoute: IncomesRoute,
   MultiRoute: MultiRoute,
   PocketsRoute: PocketsRoute,

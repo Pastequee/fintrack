@@ -13,7 +13,11 @@
       "Bash(NODE_ENV=development bun test:*)",
       "Bash(cat:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Skill(mgrep)",
+      "Bash(mgrep:*)",
+      "Bash(bun lint:*)",
+      "Bash(bun format:*)"
     ]
   }
 }

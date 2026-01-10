@@ -130,7 +130,7 @@
       "Toggle split mode (equal vs income-proportional)",
       "Show pending invitations"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

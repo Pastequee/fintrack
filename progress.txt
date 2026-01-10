@@ -62,3 +62,31 @@ Implemented expense backend (PRD item #5):
 - targetDate used for one_time, startDate/endDate/period for recurring
 - Validation in controller via zod refine
 - Next feature: Personal expense UI (PRD item #6)
+
+## 2026-01-10: Personal Expense Management UI
+
+Implemented expense UI (PRD item #6):
+
+### Added files:
+- apps/web/src/lib/queries/expenses.queries.ts - query options for expenses
+- apps/web/src/lib/mutations/expenses.mutations.ts - create/update/delete mutations
+- apps/web/src/components/expense/expense-fields.tsx - form fields w/ type toggle (one-time/recurring), uses withForm composition
+- apps/web/src/components/expense/expense-list.tsx - list of expenses
+- apps/web/src/components/expense/expense-item.tsx - expense row w/ type icons (CalendarDays/Repeat), remaining duration display
+- apps/web/src/components/expense/add-expense-form.tsx - add expense form
+- apps/web/src/components/expense/edit-expense-dialog.tsx - edit dialog
+- apps/web/src/components/expense/expense-list-card.tsx - card wrapper
+- apps/web/src/components/ui/alert-dialog.tsx - alert dialog component (base-ui)
+- apps/web/src/routes/expenses.tsx - /expenses route
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added expenses query keys
+- apps/web/src/components/navigation/navbar.tsx - added Expenses link
+
+### Notes for next dev:
+- Type toggle shows/hides fields dynamically via form.Subscribe
+- One-time shows targetDate, recurring shows period+startDate+endDate
+- Delete uses AlertDialog w/ confirmation
+- Remaining duration calc shows "X months left" for recurring w/ endDate
+- Type icons: CalendarDays for one_time, Repeat for recurring
+- Next feature: Pocket management backend (PRD item #7)

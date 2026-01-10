@@ -69,7 +69,7 @@
       "Add delete expense confirmation",
       "Display loan-style expenses with remaining duration"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

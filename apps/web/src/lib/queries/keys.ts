@@ -9,6 +9,11 @@ export const keys = {
 		list: () => [...keys.incomes.all, 'list'] as const,
 		item: (id: string) => [...keys.incomes.all, 'item', id] as const,
 	},
+	expenses: {
+		all: ['expenses'] as const,
+		list: () => [...keys.expenses.all, 'list'] as const,
+		item: (id: string) => [...keys.expenses.all, 'item', id] as const,
+	},
 	admin: {
 		all: ['admin'] as const,
 		users: {

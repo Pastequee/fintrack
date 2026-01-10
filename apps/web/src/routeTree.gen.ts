@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as MultiRouteImport } from './routes/multi'
 import { Route as IncomesRouteImport } from './routes/incomes'
+import { Route as ExpensesRouteImport } from './routes/expenses'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -26,6 +27,11 @@ const MultiRoute = MultiRouteImport.update({
 const IncomesRoute = IncomesRouteImport.update({
   id: '/incomes',
   path: '/incomes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpensesRoute = ExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRoute = AccountRouteImport.update({
@@ -61,6 +67,7 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/expenses': typeof ExpensesRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/login': typeof AuthLoginRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/expenses': typeof ExpensesRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/login': typeof AuthLoginRoute
@@ -81,6 +89,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/account': typeof AccountRoute
+  '/expenses': typeof ExpensesRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -92,6 +101,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/expenses'
     | '/incomes'
     | '/multi'
     | '/login'
@@ -101,6 +111,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/account'
+    | '/expenses'
     | '/incomes'
     | '/multi'
     | '/login'
@@ -111,6 +122,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/account'
+    | '/expenses'
     | '/incomes'
     | '/multi'
     | '/_auth/login'
@@ -122,6 +134,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AccountRoute: typeof AccountRoute
+  ExpensesRoute: typeof ExpensesRoute
   IncomesRoute: typeof IncomesRoute
   MultiRoute: typeof MultiRoute
   AdminUsersRoute: typeof AdminUsersRoute
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/incomes'
       fullPath: '/incomes'
       preLoaderRoute: typeof IncomesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expenses': {
+      id: '/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof ExpensesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -206,6 +226,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AccountRoute: AccountRoute,
+  ExpensesRoute: ExpensesRoute,
   IncomesRoute: IncomesRoute,
   MultiRoute: MultiRoute,
   AdminUsersRoute: AdminUsersRoute,

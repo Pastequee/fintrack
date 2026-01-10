@@ -9,6 +9,7 @@ export const relations = defineRelations(schema, (r) => ({
 		incomes: r.many.incomes(),
 		expenses: r.many.expenses(),
 		pockets: r.many.pockets(),
+		householdMemberships: r.many.householdMembers(),
 	},
 
 	sessions: {
@@ -44,11 +45,31 @@ export const relations = defineRelations(schema, (r) => ({
 			from: r.expenses.userId,
 			to: r.users.id,
 		}),
+		household: r.one.households({
+			from: r.expenses.householdId,
+			to: r.households.id,
+		}),
 	},
 
 	pockets: {
 		user: r.one.users({
 			from: r.pockets.userId,
+			to: r.users.id,
+		}),
+	},
+
+	households: {
+		members: r.many.householdMembers(),
+		expenses: r.many.expenses(),
+	},
+
+	householdMembers: {
+		household: r.one.households({
+			from: r.householdMembers.householdId,
+			to: r.households.id,
+		}),
+		user: r.one.users({
+			from: r.householdMembers.userId,
 			to: r.users.id,
 		}),
 	},

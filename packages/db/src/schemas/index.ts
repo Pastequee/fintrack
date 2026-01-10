@@ -1,5 +1,6 @@
 export * from './auth'
 export * from './expenses'
+export * from './households'
 export * from './incomes'
 export * from './pockets'
 export * from './todos'

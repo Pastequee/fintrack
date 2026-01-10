@@ -1,6 +1,7 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod'
 import { type accounts, roles, type sessions, type users, type verifications } from './schemas/auth'
 import { expensePeriod, expenses, expenseType } from './schemas/expenses'
+import { householdMembers, households, splitMode } from './schemas/households'
 import { incomePeriod, incomes } from './schemas/incomes'
 import { pockets } from './schemas/pockets'
 import { todoStatus, todos } from './schemas/todos'
@@ -58,6 +59,21 @@ export type PocketUpdate = Partial<PocketInsert>
 export const pocketSchema = createSelectSchema(pockets)
 export const pocketInsertSchema = createInsertSchema(pockets).omit({ ...omits, userId: true })
 export const pocketUpdateSchema = createUpdateSchema(pockets).omit({ ...omits, userId: true })
+
+// households.ts
+export const SplitMode = [...splitMode.enumValues] as const
+export type SplitMode = (typeof SplitMode)[number]
+
+export type Household = typeof households.$inferSelect
+export type HouseholdInsert = typeof households.$inferInsert
+export type HouseholdUpdate = Partial<HouseholdInsert>
+export const householdSchema = createSelectSchema(households)
+export const householdInsertSchema = createInsertSchema(households).omit(omits)
+export const householdUpdateSchema = createUpdateSchema(households).omit(omits)
+
+export type HouseholdMember = typeof householdMembers.$inferSelect
+export type HouseholdMemberInsert = typeof householdMembers.$inferInsert
+export const householdMemberSchema = createSelectSchema(householdMembers)
 
 // auth.ts
 export const UserRole = [...roles.enumValues] as const

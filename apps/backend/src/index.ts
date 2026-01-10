@@ -8,6 +8,7 @@ import { devLogger } from '#lib/dev-logger'
 import { logger } from '#lib/logger'
 import { AuthOpenAPI } from '#middlewares/auth'
 import { expensesRouter } from '#routers/expense/controller'
+import { householdsRouter } from '#routers/household/controller'
 import { incomesRouter } from '#routers/income/controller'
 import { pocketsRouter } from '#routers/pocket/controller'
 import { todosRouter } from '#routers/todo/controller'
@@ -41,6 +42,7 @@ export const app = new Elysia()
 	.use(incomesRouter)
 	.use(expensesRouter)
 	.use(pocketsRouter)
+	.use(householdsRouter)
 	.listen(3001)
 
 logger.info(

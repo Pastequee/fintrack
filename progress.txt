@@ -136,3 +136,26 @@ Implemented pocket UI (PRD item #8):
 - Delete uses AlertDialog w/ confirmation
 - Displayed as budget cards per PRD requirement
 - Next feature: Household backend (PRD item #9)
+
+## 2026-01-11: Household Creation and Membership Backend
+
+Implemented household backend (PRD item #9):
+
+### Added files:
+- packages/db/src/schemas/households.ts - household + household_members tables, split_mode enum (equal/income_proportional)
+- apps/backend/src/routers/household/service.ts - CRUD + membership service
+- apps/backend/src/routers/household/controller.ts - REST endpoints (GET /households/me, POST /households, PATCH /households/:id, DELETE /households/:id/leave)
+
+### Modified files:
+- packages/db/src/schemas/index.ts - export households
+- packages/db/src/schemas/expenses.ts - added FK reference to households
+- packages/db/src/types.ts - Household, HouseholdMember types + zod schemas, SplitMode enum
+- packages/db/src/relations.ts - household/member/expense relations
+- apps/backend/src/index.ts - register householdsRouter
+
+### Notes for next dev:
+- User can only be in one household (checked on create)
+- Leave disables user's household expenses (active=false)
+- Household auto-deleted when last member leaves
+- Expenses table already had householdId (nullable) + active flag from expense backend
+- Next feature: Household invitation system (PRD item #10)

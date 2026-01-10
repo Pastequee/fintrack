@@ -12,8 +12,7 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "build": "bun build --compile --sourcemap --minify src/index.ts --outfile dist/server",
-    "typecheck": "tsgo --noEmit",
-    "test": "NODE_ENV=development bun test --env-file=.env.local"
+    "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.4.1",

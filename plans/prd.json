@@ -105,7 +105,7 @@
       "On leave: disable all household expenses (set active=false or similar)",
       "Prevent joining multiple households"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

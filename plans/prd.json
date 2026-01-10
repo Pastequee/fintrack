@@ -117,7 +117,7 @@
       "Implement decline invitation endpoint",
       "Invalidate invitation on accept/decline/expire"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

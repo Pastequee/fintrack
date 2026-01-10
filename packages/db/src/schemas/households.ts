@@ -4,6 +4,13 @@ import { users } from './auth'
 
 export const splitMode = pgEnum('split_mode', ['equal', 'income_proportional'])
 
+export const invitationStatus = pgEnum('invitation_status', [
+	'pending',
+	'accepted',
+	'declined',
+	'expired',
+])
+
 export const households = pgTable('households', {
 	id,
 
@@ -26,4 +33,23 @@ export const householdMembers = pgTable('household_members', {
 		.notNull(),
 
 	joinedAt: timestamp().notNull().defaultNow(),
+})
+
+export const invitations = pgTable('invitations', {
+	id,
+
+	householdId: uuid('household_id')
+		.references(() => households.id, { onDelete: 'cascade' })
+		.notNull(),
+
+	invitedBy: uuid('invited_by')
+		.references(() => users.id, { onDelete: 'cascade' })
+		.notNull(),
+
+	email: text().notNull(),
+	token: text().notNull().unique(),
+	status: invitationStatus().notNull().default('pending'),
+
+	expiresAt: timestamp().notNull(),
+	...timestamps,
 })

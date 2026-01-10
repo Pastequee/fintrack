@@ -159,3 +159,32 @@ Implemented household backend (PRD item #9):
 - Household auto-deleted when last member leaves
 - Expenses table already had householdId (nullable) + active flag from expense backend
 - Next feature: Household invitation system (PRD item #10)
+
+## 2026-01-11: Household Invitation System Backend
+
+Implemented invitation backend (PRD item #10):
+
+### Added files:
+- apps/backend/src/routers/invitation/service.ts - invitation CRUD, token gen, expiration utils
+- apps/backend/src/routers/invitation/controller.ts - REST endpoints (GET/POST invitations, accept/decline via token)
+
+### Modified files:
+- packages/db/src/schemas/households.ts - added invitations table + invitation_status enum
+- packages/db/src/types.ts - Invitation types + zod schemas
+- packages/db/src/relations.ts - invitation relations (household, inviter)
+- apps/backend/src/index.ts - register invitationsRouter
+
+### Endpoints:
+- GET /invitations - pending invitations for user's household
+- GET /invitations/pending - pending invitations sent TO current user
+- GET /invitations/token/:token - get invitation by token (public for landing page)
+- POST /invitations - send invitation (requires household membership)
+- POST /invitations/token/:token/accept - accept invitation (adds user to household)
+- POST /invitations/token/:token/decline - decline invitation
+
+### Notes for next dev:
+- Token is UUID, expires in 7 days by default
+- Can't invite if already pending invite for same email/household
+- Accept fails if user already in a household
+- Status transitions: pending -> accepted/declined/expired
+- Next feature: Household management UI (PRD item #11)

@@ -1,7 +1,13 @@
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod'
 import { type accounts, roles, type sessions, type users, type verifications } from './schemas/auth'
 import { expensePeriod, expenses, expenseType } from './schemas/expenses'
-import { householdMembers, households, splitMode } from './schemas/households'
+import {
+	householdMembers,
+	households,
+	invitationStatus,
+	invitations,
+	splitMode,
+} from './schemas/households'
 import { incomePeriod, incomes } from './schemas/incomes'
 import { pockets } from './schemas/pockets'
 import { todoStatus, todos } from './schemas/todos'
@@ -74,6 +80,22 @@ export const householdUpdateSchema = createUpdateSchema(households).omit(omits)
 export type HouseholdMember = typeof householdMembers.$inferSelect
 export type HouseholdMemberInsert = typeof householdMembers.$inferInsert
 export const householdMemberSchema = createSelectSchema(householdMembers)
+
+// invitations
+export const InvitationStatus = [...invitationStatus.enumValues] as const
+export type InvitationStatus = (typeof InvitationStatus)[number]
+
+export type Invitation = typeof invitations.$inferSelect
+export type InvitationInsert = typeof invitations.$inferInsert
+export const invitationSchema = createSelectSchema(invitations)
+export const invitationInsertSchema = createInsertSchema(invitations).omit({
+	...omits,
+	householdId: true,
+	invitedBy: true,
+	token: true,
+	status: true,
+	expiresAt: true,
+})
 
 // auth.ts
 export const UserRole = [...roles.enumValues] as const

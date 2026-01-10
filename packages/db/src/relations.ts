@@ -61,6 +61,18 @@ export const relations = defineRelations(schema, (r) => ({
 	households: {
 		members: r.many.householdMembers(),
 		expenses: r.many.expenses(),
+		invitations: r.many.invitations(),
+	},
+
+	invitations: {
+		household: r.one.households({
+			from: r.invitations.householdId,
+			to: r.households.id,
+		}),
+		inviter: r.one.users({
+			from: r.invitations.invitedBy,
+			to: r.users.id,
+		}),
 	},
 
 	householdMembers: {

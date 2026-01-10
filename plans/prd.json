@@ -56,7 +56,7 @@
       "Validate: one_time requires target date, recurring requires period + start_date",
       "Filter expenses by user"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

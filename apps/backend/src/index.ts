@@ -7,6 +7,7 @@ import { isProduction } from 'elysia/error'
 import { devLogger } from '#lib/dev-logger'
 import { logger } from '#lib/logger'
 import { AuthOpenAPI } from '#middlewares/auth'
+import { expensesRouter } from '#routers/expense/controller'
 import { incomesRouter } from '#routers/income/controller'
 import { todosRouter } from '#routers/todo/controller'
 import { userRouter } from '#routers/user/controller'
@@ -37,6 +38,7 @@ export const app = new Elysia()
 	.use(userRouter)
 	.use(todosRouter)
 	.use(incomesRouter)
+	.use(expensesRouter)
 	.listen(3001)
 
 logger.info(

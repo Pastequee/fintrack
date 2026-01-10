@@ -91,7 +91,7 @@
       "Add delete pocket confirmation",
       "Display pockets as budget cards"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

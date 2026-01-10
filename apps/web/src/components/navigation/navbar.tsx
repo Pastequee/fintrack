@@ -25,6 +25,7 @@ export const Navbar = () => {
 				<LoggedIn>
 					<NavbarLink to="/incomes">Incomes</NavbarLink>
 					<NavbarLink to="/expenses">Expenses</NavbarLink>
+					<NavbarLink to="/pockets">Pockets</NavbarLink>
 					{isAdmin && <NavbarLink to="/admin/users">Admin</NavbarLink>}
 					<NavbarLink to="/account">Account</NavbarLink>
 				</LoggedIn>

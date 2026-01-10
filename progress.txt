@@ -110,3 +110,29 @@ Implemented pocket backend (PRD item #7):
 - Simple schema: name + amount only (no period/dates like income/expense)
 - User filtering via auth middleware
 - Next feature: Pocket UI (PRD item #8)
+
+## 2026-01-10: Pocket Management UI
+
+Implemented pocket UI (PRD item #8):
+
+### Added files:
+- apps/web/src/lib/queries/pockets.queries.ts - query options for pockets
+- apps/web/src/lib/mutations/pockets.mutations.ts - create/update/delete mutations
+- apps/web/src/components/pocket/pocket-fields.tsx - form fields using withFieldGroup
+- apps/web/src/components/pocket/pocket-list.tsx - list of pockets
+- apps/web/src/components/pocket/pocket-item.tsx - pocket row w/ Wallet icon, edit/delete
+- apps/web/src/components/pocket/add-pocket-form.tsx - add pocket form
+- apps/web/src/components/pocket/edit-pocket-dialog.tsx - edit dialog
+- apps/web/src/components/pocket/pocket-list-card.tsx - card wrapper
+- apps/web/src/routes/pockets.tsx - /pockets route
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added pockets query keys
+- apps/web/src/components/navigation/navbar.tsx - added Pockets link
+
+### Notes for next dev:
+- Simple form: name + amount only (no period/dates)
+- Wallet icon for pocket items
+- Delete uses AlertDialog w/ confirmation
+- Displayed as budget cards per PRD requirement
+- Next feature: Household backend (PRD item #9)

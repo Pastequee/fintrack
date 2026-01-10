@@ -79,7 +79,7 @@
       "Implement CRUD endpoints for pockets",
       "Filter pockets by user"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

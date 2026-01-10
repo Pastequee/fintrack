@@ -90,3 +90,23 @@ Implemented expense UI (PRD item #6):
 - Remaining duration calc shows "X months left" for recurring w/ endDate
 - Type icons: CalendarDays for one_time, Repeat for recurring
 - Next feature: Pocket management backend (PRD item #7)
+
+## 2026-01-10: Pocket Management Backend
+
+Implemented pocket backend (PRD item #7):
+
+### Added files:
+- packages/db/src/schemas/pockets.ts - pocket table (id, userId, name, amount, timestamps)
+- apps/backend/src/routers/pocket/service.ts - CRUD service
+- apps/backend/src/routers/pocket/controller.ts - REST endpoints (GET/POST/PATCH/DELETE /pockets)
+
+### Modified files:
+- packages/db/src/schemas/index.ts - export pockets
+- packages/db/src/types.ts - Pocket types + zod schemas
+- packages/db/src/relations.ts - user-pocket relation
+- apps/backend/src/index.ts - register pocketsRouter
+
+### Notes for next dev:
+- Simple schema: name + amount only (no period/dates like income/expense)
+- User filtering via auth middleware
+- Next feature: Pocket UI (PRD item #8)

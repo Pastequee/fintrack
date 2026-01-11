@@ -201,7 +201,7 @@
       "Store: incomes, expenses, household_share, pockets, remaining as JSON",
       "Implement get snapshot endpoint (by month/year)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

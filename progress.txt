@@ -391,3 +391,36 @@ Implemented responsive navigation (PRD item #24):
 - Admin link visible only to admin users
 - Household badge queries householdMeOptions (cached)
 - Next features remaining: Monthly snapshot system (PRD #17), Past month snapshot view (PRD #19), Future projection view (PRD #20), Dashboard warnings (PRD #21), Member departure handling (PRD #25)
+
+## 2026-01-11: Monthly Snapshot System Backend
+
+Implemented snapshot backend (PRD item #17):
+
+### Added files:
+- packages/db/src/schemas/snapshots.ts - snapshot table (id, userId, year, month, data jsonb) w/ unique constraint on (userId, year, month)
+- apps/backend/src/routers/snapshot/service.ts - get/save/archive snapshots
+- apps/backend/src/routers/snapshot/controller.ts - REST endpoints
+
+### Modified files:
+- packages/db/src/schemas/index.ts - export snapshots
+- packages/db/src/types.ts - Snapshot, SnapshotData types + schema
+- packages/db/src/relations.ts - user-snapshot relation
+- apps/backend/src/index.ts - register snapshotsRouter
+
+### Endpoints:
+- GET /snapshots/:year/:month - get snapshot for specific month
+- GET /snapshots - list all user snapshots (history)
+- POST /snapshots/archive-previous - archive previous month (manual trigger; integrate w/ cron)
+
+### SnapshotData structure:
+- income: number
+- personalExpenses: { total, items[] }
+- householdShare: { total, items[] }
+- pockets: { total, items[] }
+- remaining: number
+
+### Notes for next dev:
+- archivePreviousMonth uses current date to determine prev month
+- Data structure mirrors MonthlyBalance from balance service
+- Scheduled job not implemented as background task; use external cron/scheduler to call POST /snapshots/archive-previous
+- Next feature: Past month snapshot view (PRD #19) or Future projection view (PRD #20)

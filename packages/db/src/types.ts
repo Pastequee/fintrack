@@ -10,6 +10,7 @@ import {
 } from './schemas/households'
 import { incomePeriod, incomes } from './schemas/incomes'
 import { pockets } from './schemas/pockets'
+import { snapshots } from './schemas/snapshots'
 import { todoStatus, todos } from './schemas/todos'
 
 const omits = { id: true, createdAt: true, updatedAt: true } as const
@@ -112,3 +113,9 @@ export type AccountInsert = typeof accounts.$inferInsert
 
 export type Verification = typeof verifications.$inferSelect
 export type VerificationInsert = typeof verifications.$inferInsert
+
+// snapshots.ts
+export type { SnapshotData } from './schemas/snapshots'
+export type Snapshot = typeof snapshots.$inferSelect
+export type SnapshotInsert = typeof snapshots.$inferInsert
+export const snapshotSchema = createSelectSchema(snapshots)

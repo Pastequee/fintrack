@@ -464,3 +464,23 @@ Implemented projection view UI (PRD item #20):
 - Backend projection already handles future months via isActiveInMonth()
 - Type icons only shown for personal expenses (have type field from backend)
 - Next features: Dashboard warnings (PRD #21), Member departure handling (PRD #25)
+
+## 2026-01-11: Dashboard Warnings and Indicators
+
+Implemented dashboard warnings (PRD item #21):
+
+### Modified files:
+- apps/backend/src/routers/balance/service.ts - added endDate to personal expense items in MonthlyBalance type
+- apps/web/src/components/dashboard/balance-item.tsx - added "ending soon" badge for expenses ending within 2 months
+- apps/web/src/components/dashboard/dashboard-overview.tsx - pass endDate to BalanceItem
+
+### Features:
+- Red warning banner already existed (deficit alert)
+- Visual distinction via type icons (CalendarDays/Repeat) already existed
+- "ending soon" badge w/ Clock icon + amber styling for recurring expenses ending within 2 months
+- Amount text turns amber for ending soon items
+
+### Notes for next dev:
+- isEndingSoon() checks if endDate <= 2 months from now AND >= now
+- Loans = recurring expenses w/ endDate, so "ending soon" effectively highlights loan completion
+- Next feature: Member departure handling (PRD #25)

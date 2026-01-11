@@ -1,11 +1,11 @@
 import { db } from '@repo/db'
 import { expenses } from '@repo/db/schemas'
-import type { Expense, ExpensePeriod, IncomePeriod, User } from '@repo/db/types'
+import type { Expense, ExpensePeriod, IncomePeriod, MonthlyBalance, User } from '@repo/db/types'
 import { and, eq, isNull } from 'drizzle-orm'
 import { HouseholdsService } from '#routers/household/service'
 
 // Convert any period amount to monthly equivalent
-function toMonthlyAmount(amount: number, period: IncomePeriod | ExpensePeriod): number {
+function toMonthlyAmount(amount: number, period: IncomePeriod | ExpensePeriod) {
 	switch (period) {
 		case 'daily':
 			return amount * 30.44 // avg days/month
@@ -21,7 +21,7 @@ function toMonthlyAmount(amount: number, period: IncomePeriod | ExpensePeriod): 
 }
 
 // Check if a date falls within a given month
-function isInMonth(dateStr: string, year: number, month: number): boolean {
+function isInMonth(dateStr: string, year: number, month: number) {
 	const d = new Date(dateStr)
 	return d.getFullYear() === year && d.getMonth() + 1 === month
 }
@@ -32,7 +32,7 @@ function isActiveInMonth(
 	endDate: string | null,
 	year: number,
 	month: number
-): boolean {
+) {
 	const monthStart = new Date(year, month - 1, 1)
 	const monthEnd = new Date(year, month, 0) // last day of month
 
@@ -50,7 +50,7 @@ function isActiveInMonth(
 }
 
 // Calculate expense monthly amount (handles both one_time and recurring)
-function getExpenseMonthlyAmount(exp: Expense, year: number, month: number): number {
+function getExpenseMonthlyAmount(exp: Expense, year: number, month: number) {
 	if (exp.type === 'one_time') {
 		if (exp.targetDate && isInMonth(exp.targetDate, year, month)) {
 			return Number(exp.amount)
@@ -64,7 +64,7 @@ function getExpenseMonthlyAmount(exp: Expense, year: number, month: number): num
 }
 
 // Calculate monthly income total for a user
-async function calcMonthlyIncome(userId: User['id'], year: number, month: number): Promise<number> {
+async function calcMonthlyIncome(userId: User['id'], year: number, month: number) {
 	const userIncomes = await db.query.incomes.findMany({ where: { userId } })
 
 	return userIncomes.reduce((sum, inc) => {
@@ -74,11 +74,7 @@ async function calcMonthlyIncome(userId: User['id'], year: number, month: number
 }
 
 // Calculate personal expenses total for a user in a month
-async function calcPersonalExpenses(
-	userId: User['id'],
-	year: number,
-	month: number
-): Promise<{ total: number; items: Array<{ name: string; amount: number; type: string }> }> {
+async function calcPersonalExpenses(userId: User['id'], year: number, month: number) {
 	const userExpenses = await db
 		.select()
 		.from(expenses)
@@ -91,6 +87,7 @@ async function calcPersonalExpenses(
 			name: exp.name,
 			amount: getExpenseMonthlyAmount(exp, year, month),
 			type: exp.type,
+			endDate: exp.endDate,
 		}))
 		.filter((item) => item.amount > 0)
 
@@ -105,7 +102,7 @@ async function calcUserShareRatio(
 	userId: User['id'],
 	year: number,
 	month: number
-): Promise<number> {
+) {
 	const memberCount = household.members.length
 	if (memberCount === 0) return 0
 
@@ -129,11 +126,7 @@ async function calcUserShareRatio(
 }
 
 // Calculate household expense share for a user
-async function calcHouseholdShare(
-	userId: User['id'],
-	year: number,
-	month: number
-): Promise<{ total: number; items: Array<{ name: string; amount: number; yourShare: number }> }> {
+async function calcHouseholdShare(userId: User['id'], year: number, month: number) {
 	const membership = await HouseholdsService.getUserMembership(userId)
 	if (!membership) return { total: 0, items: [] }
 
@@ -159,9 +152,7 @@ async function calcHouseholdShare(
 }
 
 // Calculate total pockets sum
-async function calcPocketsTotal(
-	userId: User['id']
-): Promise<{ total: number; items: Array<{ name: string; amount: number }> }> {
+async function calcPocketsTotal(userId: User['id']) {
 	const userPockets = await db.query.pockets.findMany({ where: { userId } })
 
 	const items = userPockets.map((p) => ({ name: p.name, amount: Number(p.amount) }))
@@ -169,31 +160,8 @@ async function calcPocketsTotal(
 	return { total: items.reduce((sum, p) => sum + p.amount, 0), items }
 }
 
-export type MonthlyBalance = {
-	year: number
-	month: number
-	income: number
-	personalExpenses: {
-		total: number
-		items: Array<{ name: string; amount: number; type: string }>
-	}
-	householdShare: {
-		total: number
-		items: Array<{ name: string; amount: number; yourShare: number }>
-	}
-	pockets: {
-		total: number
-		items: Array<{ name: string; amount: number }>
-	}
-	remaining: number
-}
-
 export const BalanceService = {
-	getMonthlyBalance: async (
-		userId: User['id'],
-		year: number,
-		month: number
-	): Promise<MonthlyBalance> => {
+	getMonthlyBalance: async (userId: User['id'], year: number, month: number) => {
 		const [income, personalExpenses, householdShare, pockets] = await Promise.all([
 			calcMonthlyIncome(userId, year, month),
 			calcPersonalExpenses(userId, year, month),
@@ -203,7 +171,7 @@ export const BalanceService = {
 
 		const remaining = income - personalExpenses.total - householdShare.total - pockets.total
 
-		return {
+		const monthlyBalance: MonthlyBalance = {
 			year,
 			month,
 			income,
@@ -212,6 +180,8 @@ export const BalanceService = {
 			pockets,
 			remaining,
 		}
+
+		return monthlyBalance
 	},
 
 	// Project balances for N months starting from a given month
@@ -220,7 +190,7 @@ export const BalanceService = {
 		startYear: number,
 		startMonth: number,
 		monthsAhead: number
-	): Promise<MonthlyBalance[]> => {
+	) => {
 		const projections: MonthlyBalance[] = []
 		let year = startYear
 		let month = startMonth

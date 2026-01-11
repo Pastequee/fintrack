@@ -16,18 +16,12 @@ const getMonthName = (month: number) => {
 	return date.toLocaleDateString('en-US', { month: 'long' })
 }
 
-const isPastMonth = (year: number, month: number) => {
+function getMonthOffset(year: number, month: number) {
 	const now = new Date()
 	const currentYear = now.getFullYear()
 	const currentMonth = now.getMonth() + 1
-	return year < currentYear || (year === currentYear && month < currentMonth)
-}
-
-const isFutureMonth = (year: number, month: number) => {
-	const now = new Date()
-	const currentYear = now.getFullYear()
-	const currentMonth = now.getMonth() + 1
-	return year > currentYear || (year === currentYear && month > currentMonth)
+	const totalMonthsDiff = (year - currentYear) * 12 + (month - currentMonth)
+	return totalMonthsDiff
 }
 
 type ViewModeBadgeProps = {
@@ -60,8 +54,9 @@ export const DashboardOverview = () => {
 	const [year, setYear] = useState(now.getFullYear())
 	const [month, setMonth] = useState(now.getMonth() + 1)
 
-	const viewingPast = isPastMonth(year, month)
-	const viewingFuture = isFutureMonth(year, month)
+	const monthOffset = getMonthOffset(year, month)
+	const viewingPast = monthOffset < 0
+	const viewingFuture = monthOffset > 0
 
 	// Use snapshot for past months, live balance for current/future
 	const {
@@ -185,14 +180,18 @@ export const DashboardOverview = () => {
 					expandable={data.personalExpenses.items.length > 0}
 					label="Personal Expenses"
 				>
-					{data.personalExpenses.items.map((item) => (
-						<BalanceItem
-							amount={item.amount}
-							key={item.name}
-							name={item.name}
-							type={item.type as 'one_time' | 'recurring'}
-						/>
-					))}
+					{data.personalExpenses.items.map((item) => {
+						const endDate = 'endDate' in item ? (item.endDate as string | null) : null
+						return (
+							<BalanceItem
+								amount={item.amount}
+								endDate={endDate}
+								key={item.name}
+								name={item.name}
+								type={item.type as 'one_time' | 'recurring'}
+							/>
+						)
+					})}
 				</BalanceRow>
 
 				<BalanceRow

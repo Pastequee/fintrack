@@ -250,7 +250,7 @@
       "Visual distinction between expense types (one-time, recurring, loan)",
       "Highlight expenses ending soon"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

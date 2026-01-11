@@ -67,7 +67,7 @@ tooling/
 
 - Strict mode enabled
 - Prefer `type` over `interface` unless necessary
-- Use implicit return types for exported functions
+- **Function return types:** DO NOT specify return types — let TypeScript infer them. Only add explicit return types when necessary (e.g., public API contracts, recursive functions, or when inference fails). This reduces code duplication, makes refactoring easier, and TypeScript's inference is reliable.
 - Import types using `type` keyword: `import type { User } from '@repo/db/types'`
 
 ---

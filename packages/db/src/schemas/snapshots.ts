@@ -6,7 +6,7 @@ export type SnapshotData = {
 	income: number
 	personalExpenses: {
 		total: number
-		items: Array<{ name: string; amount: number; type: string }>
+		items: Array<{ name: string; amount: number; type: string; endDate: string | null }>
 	}
 	householdShare: {
 		total: number
@@ -18,6 +18,8 @@ export type SnapshotData = {
 	}
 	remaining: number
 }
+
+export type MonthlyBalance = SnapshotData & { year: number; month: number }
 
 export const snapshots = pgTable(
 	'snapshots',

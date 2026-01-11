@@ -165,7 +165,7 @@
       "Add edit/delete with confirmation",
       "Indicate disabled expenses (from member departure)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

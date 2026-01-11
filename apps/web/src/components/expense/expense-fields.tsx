@@ -1,3 +1,4 @@
+import type { Expense } from '@repo/db/types'
 import { ExpensePeriod, ExpenseType } from '@repo/db/types'
 import z from 'zod'
 import { withForm } from '~/lib/hooks/form-hook'
@@ -32,15 +33,40 @@ export const expenseFormSchema = z
 
 export type ExpenseFormValues = z.infer<typeof expenseFormSchema>
 
+export const toExpensePayload = (value: ExpenseFormValues) => {
+	const isOneTime = value.type === 'one_time'
+	return {
+		name: value.name.trim(),
+		amount: value.amount,
+		type: value.type,
+		period: isOneTime ? null : value.period,
+		startDate: isOneTime ? null : value.startDate,
+		endDate: isOneTime ? null : value.endDate || null,
+		targetDate: isOneTime ? value.targetDate : null,
+	}
+}
+
+const getDefaultDate = () => new Date().toISOString().slice(0, 10)
+
 export const defaultExpenseValues: ExpenseFormValues = {
 	name: '',
 	amount: '',
 	type: 'recurring',
 	period: 'monthly',
-	startDate: new Date().toISOString().slice(0, 10),
+	startDate: getDefaultDate(),
 	endDate: '',
-	targetDate: new Date().toISOString().slice(0, 10),
+	targetDate: getDefaultDate(),
 }
+
+export const expenseToFormValues = (expense: Expense): ExpenseFormValues => ({
+	name: expense.name,
+	amount: expense.amount,
+	type: expense.type,
+	period: expense.period ?? 'monthly',
+	startDate: expense.startDate ?? getDefaultDate(),
+	endDate: expense.endDate ?? '',
+	targetDate: expense.targetDate ?? getDefaultDate(),
+})
 
 export const ExpenseFields = withForm({
 	defaultValues: defaultExpenseValues,

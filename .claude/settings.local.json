@@ -18,7 +18,8 @@
       "Bash(mgrep:*)",
       "Bash(bun lint:*)",
       "Bash(bun format:*)",
-      "Bash(bunx @tanstack/router-cli generate:*)"
+      "Bash(bunx @tanstack/router-cli generate:*)",
+      "Bash(git status:*)"
     ]
   }
 }

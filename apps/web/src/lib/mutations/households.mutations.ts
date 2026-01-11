@@ -36,3 +36,21 @@ export const declineInvitationOptions = (token: string) =>
 		edenMutation: eden.invitations.token({ token }).decline.post,
 		meta: { invalidate: [keys.invitations.byToken(token)] },
 	})
+
+export const createHouseholdExpenseOptions = () =>
+	edenMutationOption({
+		edenMutation: eden['household-expenses'].post,
+		meta: { invalidate: [keys.householdExpenses.list()] },
+	})
+
+export const updateHouseholdExpenseOptions = (id: string) =>
+	edenMutationOption({
+		edenMutation: eden['household-expenses']({ id }).patch,
+		meta: { invalidate: [keys.householdExpenses.list()] },
+	})
+
+export const deleteHouseholdExpenseOptions = (id: string) =>
+	edenMutationOption({
+		edenMutation: eden['household-expenses']({ id }).delete,
+		meta: { invalidate: [keys.householdExpenses.list()] },
+	})

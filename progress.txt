@@ -258,3 +258,36 @@ Implemented household expense backend (PRD item #13):
 - Membership validated via HouseholdsService.getUserMembership
 - Personal expense list now filters out household expenses (householdId IS NULL)
 - Next feature: Household expense UI (PRD item #14)
+
+## 2026-01-11: Household Expense UI
+
+Implemented household expense UI (PRD item #14):
+
+### Added files:
+- apps/web/src/components/household-expense/household-expense-item.tsx - expense row w/ split amount, disabled indicator
+- apps/web/src/components/household-expense/household-expense-list.tsx - list component
+- apps/web/src/components/household-expense/add-household-expense-form.tsx - add expense form (reuses ExpenseFields)
+- apps/web/src/components/household-expense/edit-household-expense-dialog.tsx - edit dialog
+- apps/web/src/components/household-expense/household-expense-card.tsx - main card w/ household context
+- apps/web/src/lib/utils/expense-format.ts - shared formatting utils (extracted from expense/household-expense items)
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added householdExpenses query keys
+- apps/web/src/lib/queries/households.queries.ts - added householdExpenseListOptions
+- apps/web/src/lib/mutations/households.mutations.ts - added create/update/delete household expense mutations
+- apps/web/src/routes/household.tsx - added HouseholdExpenseCard below HouseholdSettings
+- apps/web/src/components/expense/expense-fields.tsx - added toExpensePayload, expenseToFormValues helpers
+- apps/web/src/components/expense/expense-item.tsx - uses shared expense-format utils
+
+### Features:
+- Expense list with equal split display (€X each) or "by income" indicator
+- Disabled expenses from member departure show amber warning icon + "Disabled" badge + 50% opacity
+- Edit button disabled for disabled expenses
+- Delete confirmation dialog
+- Reuses ExpenseFields for consistent form experience
+
+### Notes for next dev:
+- Household expense card only shows when user has a household
+- Split calculation currently shows equal split; income-proportional just shows "by income" (actual calc in future PRD)
+- Shared utils extracted to reduce duplication across expense/household-expense items
+- Next feature: Monthly balance calculation engine (PRD item #15)

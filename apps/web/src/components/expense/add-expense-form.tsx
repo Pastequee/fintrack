@@ -2,7 +2,12 @@ import { useMutation } from '@tanstack/react-query'
 import { useAppForm } from '~/lib/hooks/form-hook'
 import { createExpenseOptions } from '~/lib/mutations/expenses.mutations'
 import { LoggedIn } from '../auth/logged-in'
-import { defaultExpenseValues, ExpenseFields, expenseFormSchema } from './expense-fields'
+import {
+	defaultExpenseValues,
+	ExpenseFields,
+	expenseFormSchema,
+	toExpensePayload,
+} from './expense-fields'
 
 export const AddExpenseForm = () => {
 	const { isPending, mutate } = useMutation(createExpenseOptions())
@@ -15,19 +20,7 @@ export const AddExpenseForm = () => {
 			onSubmit: expenseFormSchema,
 		},
 		onSubmit: ({ value }) => {
-			const isOneTime = value.type === 'one_time'
-			mutate(
-				{
-					name: value.name.trim(),
-					amount: value.amount,
-					type: value.type,
-					period: isOneTime ? null : value.period,
-					startDate: isOneTime ? null : value.startDate,
-					endDate: isOneTime ? null : value.endDate || null,
-					targetDate: isOneTime ? value.targetDate : null,
-				},
-				{ onSuccess: () => form.reset() }
-			)
+			mutate(toExpensePayload(value), { onSuccess: () => form.reset() })
 		},
 	})
 

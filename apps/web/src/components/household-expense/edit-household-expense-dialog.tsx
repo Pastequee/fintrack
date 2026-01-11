@@ -1,23 +1,27 @@
 import type { Expense } from '@repo/db/types'
 import { useMutation } from '@tanstack/react-query'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { updateExpenseOptions } from '~/lib/mutations/expenses.mutations'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
+import { updateHouseholdExpenseOptions } from '~/lib/mutations/households.mutations'
 import {
 	ExpenseFields,
 	expenseFormSchema,
 	expenseToFormValues,
 	toExpensePayload,
-} from './expense-fields'
+} from '../expense/expense-fields'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 
-type EditExpenseDialogProps = {
+type EditHouseholdExpenseDialogProps = {
 	expense: Expense
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
 
-export const EditExpenseDialog = ({ expense, open, onOpenChange }: EditExpenseDialogProps) => {
-	const { isPending, mutate } = useMutation(updateExpenseOptions(expense.id))
+export const EditHouseholdExpenseDialog = ({
+	expense,
+	open,
+	onOpenChange,
+}: EditHouseholdExpenseDialogProps) => {
+	const { isPending, mutate } = useMutation(updateHouseholdExpenseOptions(expense.id))
 
 	const form = useAppForm({
 		defaultValues: expenseToFormValues(expense),
@@ -35,7 +39,7 @@ export const EditExpenseDialog = ({ expense, open, onOpenChange }: EditExpenseDi
 		<Dialog onOpenChange={onOpenChange} open={open}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Edit Expense</DialogTitle>
+					<DialogTitle>Edit Household Expense</DialogTitle>
 				</DialogHeader>
 
 				<form

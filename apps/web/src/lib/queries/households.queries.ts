@@ -18,3 +18,9 @@ export const invitationByTokenOptions = (token: string) =>
 		edenQuery: eden.invitations.token({ token }).get,
 		queryKey: keys.invitations.byToken(token),
 	})
+
+export const householdExpenseListOptions = () =>
+	edenQueryOption({
+		edenQuery: eden['household-expenses'].get,
+		queryKey: keys.householdExpenses.list(),
+	})

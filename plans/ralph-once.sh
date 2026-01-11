@@ -7,7 +7,7 @@ This should be the one YOU decide has the highest priority - not necessarily the
 3. Update the PRD with the work that was done. \
 4. Append your progress to the progress.txt file. \
 Use this to leave a note for the next person working in the codebase. \
-5. Use the code simplifier agent once you're done before committing. \
+5. Use the code simplifier agent (code-simplifier:code-simplifier) once you're done before committing. \
 5. Make a git commit of that feature. \
 ONLY WORK ON A SINGLE FEATURE. \
 If, while implementing the feature, you notice the PRD is complete, output <promise>NOTHING_TO_DO</promise>. \

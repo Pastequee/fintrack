@@ -507,3 +507,27 @@ Completed member departure handling (PRD item #25):
 ### Notes for next dev:
 - PRD fully complete - all 25 features passing
 - Backend already had all logic for disabling/filtering - only UI re-enable button was missing
+
+## 2026-01-11: Verify Monthly Balance Calculation Engine (PRD #15)
+
+Verified balance calculation engine implementation:
+
+### Files reviewed:
+- apps/backend/src/routers/balance/service.ts - main calculation engine
+- apps/backend/src/routers/balance/controller.ts - REST endpoints
+- packages/db/src/schemas/snapshots.ts - MonthlyBalance type
+- apps/web/src/components/dashboard/dashboard-overview.tsx - UI consumption
+
+### Verification checklist:
+- calcMonthlyIncome() - sums active recurring incomes for month ✓
+- calcPersonalExpenses() - handles one_time + recurring, filters by active=true, householdId IS NULL ✓
+- calcHouseholdShare() - computes share based on split mode (equal or income_proportional) ✓
+- calcUserShareRatio() - income-proportional falls back to equal split if total income=0 ✓
+- calcPocketsTotal() - sums all pocket amounts ✓
+- getMonthlyBalance() - returns income, personalExpenses, householdShare, pockets, remaining ✓
+- toMonthlyAmount() - converts daily/weekly/monthly/yearly to monthly equiv ✓
+- isActiveInMonth() - respects startDate/endDate for recurring items ✓
+
+### Notes:
+- Period conversion constants: daily*30.44, weekly*4.35, yearly/12
+- PRD #15 marked as verified

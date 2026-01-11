@@ -285,7 +285,7 @@
       "User menu with logout",
       "Household indicator in header (if member)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",

@@ -365,3 +365,29 @@ Implemented projection backend (PRD item #16):
 - Max 24 months projection
 - Also marked PRD #22 (expense recurrence logic) and #23 (income-proportional split) as done - already implemented in balance service
 - Next feature: Monthly snapshot system (PRD #17), Future projection view UI (PRD #20), or Dashboard warnings (PRD #21)
+
+## 2026-01-11: Navigation and Layout UI
+
+Implemented responsive navigation (PRD item #24):
+
+### Added files:
+- apps/web/src/components/navigation/mobile-nav.tsx - hamburger menu for mobile, shows nav links in dropdown
+- apps/web/src/components/navigation/user-menu.tsx - user dropdown w/ account link + logout
+- apps/web/src/components/navigation/household-badge.tsx - badge showing household name (if member)
+
+### Modified files:
+- apps/web/src/components/navigation/navbar.tsx - integrated all nav components, responsive layout
+
+### Features:
+- Desktop: horizontal nav links hidden on mobile (md:flex)
+- Mobile: hamburger menu expands to show nav links
+- User menu dropdown w/ Settings icon -> Account, LogOut -> Logout
+- Household badge shows next to theme switcher when user is in a household
+- App renamed from "Awesome Todo App" to "FinTrack"
+- Added border-b to header for visual separation
+
+### Notes for next dev:
+- Mobile nav closes on link click
+- Admin link visible only to admin users
+- Household badge queries householdMeOptions (cached)
+- Next features remaining: Monthly snapshot system (PRD #17), Past month snapshot view (PRD #19), Future projection view (PRD #20), Dashboard warnings (PRD #21), Member departure handling (PRD #25)

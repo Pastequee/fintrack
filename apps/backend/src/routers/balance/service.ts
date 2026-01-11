@@ -86,16 +86,15 @@ async function calcPersonalExpenses(
 			and(eq(expenses.userId, userId), isNull(expenses.householdId), eq(expenses.active, true))
 		)
 
-	const items: Array<{ name: string; amount: number; type: string }> = []
-	let total = 0
+	const items = userExpenses
+		.map((exp) => ({
+			name: exp.name,
+			amount: getExpenseMonthlyAmount(exp, year, month),
+			type: exp.type,
+		}))
+		.filter((item) => item.amount > 0)
 
-	for (const exp of userExpenses) {
-		const amt = getExpenseMonthlyAmount(exp, year, month)
-		if (amt > 0) {
-			items.push({ name: exp.name, amount: amt, type: exp.type })
-			total += amt
-		}
-	}
+	const total = items.reduce((sum, item) => sum + item.amount, 0)
 
 	return { total, items }
 }
@@ -145,25 +144,18 @@ async function calcHouseholdShare(
 		where: { householdId: membership.householdId, active: true },
 	})
 
-	// Build expense items with monthly amounts
-	const expenseItems: Array<{ name: string; amount: number; yourShare: number }> = []
-	let totalHouseholdExpense = 0
-
-	for (const exp of householdExpenses) {
-		const monthlyAmount = getExpenseMonthlyAmount(exp, year, month)
-		if (monthlyAmount > 0) {
-			totalHouseholdExpense += monthlyAmount
-			expenseItems.push({ name: exp.name, amount: monthlyAmount, yourShare: 0 })
-		}
-	}
-
 	const userShare = await calcUserShareRatio(household, userId, year, month)
 
-	for (const item of expenseItems) {
-		item.yourShare = item.amount * userShare
-	}
+	const items = householdExpenses
+		.map((exp) => {
+			const amount = getExpenseMonthlyAmount(exp, year, month)
+			return { name: exp.name, amount, yourShare: amount * userShare }
+		})
+		.filter((item) => item.amount > 0)
 
-	return { total: totalHouseholdExpense * userShare, items: expenseItems }
+	const total = items.reduce((sum, item) => sum + item.yourShare, 0)
+
+	return { total, items }
 }
 
 // Calculate total pockets sum
@@ -172,14 +164,9 @@ async function calcPocketsTotal(
 ): Promise<{ total: number; items: Array<{ name: string; amount: number }> }> {
 	const userPockets = await db.query.pockets.findMany({ where: { userId } })
 
-	const items = userPockets.map((p) => ({
-		name: p.name,
-		amount: Number(p.amount),
-	}))
+	const items = userPockets.map((p) => ({ name: p.name, amount: Number(p.amount) }))
 
-	const total = items.reduce((sum, p) => sum + p.amount, 0)
-
-	return { total, items }
+	return { total: items.reduce((sum, p) => sum + p.amount, 0), items }
 }
 
 export type MonthlyBalance = {
@@ -225,5 +212,31 @@ export const BalanceService = {
 			pockets,
 			remaining,
 		}
+	},
+
+	// Project balances for N months starting from a given month
+	getProjection: async (
+		userId: User['id'],
+		startYear: number,
+		startMonth: number,
+		monthsAhead: number
+	): Promise<MonthlyBalance[]> => {
+		const projections: MonthlyBalance[] = []
+		let year = startYear
+		let month = startMonth
+
+		for (let i = 0; i < monthsAhead; i++) {
+			const balance = await BalanceService.getMonthlyBalance(userId, year, month)
+			projections.push(balance)
+
+			// Advance to next month
+			month++
+			if (month > 12) {
+				month = 1
+				year++
+			}
+		}
+
+		return projections
 	},
 }

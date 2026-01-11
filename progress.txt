@@ -346,3 +346,22 @@ Implemented dashboard UI (PRD item #18):
 - Dashboard is first nav link for logged-in users
 - Future: add badges for past/future months (snapshots/projections)
 - Next feature: Future month projections (PRD #16), Monthly snapshot system (PRD #17), or Dashboard warnings (PRD #21)
+
+## 2026-01-11: Future Month Projections Backend
+
+Implemented projection backend (PRD item #16):
+
+### Modified files:
+- apps/backend/src/routers/balance/service.ts - added getProjection() method
+- apps/backend/src/routers/balance/controller.ts - added GET /balance/projection/:year/:month/:months endpoint
+
+### Endpoint:
+- GET /balance/projection/:year/:month/:months - returns array of MonthlyBalance for N months starting from given month
+
+### Notes for next dev:
+- Projections reuse getMonthlyBalance() which already handles future months correctly
+- Incomes/expenses respect start_date/end_date
+- Pockets applied as current values (no date projection)
+- Max 24 months projection
+- Also marked PRD #22 (expense recurrence logic) and #23 (income-proportional split) as done - already implemented in balance service
+- Next feature: Monthly snapshot system (PRD #17), Future projection view UI (PRD #20), or Dashboard warnings (PRD #21)

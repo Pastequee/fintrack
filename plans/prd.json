@@ -190,7 +190,7 @@
       "Apply current pocket values to future months",
       "Return projection data for N months ahead"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",
@@ -262,7 +262,7 @@
       "Handle end_date (expense expires)",
       "Loan = recurring with calculated end_date based on duration"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "functional",
@@ -274,7 +274,7 @@
       "Handle edge case: member with zero income",
       "Recalculate on income change"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

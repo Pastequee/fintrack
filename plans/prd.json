@@ -215,7 +215,7 @@
       "Show remaining balance (green if positive, red if negative)",
       "Month navigation (previous/next)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

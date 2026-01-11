@@ -14,6 +14,7 @@ import { Route as MultiRouteImport } from './routes/multi'
 import { Route as IncomesRouteImport } from './routes/incomes'
 import { Route as HouseholdRouteImport } from './routes/household'
 import { Route as ExpensesRouteImport } from './routes/expenses'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -45,6 +46,11 @@ const HouseholdRoute = HouseholdRouteImport.update({
 const ExpensesRoute = ExpensesRouteImport.update({
   id: '/expenses',
   path: '/expenses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRoute = AccountRouteImport.update({
@@ -85,6 +91,7 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/dashboard': typeof DashboardRoute
   '/expenses': typeof ExpensesRoute
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
@@ -98,6 +105,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
+  '/dashboard': typeof DashboardRoute
   '/expenses': typeof ExpensesRoute
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/account': typeof AccountRoute
+  '/dashboard': typeof DashboardRoute
   '/expenses': typeof ExpensesRoute
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/dashboard'
     | '/expenses'
     | '/household'
     | '/incomes'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/account'
+    | '/dashboard'
     | '/expenses'
     | '/household'
     | '/incomes'
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/account'
+    | '/dashboard'
     | '/expenses'
     | '/household'
     | '/incomes'
@@ -170,6 +182,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AccountRoute: typeof AccountRoute
+  DashboardRoute: typeof DashboardRoute
   ExpensesRoute: typeof ExpensesRoute
   HouseholdRoute: typeof HouseholdRoute
   IncomesRoute: typeof IncomesRoute
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/expenses'
       fullPath: '/expenses'
       preLoaderRoute: typeof ExpensesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -286,6 +306,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AccountRoute: AccountRoute,
+  DashboardRoute: DashboardRoute,
   ExpensesRoute: ExpensesRoute,
   HouseholdRoute: HouseholdRoute,
   IncomesRoute: IncomesRoute,
@@ -297,12 +318,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

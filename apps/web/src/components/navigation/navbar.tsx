@@ -23,6 +23,7 @@ export const Navbar = () => {
 					</div>
 				</LoggedOut>
 				<LoggedIn>
+					<NavbarLink to="/dashboard">Dashboard</NavbarLink>
 					<NavbarLink to="/incomes">Incomes</NavbarLink>
 					<NavbarLink to="/expenses">Expenses</NavbarLink>
 					<NavbarLink to="/pockets">Pockets</NavbarLink>

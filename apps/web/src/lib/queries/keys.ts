@@ -40,4 +40,8 @@ export const keys = {
 			list: () => [...keys.admin.users.all(), 'list'] as const,
 		},
 	},
+	balance: {
+		all: ['balance'] as const,
+		month: (year: number, month: number) => [...keys.balance.all, year, month] as const,
+	},
 } as const

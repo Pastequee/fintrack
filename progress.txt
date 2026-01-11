@@ -318,3 +318,31 @@ Implemented balance calculation backend (PRD item #15):
 - Income-proportional falls back to equal split if total income=0
 - Endpoint at GET /balance/:year/:month (auth required)
 - Next feature: Future month projections (PRD item #16) or Monthly dashboard UI (PRD item #18)
+
+## 2026-01-11: Monthly Dashboard View
+
+Implemented dashboard UI (PRD item #18):
+
+### Added files:
+- apps/web/src/lib/queries/balance.queries.ts - query options for balance endpoint
+- apps/web/src/lib/utils/format-currency.ts - Intl.NumberFormat currency formatter
+- apps/web/src/components/dashboard/balance-row.tsx - expandable row w/ colored amounts
+- apps/web/src/components/dashboard/balance-item.tsx - individual item in expanded list
+- apps/web/src/components/dashboard/dashboard-overview.tsx - main dashboard card w/ month nav
+- apps/web/src/routes/dashboard.tsx - /dashboard route
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added balance query keys
+- apps/web/src/components/navigation/navbar.tsx - added Dashboard link
+
+### Features:
+- Month navigation (prev/next) w/ ChevronLeft/ChevronRight buttons
+- Income shown in green, negative remaining in red
+- Expandable sections for personal expenses, household share, pockets
+- Red warning Alert when remaining is negative (deficit)
+- Uses existing balance calculation engine
+
+### Notes for next dev:
+- Dashboard is first nav link for logged-in users
+- Future: add badges for past/future months (snapshots/projections)
+- Next feature: Future month projections (PRD #16), Monthly snapshot system (PRD #17), or Dashboard warnings (PRD #21)

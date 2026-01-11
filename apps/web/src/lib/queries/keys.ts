@@ -26,6 +26,7 @@ export const keys = {
 	invitations: {
 		all: ['invitations'] as const,
 		list: () => [...keys.invitations.all, 'list'] as const,
+		byToken: (token: string) => [...keys.invitations.all, 'token', token] as const,
 	},
 	admin: {
 		all: ['admin'] as const,

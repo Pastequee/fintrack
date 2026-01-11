@@ -142,7 +142,7 @@
       "Handle already-in-household error",
       "Redirect to dashboard on accept"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

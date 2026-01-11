@@ -17,7 +17,8 @@
       "Skill(mgrep)",
       "Bash(mgrep:*)",
       "Bash(bun lint:*)",
-      "Bash(bun format:*)"
+      "Bash(bun format:*)",
+      "Bash(bunx @tanstack/router-cli generate:*)"
     ]
   }
 }

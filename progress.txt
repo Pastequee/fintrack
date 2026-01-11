@@ -217,3 +217,23 @@ Implemented household UI (PRD item #11):
 - Create form shown when user has no household
 - Pending invitations fetched via separate query
 - Next feature: Household invitation flow UI (PRD item #12)
+
+## 2026-01-11: Household Invitation Flow UI
+
+Implemented invitation flow UI (PRD item #12):
+
+### Added files:
+- apps/web/src/routes/invite.$token.tsx - invitation landing page at /invite/:token
+
+### Features:
+- Displays household name and inviter info
+- Accept/decline buttons with loading states
+- Handles already-in-household error with user-friendly message
+- Redirects to dashboard on accept/decline
+- Shows login prompt if not authenticated
+- Shows error state for invalid/expired invitations
+
+### Notes for next dev:
+- Uses existing invitationByTokenOptions query and accept/declineInvitationOptions mutations
+- Route pattern: /invite/$token (TanStack Router dynamic param)
+- Next feature: Household expense backend (PRD item #13)

@@ -52,7 +52,11 @@
   "overrides": [
     // remove file naming convention for tsrouter file routing features
     {
-      "includes": ["**/$.ts"],
+      "includes": [
+        "apps/web/src/routes/**/$*.tsx",
+        "apps/web/src/routes/**/*.$*.tsx",
+        "apps/web/src/routes/**/$.ts"
+      ],
       "linter": {
         "rules": {
           "style": {

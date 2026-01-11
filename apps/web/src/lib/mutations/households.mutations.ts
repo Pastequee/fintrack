@@ -24,3 +24,15 @@ export const sendInvitationOptions = () =>
 		edenMutation: eden.invitations.post,
 		meta: { invalidate: [keys.invitations.list()] },
 	})
+
+export const acceptInvitationOptions = (token: string) =>
+	edenMutationOption({
+		edenMutation: eden.invitations.token({ token }).accept.post,
+		meta: { invalidate: [keys.households.me(), keys.invitations.byToken(token)] },
+	})
+
+export const declineInvitationOptions = (token: string) =>
+	edenMutationOption({
+		edenMutation: eden.invitations.token({ token }).decline.post,
+		meta: { invalidate: [keys.invitations.byToken(token)] },
+	})

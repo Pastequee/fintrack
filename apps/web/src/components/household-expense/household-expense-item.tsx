@@ -1,8 +1,19 @@
 import type { Expense, SplitMode } from '@repo/db/types'
 import { useMutation } from '@tanstack/react-query'
-import { AlertTriangle, CalendarDays, Loader2, Pencil, Repeat, Trash2 } from 'lucide-react'
+import {
+	AlertTriangle,
+	CalendarDays,
+	Loader2,
+	Pencil,
+	RefreshCcw,
+	Repeat,
+	Trash2,
+} from 'lucide-react'
 import { useState } from 'react'
-import { deleteHouseholdExpenseOptions } from '~/lib/mutations/households.mutations'
+import {
+	deleteHouseholdExpenseOptions,
+	updateHouseholdExpenseOptions,
+} from '~/lib/mutations/households.mutations'
 import {
 	formatExpenseAmount,
 	formatShortDate,
@@ -45,12 +56,15 @@ export const HouseholdExpenseItem = ({
 	const { isPending: isDeleting, mutate: deleteMutation } = useMutation(
 		deleteHouseholdExpenseOptions(expense.id)
 	)
+	const { isPending: isReenabling, mutate: reenableMutation } = useMutation(
+		updateHouseholdExpenseOptions(expense.id)
+	)
 
 	const isOneTime = expense.type === 'one_time'
 	const isDisabled = !expense.active
 	const remaining = isOneTime ? null : getRemainingDuration(expense.endDate)
-	const splitAmount =
-		splitMode === 'equal' ? getSplitAmount(expense.amount, memberCount) : 'by income'
+	const splitLabel =
+		splitMode === 'equal' ? getSplitAmount(expense.amount, memberCount) : 'split by income'
 
 	return (
 		<div className={`flex items-center gap-4 ${isDisabled ? 'opacity-50' : ''}`}>
@@ -71,7 +85,7 @@ export const HouseholdExpenseItem = ({
 					<span className="text-muted-foreground text-xs">
 						{formatExpenseAmount(expense.amount, expense.type, expense.period)}
 					</span>
-					{splitAmount && <span className="text-muted-foreground text-xs">• {splitAmount}</span>}
+					{splitLabel && <span className="text-muted-foreground text-xs">• {splitLabel}</span>}
 					{isOneTime && expense.targetDate && (
 						<span className="text-muted-foreground text-xs">
 							on {formatShortDate(expense.targetDate)}
@@ -81,9 +95,20 @@ export const HouseholdExpenseItem = ({
 				</div>
 			</div>
 
-			<Button disabled={isDisabled} onClick={() => setIsEditOpen(true)} size="icon" variant="ghost">
-				<Pencil size={16} />
-			</Button>
+			{isDisabled ? (
+				<Button
+					disabled={isReenabling}
+					onClick={() => reenableMutation({ active: true })}
+					size="icon"
+					variant="outline"
+				>
+					{isReenabling ? <Loader2 className="animate-spin" size={16} /> : <RefreshCcw size={16} />}
+				</Button>
+			) : (
+				<Button onClick={() => setIsEditOpen(true)} size="icon" variant="ghost">
+					<Pencil size={16} />
+				</Button>
+			)}
 
 			<Button
 				disabled={isDeleting}

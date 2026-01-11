@@ -1,17 +1,5 @@
 [
   {
-    "category": "backend",
-    "description": "User authentication system",
-    "tasks": [
-      "Create user table (id, email, password_hash, name, created_at)",
-      "Implement registration endpoint",
-      "Implement login endpoint with session/token",
-      "Implement logout endpoint",
-      "Add authentication middleware"
-    ],
-    "passes": true
-  },
-  {
     "category": "ui",
     "description": "Authentication pages",
     "tasks": [
@@ -296,6 +284,6 @@
       "Remaining members can re-enable or delete disabled expenses",
       "Disabled expenses excluded from calculations"
     ],
-    "passes": false
+    "passes": true
   }
 ]

@@ -484,3 +484,26 @@ Implemented dashboard warnings (PRD item #21):
 - isEndingSoon() checks if endDate <= 2 months from now AND >= now
 - Loans = recurring expenses w/ endDate, so "ending soon" effectively highlights loan completion
 - Next feature: Member departure handling (PRD #25)
+
+## 2026-01-11: Member Departure Handling
+
+Completed member departure handling (PRD item #25):
+
+### Modified files:
+- apps/web/src/components/household-expense/household-expense-item.tsx - added re-enable button
+
+### Features implemented:
+- On member leave: expenses flagged as disabled (already working via disableHouseholdExpensesForUser in backend)
+- Disabled expenses shown w/ amber badge, AlertTriangle icon, 50% opacity (already existed)
+- Re-enable button w/ RefreshCcw icon for disabled expenses (replaces edit button)
+- Delete button always available for all expenses (already existed)
+- Disabled expenses excluded from calculations via active=true filter (already working)
+
+### Implementation:
+- Added re-enable mutation using existing updateHouseholdExpenseOptions({ active: true })
+- Conditional render: disabled expenses show RefreshCcw button, enabled show Pencil (edit)
+- Loading state with Loader2 spinner during re-enable
+
+### Notes for next dev:
+- PRD fully complete - all 25 features passing
+- Backend already had all logic for disabling/filtering - only UI re-enable button was missing

@@ -26,8 +26,7 @@ export const env = createEnv({
 		REDIS_URL: z.url(),
 	},
 
-	// biome-ignore lint/suspicious/noExplicitAny: its ok
-	runtimeEnv: (import.meta as any).env,
+	runtimeEnv: import.meta.env,
 
 	emptyStringAsUndefined: true,
 })

@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { AlertTriangle, ChevronLeft, ChevronRight } from 'lucide-react'
+import { AlertTriangle, Archive, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
-import { balanceOptions } from '~/lib/queries/balance.queries'
+import { balanceOptions, snapshotOptions } from '~/lib/queries/balance.queries'
 import { formatCurrency } from '~/lib/utils/format-currency'
 import { Alert, AlertDescription } from '../ui/alert'
+import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Loader } from '../ui/loader'
@@ -15,12 +16,37 @@ const getMonthName = (month: number) => {
 	return date.toLocaleDateString('en-US', { month: 'long' })
 }
 
+const isPastMonth = (year: number, month: number) => {
+	const now = new Date()
+	const currentYear = now.getFullYear()
+	const currentMonth = now.getMonth() + 1
+	return year < currentYear || (year === currentYear && month < currentMonth)
+}
+
 export const DashboardOverview = () => {
 	const now = new Date()
 	const [year, setYear] = useState(now.getFullYear())
 	const [month, setMonth] = useState(now.getMonth() + 1)
 
-	const { data: balance, isLoading, isError } = useQuery(balanceOptions(year, month))
+	const viewingPast = isPastMonth(year, month)
+
+	// Use snapshot for past months, live balance for current/future
+	const {
+		data: balance,
+		isLoading: balanceLoading,
+		isError: balanceError,
+	} = useQuery({ ...balanceOptions(year, month), enabled: !viewingPast })
+
+	const {
+		data: snapshot,
+		isLoading: snapshotLoading,
+		isError: snapshotError,
+	} = useQuery({ ...snapshotOptions(year, month), enabled: viewingPast })
+
+	const isLoading = viewingPast ? snapshotLoading : balanceLoading
+	const isError = viewingPast ? snapshotError : balanceError
+
+	const data = viewingPast ? snapshot?.data : balance
 
 	const goToPreviousMonth = () => {
 		if (month === 1) {
@@ -50,7 +76,7 @@ export const DashboardOverview = () => {
 		)
 	}
 
-	if (isError || !balance) {
+	if (isError) {
 		return (
 			<Card className="w-full max-w-md">
 				<CardContent>
@@ -60,7 +86,35 @@ export const DashboardOverview = () => {
 		)
 	}
 
-	const isDeficit = balance.remaining < 0
+	// No snapshot for past month - show message
+	if (viewingPast && !data) {
+		return (
+			<Card className="w-full max-w-md">
+				<CardHeader>
+					<div className="flex items-center justify-between">
+						<Button onClick={goToPreviousMonth} size="icon" variant="ghost">
+							<ChevronLeft size={20} />
+						</Button>
+						<CardTitle className="text-center">
+							{getMonthName(month)} {year}
+						</CardTitle>
+						<Button onClick={goToNextMonth} size="icon" variant="ghost">
+							<ChevronRight size={20} />
+						</Button>
+					</div>
+				</CardHeader>
+				<CardContent>
+					<p className="text-center text-muted-foreground text-sm">
+						No archived data for this month
+					</p>
+				</CardContent>
+			</Card>
+		)
+	}
+
+	if (!data) return null
+
+	const isDeficit = data.remaining < 0
 
 	return (
 		<Card className="w-full max-w-md">
@@ -69,9 +123,17 @@ export const DashboardOverview = () => {
 					<Button onClick={goToPreviousMonth} size="icon" variant="ghost">
 						<ChevronLeft size={20} />
 					</Button>
-					<CardTitle className="text-center">
-						{getMonthName(month)} {year}
-					</CardTitle>
+					<div className="flex flex-col items-center gap-1">
+						<CardTitle className="text-center">
+							{getMonthName(month)} {year}
+						</CardTitle>
+						{viewingPast && (
+							<Badge className="gap-1" variant="secondary">
+								<Archive size={12} />
+								Archived
+							</Badge>
+						)}
+					</div>
 					<Button onClick={goToNextMonth} size="icon" variant="ghost">
 						<ChevronRight size={20} />
 					</Button>
@@ -83,46 +145,46 @@ export const DashboardOverview = () => {
 					<Alert className="mb-4" variant="destructive">
 						<AlertTriangle size={16} />
 						<AlertDescription>
-							Deficit of {formatCurrency(Math.abs(balance.remaining))} this month
+							Deficit of {formatCurrency(Math.abs(data.remaining))} this month
 						</AlertDescription>
 					</Alert>
 				)}
 
-				<BalanceRow amount={balance.income} label="Income" variant="positive" />
+				<BalanceRow amount={data.income} label="Income" variant="positive" />
 
 				<BalanceRow
-					amount={balance.personalExpenses.total}
-					expandable={balance.personalExpenses.items.length > 0}
+					amount={data.personalExpenses.total}
+					expandable={data.personalExpenses.items.length > 0}
 					label="Personal Expenses"
 				>
-					{balance.personalExpenses.items.map((item) => (
+					{data.personalExpenses.items.map((item) => (
 						<BalanceItem amount={item.amount} key={item.name} name={item.name} />
 					))}
 				</BalanceRow>
 
 				<BalanceRow
-					amount={balance.householdShare.total}
-					expandable={balance.householdShare.items.length > 0}
+					amount={data.householdShare.total}
+					expandable={data.householdShare.items.length > 0}
 					label="Household Share"
 				>
-					{balance.householdShare.items.map((item) => (
+					{data.householdShare.items.map((item) => (
 						<BalanceItem amount={item.yourShare} key={item.name} name={item.name} />
 					))}
 				</BalanceRow>
 
 				<BalanceRow
-					amount={balance.pockets.total}
-					expandable={balance.pockets.items.length > 0}
+					amount={data.pockets.total}
+					expandable={data.pockets.items.length > 0}
 					label="Pockets"
 				>
-					{balance.pockets.items.map((item) => (
+					{data.pockets.items.map((item) => (
 						<BalanceItem amount={item.amount} key={item.name} name={item.name} />
 					))}
 				</BalanceRow>
 
 				<div className="mt-2 border-t pt-2">
 					<BalanceRow
-						amount={balance.remaining}
+						amount={data.remaining}
 						label="Remaining"
 						variant={isDeficit ? 'negative' : 'positive'}
 					/>

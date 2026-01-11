@@ -6,7 +6,12 @@ export const snapshotsRouter = new Elysia({ name: 'snapshots', tags: ['Snapshots
 	.use(betterAuth)
 	.get(
 		'/snapshots/:year/:month',
-		({ params, user }) => SnapshotsService.getSnapshot(user.id, params.year, params.month),
+		async ({ params, user, status }) => {
+			const snapshot = await SnapshotsService.getSnapshot(user.id, params.year, params.month)
+			if (!snapshot) return status('Not Found')
+
+			return snapshot
+		},
 		{
 			auth: true,
 			params: t.Object({

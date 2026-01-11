@@ -424,3 +424,24 @@ Implemented snapshot backend (PRD item #17):
 - Data structure mirrors MonthlyBalance from balance service
 - Scheduled job not implemented as background task; use external cron/scheduler to call POST /snapshots/archive-previous
 - Next feature: Past month snapshot view (PRD #19) or Future projection view (PRD #20)
+
+## 2026-01-11: Past Month Snapshot View UI
+
+Implemented past month snapshot view (PRD item #19):
+
+### Modified files:
+- apps/web/src/lib/queries/keys.ts - added snapshots query keys
+- apps/web/src/lib/queries/balance.queries.ts - added snapshotOptions query
+- apps/web/src/components/dashboard/dashboard-overview.tsx - detect past months, fetch snapshot, show badge
+
+### Features:
+- isPastMonth() helper detects when viewing past month
+- Past months fetch from /snapshots endpoint instead of live /balance
+- "Archived" badge w/ Archive icon shown for past months
+- "No archived data for this month" message when no snapshot exists
+- Same layout for snapshot and live data (SnapshotData matches MonthlyBalance)
+
+### Notes for next dev:
+- Dashboard is view-only so "disable editing" is N/A
+- SnapshotData cast needed due to jsonb type not inferring through Eden
+- Next features: Future projection view (PRD #20), Dashboard warnings (PRD #21), Member departure handling (PRD #25)

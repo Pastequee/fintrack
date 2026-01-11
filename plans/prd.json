@@ -227,7 +227,7 @@
       "Indicate 'viewing archived data' badge",
       "Disable editing for past months"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

@@ -6,3 +6,9 @@ export const balanceOptions = (year: number, month: number) =>
 		edenQuery: eden.balance({ year })({ month }).get,
 		queryKey: keys.balance.month(year, month),
 	})
+
+export const snapshotOptions = (year: number, month: number) =>
+	edenQueryOption({
+		edenQuery: eden.snapshots({ year })({ month }).get,
+		queryKey: keys.snapshots.month(year, month),
+	})

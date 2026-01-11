@@ -14,8 +14,7 @@ export const env = createEnv({
 		NODE_ENV: z.enum(['development', 'production']).default('development'),
 	},
 
-	// biome-ignore lint/suspicious/noExplicitAny: its ok
-	runtimeEnv: (import.meta as any).env,
+	runtimeEnv: import.meta.env,
 
 	emptyStringAsUndefined: true,
 })

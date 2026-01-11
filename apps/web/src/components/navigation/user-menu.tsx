@@ -6,6 +6,7 @@ import { Button } from '../ui/button'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
@@ -33,17 +34,19 @@ export const UserMenu = () => {
 				}
 			/>
 			<DropdownMenuContent align="end" sideOffset={8}>
-				<DropdownMenuLabel>{auth.user.name || auth.user.email}</DropdownMenuLabel>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem render={<Link to="/account" />}>
-					<Settings className="size-4" />
-					Account
-				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem onClick={handleLogout} variant="destructive">
-					<LogOut className="size-4" />
-					Logout
-				</DropdownMenuItem>
+				<DropdownMenuGroup>
+					<DropdownMenuLabel>{auth.user.name || auth.user.email}</DropdownMenuLabel>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem render={<Link to="/account" />}>
+						<Settings className="size-4" />
+						Account
+					</DropdownMenuItem>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem onClick={handleLogout} variant="destructive">
+						<LogOut className="size-4" />
+						Logout
+					</DropdownMenuItem>
+				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { AlertTriangle, Archive, ChevronLeft, ChevronRight } from 'lucide-react'
+import { AlertTriangle, Archive, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
 import { balanceOptions, snapshotOptions } from '~/lib/queries/balance.queries'
 import { formatCurrency } from '~/lib/utils/format-currency'
@@ -23,12 +23,45 @@ const isPastMonth = (year: number, month: number) => {
 	return year < currentYear || (year === currentYear && month < currentMonth)
 }
 
+const isFutureMonth = (year: number, month: number) => {
+	const now = new Date()
+	const currentYear = now.getFullYear()
+	const currentMonth = now.getMonth() + 1
+	return year > currentYear || (year === currentYear && month > currentMonth)
+}
+
+type ViewModeBadgeProps = {
+	viewingPast: boolean
+	viewingFuture: boolean
+}
+
+const ViewModeBadge = ({ viewingPast, viewingFuture }: ViewModeBadgeProps) => {
+	if (viewingPast) {
+		return (
+			<Badge className="gap-1" variant="secondary">
+				<Archive size={12} />
+				Archived
+			</Badge>
+		)
+	}
+	if (viewingFuture) {
+		return (
+			<Badge className="gap-1" variant="outline">
+				<TrendingUp size={12} />
+				Projection
+			</Badge>
+		)
+	}
+	return null
+}
+
 export const DashboardOverview = () => {
 	const now = new Date()
 	const [year, setYear] = useState(now.getFullYear())
 	const [month, setMonth] = useState(now.getMonth() + 1)
 
 	const viewingPast = isPastMonth(year, month)
+	const viewingFuture = isFutureMonth(year, month)
 
 	// Use snapshot for past months, live balance for current/future
 	const {
@@ -127,12 +160,7 @@ export const DashboardOverview = () => {
 						<CardTitle className="text-center">
 							{getMonthName(month)} {year}
 						</CardTitle>
-						{viewingPast && (
-							<Badge className="gap-1" variant="secondary">
-								<Archive size={12} />
-								Archived
-							</Badge>
-						)}
+						<ViewModeBadge viewingFuture={viewingFuture} viewingPast={viewingPast} />
 					</div>
 					<Button onClick={goToNextMonth} size="icon" variant="ghost">
 						<ChevronRight size={20} />
@@ -158,7 +186,12 @@ export const DashboardOverview = () => {
 					label="Personal Expenses"
 				>
 					{data.personalExpenses.items.map((item) => (
-						<BalanceItem amount={item.amount} key={item.name} name={item.name} />
+						<BalanceItem
+							amount={item.amount}
+							key={item.name}
+							name={item.name}
+							type={item.type as 'one_time' | 'recurring'}
+						/>
 					))}
 				</BalanceRow>
 

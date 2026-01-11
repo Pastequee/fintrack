@@ -445,3 +445,22 @@ Implemented past month snapshot view (PRD item #19):
 - Dashboard is view-only so "disable editing" is N/A
 - SnapshotData cast needed due to jsonb type not inferring through Eden
 - Next features: Future projection view (PRD #20), Dashboard warnings (PRD #21), Member departure handling (PRD #25)
+
+## 2026-01-11: Future Month Projection View UI
+
+Implemented projection view UI (PRD item #20):
+
+### Modified files:
+- apps/web/src/components/dashboard/dashboard-overview.tsx - added isFutureMonth detection, "Projection" badge
+- apps/web/src/components/dashboard/balance-item.tsx - added type indicator icons (CalendarDays/Repeat)
+
+### Features:
+- isFutureMonth() helper detects when viewing future month
+- "Projection" badge w/ TrendingUp icon shown for future months
+- Recurring items show Repeat icon, one-time items show CalendarDays icon in expense list
+- Projections use existing /balance/:year/:month endpoint (already handles future months correctly)
+
+### Notes for next dev:
+- Backend projection already handles future months via isActiveInMonth()
+- Type icons only shown for personal expenses (have type field from backend)
+- Next features: Dashboard warnings (PRD #21), Member departure handling (PRD #25)

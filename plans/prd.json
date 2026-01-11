@@ -239,7 +239,7 @@
       "Indicate 'projection' badge",
       "Show which recurring items contribute"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "ui",

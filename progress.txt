@@ -237,3 +237,24 @@ Implemented invitation flow UI (PRD item #12):
 - Uses existing invitationByTokenOptions query and accept/declineInvitationOptions mutations
 - Route pattern: /invite/$token (TanStack Router dynamic param)
 - Next feature: Household expense backend (PRD item #13)
+
+## 2026-01-11: Household Expense Management Backend
+
+Implemented household expense backend (PRD item #13):
+
+### Modified files:
+- apps/backend/src/routers/expense/service.ts - added getHouseholdExpenses, updated getUserExpenses to filter out household expenses
+- apps/backend/src/routers/expense/controller.ts - added household expense CRUD endpoints
+
+### Endpoints:
+- GET /household-expenses - get expenses for user's household
+- POST /household-expenses - create household expense
+- PATCH /household-expenses/:id - update household expense
+- DELETE /household-expenses/:id - delete household expense
+
+### Notes for next dev:
+- Expense table already had householdId (nullable) + active flag from prior work
+- Routes use /household-expenses (not /households/:id/expenses) to avoid Eden type conflicts
+- Membership validated via HouseholdsService.getUserMembership
+- Personal expense list now filters out household expenses (householdId IS NULL)
+- Next feature: Household expense UI (PRD item #14)

@@ -1,12 +1,18 @@
 import { db } from '@repo/db'
 import { expenses } from '@repo/db/schemas'
-import type { Expense, ExpenseInsert, ExpenseUpdate, User } from '@repo/db/types'
-import { eq } from 'drizzle-orm'
+import type { Expense, ExpenseInsert, ExpenseUpdate, Household, User } from '@repo/db/types'
+import { and, eq, isNull } from 'drizzle-orm'
 
 export const ExpensesService = {
 	getUserExpenses: async (userId: User['id']) =>
+		db
+			.select()
+			.from(expenses)
+			.where(and(eq(expenses.userId, userId), isNull(expenses.householdId))),
+
+	getHouseholdExpenses: async (householdId: Household['id']) =>
 		db.query.expenses.findMany({
-			where: { userId },
+			where: { householdId },
 			orderBy: { createdAt: 'desc' },
 		}),
 

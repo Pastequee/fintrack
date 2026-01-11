@@ -291,3 +291,30 @@ Implemented household expense UI (PRD item #14):
 - Split calculation currently shows equal split; income-proportional just shows "by income" (actual calc in future PRD)
 - Shared utils extracted to reduce duplication across expense/household-expense items
 - Next feature: Monthly balance calculation engine (PRD item #15)
+
+## 2026-01-11: Monthly Balance Calculation Engine
+
+Implemented balance calculation backend (PRD item #15):
+
+### Added files:
+- apps/backend/src/routers/balance/service.ts - calculation engine
+- apps/backend/src/routers/balance/controller.ts - GET /balance/:year/:month endpoint
+
+### Modified files:
+- apps/backend/src/index.ts - registered balanceRouter
+
+### Features:
+- toMonthlyAmount() converts daily/weekly/monthly/yearly to monthly equiv
+- isActiveInMonth() checks if recurring item active during month (respects start/end dates)
+- isInMonth() checks if one-time date falls in month
+- calcMonthlyIncome() - sum user's active incomes for month
+- calcPersonalExpenses() - sum personal one-time + recurring expenses for month
+- calcHouseholdShare() - compute user's share based on split mode (equal or income_proportional)
+- calcPocketsTotal() - sum all user's pocket amounts
+- Returns: income, personalExpenses, householdShare, pockets, remaining
+
+### Notes for next dev:
+- Period conversion: daily*30.44, weekly*4.35, yearly/12
+- Income-proportional falls back to equal split if total income=0
+- Endpoint at GET /balance/:year/:month (auth required)
+- Next feature: Future month projections (PRD item #16) or Monthly dashboard UI (PRD item #18)

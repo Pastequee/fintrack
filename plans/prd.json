@@ -178,7 +178,7 @@
       "Calculate total pockets sum",
       "Return: income, personal_expenses, household_share, pockets, remaining"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "category": "backend",

@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PocketsRouteImport } from './routes/pockets'
 import { Route as MultiRouteImport } from './routes/multi'
 import { Route as IncomesRouteImport } from './routes/incomes'
 import { Route as HouseholdRouteImport } from './routes/household'
@@ -23,11 +22,6 @@ import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
-const PocketsRoute = PocketsRouteImport.update({
-  id: '/pockets',
-  path: '/pockets',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MultiRoute = MultiRouteImport.update({
   id: '/multi',
   path: '/multi',
@@ -96,7 +90,6 @@ export interface FileRoutesByFullPath {
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
-  '/pockets': typeof PocketsRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -110,7 +103,6 @@ export interface FileRoutesByTo {
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
-  '/pockets': typeof PocketsRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -126,7 +118,6 @@ export interface FileRoutesById {
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
   '/multi': typeof MultiRoute
-  '/pockets': typeof PocketsRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -142,7 +133,6 @@ export interface FileRouteTypes {
     | '/household'
     | '/incomes'
     | '/multi'
-    | '/pockets'
     | '/login'
     | '/register'
     | '/admin/users'
@@ -156,7 +146,6 @@ export interface FileRouteTypes {
     | '/household'
     | '/incomes'
     | '/multi'
-    | '/pockets'
     | '/login'
     | '/register'
     | '/admin/users'
@@ -171,7 +160,6 @@ export interface FileRouteTypes {
     | '/household'
     | '/incomes'
     | '/multi'
-    | '/pockets'
     | '/_auth/login'
     | '/_auth/register'
     | '/admin/users'
@@ -187,20 +175,12 @@ export interface RootRouteChildren {
   HouseholdRoute: typeof HouseholdRoute
   IncomesRoute: typeof IncomesRoute
   MultiRoute: typeof MultiRoute
-  PocketsRoute: typeof PocketsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   InviteTokenRoute: typeof InviteTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/pockets': {
-      id: '/pockets'
-      path: '/pockets'
-      fullPath: '/pockets'
-      preLoaderRoute: typeof PocketsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/multi': {
       id: '/multi'
       path: '/multi'
@@ -311,19 +291,9 @@ const rootRouteChildren: RootRouteChildren = {
   HouseholdRoute: HouseholdRoute,
   IncomesRoute: IncomesRoute,
   MultiRoute: MultiRoute,
-  PocketsRoute: PocketsRoute,
   AdminUsersRoute: AdminUsersRoute,
   InviteTokenRoute: InviteTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

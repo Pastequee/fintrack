@@ -15,7 +15,6 @@ const navLinks: NavLink[] = [
 	{ to: '/dashboard', label: 'Dashboard' },
 	{ to: '/incomes', label: 'Incomes' },
 	{ to: '/expenses', label: 'Expenses' },
-	{ to: '/pockets', label: 'Pockets' },
 	{ to: '/household', label: 'Household' },
 	{ to: '/admin/users', label: 'Admin', adminOnly: true },
 	{ to: '/account', label: 'Account' },

@@ -9,3 +9,14 @@ Removed todo example code from entire codebase:
 Note: db:push not run - table still exists in DB but code is clean. Run manually if needed.
 
 Next: PRD #4-7 (pockets cleanup, multi-step demo removal)
+
+## 2026-01-12 - Pockets cleanup backend+frontend (PRD #4, #5)
+
+Removed pockets feature from backend and frontend:
+- Deleted backend router (apps/backend/src/routers/pocket/)
+- Deleted frontend components, queries, mutations, route
+- Removed pockets key from query keys
+- Removed Pockets link from navbar and mobile-nav
+- Regenerated router types
+
+Note: PRD #6 still pending - pockets DB schema and balance calculation refs remain. Do #6 next to complete pockets removal.

@@ -41,7 +41,7 @@
       "Delete apps/backend/src/routers/pocket/ directory",
       "Remove pocketsRouter import and .use() from apps/backend/src/index.ts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 5,
@@ -55,7 +55,7 @@
       "Remove pockets key from apps/web/src/lib/queries/keys.ts",
       "Remove Pockets link from navbar"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 6,

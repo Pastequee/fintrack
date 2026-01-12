@@ -12,7 +12,6 @@ import { expensesRouter } from '#routers/expense/controller'
 import { householdsRouter } from '#routers/household/controller'
 import { incomesRouter } from '#routers/income/controller'
 import { invitationsRouter } from '#routers/invitation/controller'
-import { pocketsRouter } from '#routers/pocket/controller'
 import { snapshotsRouter } from '#routers/snapshot/controller'
 import { userRouter } from '#routers/user/controller'
 import { utilsRouter } from '#routers/utils/controller'
@@ -42,7 +41,6 @@ export const app = new Elysia()
 	.use(userRouter)
 	.use(incomesRouter)
 	.use(expensesRouter)
-	.use(pocketsRouter)
 	.use(householdsRouter)
 	.use(invitationsRouter)
 	.use(balanceRouter)

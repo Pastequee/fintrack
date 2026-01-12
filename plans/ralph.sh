@@ -1,14 +1,15 @@
 set -e
 
-claude --permission-mode acceptEdits "@plans/prd.json @progress.txt \
+claude --permission-mode acceptEdits "@prd.json @progress.txt \
 1. Find the highest-priority feature to work on and work only on that feature. \
 This should be the one YOU decide has the highest priority - not necessarily the first one on the list. \
 2. Check that the types check via 'bun typecheck' and that the linter is fine with 'bun lint' \
 3. Update the PRD with the work that was done. \
 4. Append your progress to the progress.txt file. \
 Use this to leave a note for the next person working in the codebase. \
-5. Use the code simplifier agent (code-simplifier:code-simplifier) once you're done before committing. \
-5. Make a git commit of that feature. \
+5. If working with UI changes use the 'frontend-design' skill. \
+6. Use the code simplifier agent (code-simplifier:code-simplifier) once you're done before committing. \
+7. Make a git commit of that feature. \
 ONLY WORK ON A SINGLE FEATURE. \
 If, while implementing the feature, you notice the PRD is complete, output <promise>NOTHING_TO_DO</promise>. \
 "

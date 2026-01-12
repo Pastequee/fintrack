@@ -1,0 +1,428 @@
+[
+  {
+    "id": 1,
+    "category": "cleanup",
+    "description": "Remove todo example from backend",
+    "tasks": [
+      "Delete apps/backend/src/routers/todo/ directory",
+      "Remove todosRouter import and .use() from apps/backend/src/index.ts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 2,
+    "category": "cleanup",
+    "description": "Remove todo example from frontend",
+    "tasks": [
+      "Delete apps/web/src/components/todo/ directory",
+      "Delete apps/web/src/lib/queries/todos.queries.ts",
+      "Delete apps/web/src/lib/mutations/todos.mutations.ts",
+      "Remove todos key from apps/web/src/lib/queries/keys.ts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 3,
+    "category": "cleanup",
+    "description": "Remove todo from database",
+    "tasks": [
+      "Delete packages/db/src/schemas/todos.ts",
+      "Remove export from packages/db/src/schemas/index.ts",
+      "Remove todo types from packages/db/src/types.ts",
+      "Run bun db:push to sync schema"
+    ],
+    "passes": false
+  },
+  {
+    "id": 4,
+    "category": "cleanup",
+    "description": "Remove pockets from backend",
+    "tasks": [
+      "Delete apps/backend/src/routers/pocket/ directory",
+      "Remove pocketsRouter import and .use() from apps/backend/src/index.ts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 5,
+    "category": "cleanup",
+    "description": "Remove pockets from frontend",
+    "tasks": [
+      "Delete apps/web/src/components/pocket/ directory",
+      "Delete apps/web/src/lib/queries/pockets.queries.ts",
+      "Delete apps/web/src/lib/mutations/pockets.mutations.ts",
+      "Delete apps/web/src/routes/pockets.tsx",
+      "Remove pockets key from apps/web/src/lib/queries/keys.ts",
+      "Remove Pockets link from navbar"
+    ],
+    "passes": false
+  },
+  {
+    "id": 6,
+    "category": "cleanup",
+    "description": "Remove pockets from database and balance calculation",
+    "tasks": [
+      "Delete packages/db/src/schemas/pockets.ts",
+      "Remove export from packages/db/src/schemas/index.ts",
+      "Remove pocket types from packages/db/src/types.ts",
+      "Remove pockets from balance calculation in apps/backend/src/routers/balance/service.ts",
+      "Remove pockets section from dashboard-overview.tsx",
+      "Run bun db:push to sync schema"
+    ],
+    "passes": false
+  },
+  {
+    "id": 7,
+    "category": "cleanup",
+    "description": "Remove multi-step form demo route",
+    "tasks": [
+      "Delete apps/web/src/routes/multi.tsx",
+      "Regenerate router types with bunx @tanstack/router-cli generate"
+    ],
+    "passes": false
+  },
+  {
+    "id": 8,
+    "category": "backend",
+    "description": "Create tags database schema",
+    "tasks": [
+      "Create packages/db/src/schemas/tags.ts with id, userId, name, color fields",
+      "Export tags from packages/db/src/schemas/index.ts",
+      "Add tag types to packages/db/src/types.ts",
+      "Run bun db:push to create table"
+    ],
+    "passes": false
+  },
+  {
+    "id": 9,
+    "category": "backend",
+    "description": "Add tagId to expenses schema",
+    "tasks": [
+      "Add nullable tagId foreign key to expenses table in packages/db/src/schemas/expenses.ts",
+      "Update expense types in packages/db/src/types.ts",
+      "Run bun db:push to sync schema"
+    ],
+    "passes": false
+  },
+  {
+    "id": 10,
+    "category": "backend",
+    "description": "Create tags API endpoints",
+    "tasks": [
+      "Create apps/backend/src/routers/tag/service.ts with CRUD operations",
+      "Create apps/backend/src/routers/tag/controller.ts with GET, POST, PATCH, DELETE routes",
+      "Register tagsRouter in apps/backend/src/index.ts",
+      "Tags scoped to authenticated user"
+    ],
+    "passes": false
+  },
+  {
+    "id": 11,
+    "category": "frontend",
+    "description": "Create tags queries and mutations",
+    "tasks": [
+      "Create apps/web/src/lib/queries/tags.queries.ts with tagListOptions",
+      "Create apps/web/src/lib/mutations/tags.mutations.ts with create, update, delete options",
+      "Add tags key to apps/web/src/lib/queries/keys.ts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 12,
+    "category": "ui",
+    "description": "Create tag management UI",
+    "tasks": [
+      "Create tag color palette constant (~10-12 preset colors)",
+      "Create tag selector dropdown component for expense forms",
+      "Create add tag dialog component",
+      "Create manage tags dialog with list, edit, delete",
+      "Add tag selector to add-expense-form.tsx",
+      "Add tag selector to edit-expense-dialog.tsx"
+    ],
+    "passes": false
+  },
+  {
+    "id": 13,
+    "category": "backend",
+    "description": "Implement mock email service for development",
+    "tasks": [
+      "Modify packages/email/src/index.ts to check NODE_ENV",
+      "In dev: console.log email to, subject, body",
+      "In prod: use Resend as before",
+      "Create sendInvitation function with to, inviterName, householdName, token params",
+      "Email contains link to /invite/:token"
+    ],
+    "passes": false
+  },
+  {
+    "id": 14,
+    "category": "backend",
+    "description": "Send invitation email when creating invitation",
+    "tasks": [
+      "Import mail.sendInvitation in apps/backend/src/routers/invitation/controller.ts",
+      "Call sendInvitation after creating invitation record",
+      "Include inviter name and household name in email"
+    ],
+    "passes": false
+  },
+  {
+    "id": 15,
+    "category": "ui",
+    "description": "Consolidate routes into single dashboard",
+    "tasks": [
+      "Delete apps/web/src/routes/expenses.tsx",
+      "Delete apps/web/src/routes/incomes.tsx",
+      "Delete apps/web/src/routes/household.tsx",
+      "Delete apps/web/src/routes/dashboard.tsx",
+      "Transform apps/web/src/routes/index.tsx into main dashboard",
+      "Regenerate router types"
+    ],
+    "passes": false
+  },
+  {
+    "id": 16,
+    "category": "ui",
+    "description": "Create dashboard tabs component",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/dashboard-tabs.tsx",
+      "Two tabs: Personnel (personal) and Foyer (household)",
+      "Use shadcn Tabs component",
+      "Persist selected tab in URL or state"
+    ],
+    "passes": false
+  },
+  {
+    "id": 17,
+    "category": "ui",
+    "description": "Create personal tab content",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/personal-tab.tsx",
+      "Show key insight cards at top",
+      "Show income list with add button",
+      "Show expense list with add button",
+      "Show charts section",
+      "Monthly navigation (prev/next month)"
+    ],
+    "passes": false
+  },
+  {
+    "id": 18,
+    "category": "ui",
+    "description": "Create household tab content",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/household-tab.tsx",
+      "Show household creation if no household",
+      "Show household members list",
+      "Show shared expenses list",
+      "Show invitation form and pending invitations",
+      "Show user's share of household expenses"
+    ],
+    "passes": false
+  },
+  {
+    "id": 19,
+    "category": "ui",
+    "description": "Create modal dialogs for CRUD operations",
+    "tasks": [
+      "Create apps/web/src/components/income/add-income-dialog.tsx",
+      "Create apps/web/src/components/expense/add-expense-dialog.tsx",
+      "Reuse existing edit dialogs for edit functionality",
+      "All forms work via modals, no separate pages"
+    ],
+    "passes": false
+  },
+  {
+    "id": 20,
+    "category": "ui",
+    "description": "Update navigation for single dashboard",
+    "tasks": [
+      "Remove Dashboard, Incomes, Expenses, Pockets, Household links from navbar",
+      "Keep Account dropdown and Admin link (for admins)",
+      "Update mobile-nav.tsx similarly",
+      "Logo/home links go to dashboard"
+    ],
+    "passes": false
+  },
+  {
+    "id": 21,
+    "category": "i18n",
+    "description": "Update number and date formatters to French",
+    "tasks": [
+      "Update apps/web/src/lib/utils/format-currency.ts to use fr-FR locale",
+      "Create apps/web/src/lib/utils/format-date.ts with French date formatting",
+      "Format: 1 234,56 EUR for currency",
+      "Format: 12 janvier 2024 for dates"
+    ],
+    "passes": false
+  },
+  {
+    "id": 22,
+    "category": "i18n",
+    "description": "Translate dashboard components to French",
+    "tasks": [
+      "Translate all strings in components/dashboard/",
+      "Revenus, Depenses, Disponible, Personnel, Foyer, etc.",
+      "Update month names to French",
+      "Update period labels (/jour, /semaine, /mois, /an)"
+    ],
+    "passes": false
+  },
+  {
+    "id": 23,
+    "category": "i18n",
+    "description": "Translate expense and income components to French",
+    "tasks": [
+      "Translate all strings in components/expense/",
+      "Translate all strings in components/income/",
+      "Ajouter, Modifier, Supprimer, Enregistrer, Annuler",
+      "Recurrent, Ponctuel, Mensuel, Hebdomadaire, etc."
+    ],
+    "passes": false
+  },
+  {
+    "id": 24,
+    "category": "i18n",
+    "description": "Translate household components to French",
+    "tasks": [
+      "Translate all strings in components/household/",
+      "Translate all strings in components/household-expense/",
+      "Foyer, Membres, Invitation, Accepter, Refuser, etc."
+    ],
+    "passes": false
+  },
+  {
+    "id": 25,
+    "category": "i18n",
+    "description": "Translate auth and navigation to French",
+    "tasks": [
+      "Translate components/auth/login-form.tsx",
+      "Translate components/auth/register-form.tsx",
+      "Translate components/navigation/navbar.tsx",
+      "Translate routes/invite.$token.tsx",
+      "Translate routes/account.tsx",
+      "Connexion, Inscription, Deconnexion, Compte"
+    ],
+    "passes": false
+  },
+  {
+    "id": 26,
+    "category": "ui",
+    "description": "Create key insight cards component",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/insight-cards.tsx",
+      "Income card (green background)",
+      "Personal expenses card (blue background)",
+      "Shared expenses card (purple background)",
+      "Available money card (amber, red if negative)",
+      "Each card shows icon, label, formatted amount"
+    ],
+    "passes": false
+  },
+  {
+    "id": 27,
+    "category": "backend",
+    "description": "Create stats API endpoints for charts",
+    "tasks": [
+      "Create apps/backend/src/routers/stats/service.ts",
+      "Implement getExpensesByTag(userId, year, month)",
+      "Implement getMonthlyTrend(userId, monthsBack: 6)",
+      "Create apps/backend/src/routers/stats/controller.ts with GET routes",
+      "Register statsRouter in apps/backend/src/index.ts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 28,
+    "category": "frontend",
+    "description": "Create stats queries",
+    "tasks": [
+      "Create apps/web/src/lib/queries/stats.queries.ts",
+      "expensesByTagOptions(year, month)",
+      "monthlyTrendOptions()",
+      "Add stats key to keys.ts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 29,
+    "category": "ui",
+    "description": "Install and setup shadcn charts",
+    "tasks": [
+      "Run bunx shadcn@latest add chart",
+      "Verify recharts is installed as dependency"
+    ],
+    "passes": false
+  },
+  {
+    "id": 30,
+    "category": "ui",
+    "description": "Create spending by category pie chart",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/spending-pie-chart.tsx",
+      "Use shadcn PieChart component",
+      "Show expenses grouped by tag",
+      "Use tag colors for pie slices",
+      "Show legend with tag names and amounts"
+    ],
+    "passes": false
+  },
+  {
+    "id": 31,
+    "category": "ui",
+    "description": "Create spending trend chart",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/spending-trend-chart.tsx",
+      "Show last 6 months of expenses",
+      "Line or bar chart",
+      "X-axis: month names in French",
+      "Y-axis: amount in EUR"
+    ],
+    "passes": false
+  },
+  {
+    "id": 32,
+    "category": "ui",
+    "description": "Create income vs expenses chart",
+    "tasks": [
+      "Create apps/web/src/components/dashboard/income-vs-expenses-chart.tsx",
+      "Bar chart comparing income and total expenses",
+      "Show for current month or selectable period",
+      "Green for income, red/blue for expenses"
+    ],
+    "passes": false
+  },
+  {
+    "id": 33,
+    "category": "ui",
+    "description": "Apply modern colorful styling",
+    "tasks": [
+      "Use solid background colors for cards (no gradients)",
+      "Apply tag colors to expense items in lists",
+      "Consistent color scheme across insight cards",
+      "Clean spacing and modern typography",
+      "Ensure good contrast and accessibility"
+    ],
+    "passes": false
+  },
+  {
+    "id": 34,
+    "category": "functional",
+    "description": "Verify all features work end-to-end",
+    "tasks": [
+      "Run bun typecheck with no errors",
+      "Run bun lint with no errors",
+      "Run bun build successfully",
+      "Test: create account, login",
+      "Test: add incomes and expenses with tags",
+      "Test: view dashboard tabs",
+      "Test: verify insight cards calculations",
+      "Test: verify charts render with data",
+      "Test: create household, send invitation",
+      "Test: verify invitation email logged in dev console",
+      "Test: accept invitation via /invite/:token",
+      "Test: verify all UI text is in French",
+      "Test: verify French number formatting"
+    ],
+    "passes": false
+  }
+]

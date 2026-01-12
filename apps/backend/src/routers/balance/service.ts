@@ -151,37 +151,22 @@ async function calcHouseholdShare(userId: User['id'], year: number, month: numbe
 	return { total, items }
 }
 
-// Calculate total pockets sum
-async function calcPocketsTotal(userId: User['id']) {
-	const userPockets = await db.query.pockets.findMany({ where: { userId } })
-
-	const items = userPockets.map((p) => ({ name: p.name, amount: Number(p.amount) }))
-
-	return { total: items.reduce((sum, p) => sum + p.amount, 0), items }
-}
-
 export const BalanceService = {
 	getMonthlyBalance: async (userId: User['id'], year: number, month: number) => {
-		const [income, personalExpenses, householdShare, pockets] = await Promise.all([
+		const [income, personalExpenses, householdShare] = await Promise.all([
 			calcMonthlyIncome(userId, year, month),
 			calcPersonalExpenses(userId, year, month),
 			calcHouseholdShare(userId, year, month),
-			calcPocketsTotal(userId),
 		])
 
-		const remaining = income - personalExpenses.total - householdShare.total - pockets.total
-
-		const monthlyBalance: MonthlyBalance = {
+		return {
 			year,
 			month,
 			income,
 			personalExpenses,
 			householdShare,
-			pockets,
-			remaining,
-		}
-
-		return monthlyBalance
+			remaining: income - personalExpenses.total - householdShare.total,
+		} satisfies MonthlyBalance
 	},
 
 	// Project balances for N months starting from a given month

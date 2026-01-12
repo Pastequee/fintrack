@@ -38,24 +38,18 @@ export const SnapshotsService = {
 	},
 
 	archivePreviousMonth: async (userId: User['id']): Promise<Snapshot> => {
-		const now = new Date()
-		let year = now.getFullYear()
-		let month = now.getMonth() // 0-indexed, so this is previous month
-		if (month === 0) {
-			month = 12
-			year--
-		}
+		const prev = new Date()
+		prev.setMonth(prev.getMonth() - 1)
+		const year = prev.getFullYear()
+		const month = prev.getMonth() + 1
 
-		const { income, personalExpenses, householdShare, pockets, remaining } =
-			await BalanceService.getMonthlyBalance(userId, year, month)
+		const {
+			year: _,
+			month: __,
+			...data
+		} = await BalanceService.getMonthlyBalance(userId, year, month)
 
-		return SnapshotsService.saveSnapshot(userId, year, month, {
-			income,
-			personalExpenses,
-			householdShare,
-			pockets,
-			remaining,
-		})
+		return SnapshotsService.saveSnapshot(userId, year, month, data)
 	},
 
 	getUserSnapshots: (userId: User['id']): Promise<Snapshot[]> =>

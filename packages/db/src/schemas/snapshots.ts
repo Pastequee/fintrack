@@ -12,10 +12,6 @@ export type SnapshotData = {
 		total: number
 		items: Array<{ name: string; amount: number; yourShare: number }>
 	}
-	pockets: {
-		total: number
-		items: Array<{ name: string; amount: number }>
-	}
 	remaining: number
 }
 

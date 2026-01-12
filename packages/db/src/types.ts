@@ -9,7 +9,6 @@ import {
 	splitMode,
 } from './schemas/households'
 import { incomePeriod, incomes } from './schemas/incomes'
-import { pockets } from './schemas/pockets'
 import { snapshots } from './schemas/snapshots'
 
 const omits = { id: true, createdAt: true, updatedAt: true } as const
@@ -46,14 +45,6 @@ export const expenseUpdateSchema = createUpdateSchema(expenses).omit({
 	userId: true,
 	householdId: true,
 })
-
-// pockets.ts
-export type Pocket = typeof pockets.$inferSelect
-export type PocketInsert = typeof pockets.$inferInsert
-export type PocketUpdate = Partial<PocketInsert>
-export const pocketSchema = createSelectSchema(pockets)
-export const pocketInsertSchema = createInsertSchema(pockets).omit({ ...omits, userId: true })
-export const pocketUpdateSchema = createUpdateSchema(pockets).omit({ ...omits, userId: true })
 
 // households.ts
 export const SplitMode = [...splitMode.enumValues] as const

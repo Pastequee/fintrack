@@ -69,7 +69,7 @@
       "Remove pockets section from dashboard-overview.tsx",
       "Run bun db:push to sync schema"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 7,

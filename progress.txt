@@ -20,3 +20,19 @@ Removed pockets feature from backend and frontend:
 - Regenerated router types
 
 Note: PRD #6 still pending - pockets DB schema and balance calculation refs remain. Do #6 next to complete pockets removal.
+
+## 2026-01-12 - Pockets DB + balance cleanup (PRD #6)
+
+Removed pockets from database schema and balance calculations:
+- Deleted packages/db/src/schemas/pockets.ts
+- Removed pockets export from schemas/index.ts
+- Removed pocket types from types.ts
+- Removed pockets from SnapshotData type in snapshots.ts
+- Removed pockets relation from relations.ts
+- Removed calcPocketsTotal and pockets from balance service
+- Removed pockets from snapshot service archival
+- Removed pockets section from dashboard-overview.tsx
+
+Note: db:push requires interactive confirmation to drop tables. Run manually if needed.
+
+Next: PRD #7 (remove multi-step form demo route)

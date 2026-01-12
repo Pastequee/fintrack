@@ -180,18 +180,15 @@ export const DashboardOverview = () => {
 					expandable={data.personalExpenses.items.length > 0}
 					label="Personal Expenses"
 				>
-					{data.personalExpenses.items.map((item) => {
-						const endDate = 'endDate' in item ? (item.endDate as string | null) : null
-						return (
-							<BalanceItem
-								amount={item.amount}
-								endDate={endDate}
-								key={item.name}
-								name={item.name}
-								type={item.type as 'one_time' | 'recurring'}
-							/>
-						)
-					})}
+					{data.personalExpenses.items.map((item) => (
+						<BalanceItem
+							amount={item.amount}
+							endDate={item.endDate}
+							key={item.name}
+							name={item.name}
+							type={item.type as 'one_time' | 'recurring'}
+						/>
+					))}
 				</BalanceRow>
 
 				<BalanceRow
@@ -201,16 +198,6 @@ export const DashboardOverview = () => {
 				>
 					{data.householdShare.items.map((item) => (
 						<BalanceItem amount={item.yourShare} key={item.name} name={item.name} />
-					))}
-				</BalanceRow>
-
-				<BalanceRow
-					amount={data.pockets.total}
-					expandable={data.pockets.items.length > 0}
-					label="Pockets"
-				>
-					{data.pockets.items.map((item) => (
-						<BalanceItem amount={item.amount} key={item.name} name={item.name} />
 					))}
 				</BalanceRow>
 

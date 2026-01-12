@@ -7,7 +7,7 @@
       "Delete apps/backend/src/routers/todo/ directory",
       "Remove todosRouter import and .use() from apps/backend/src/index.ts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 2,
@@ -19,7 +19,7 @@
       "Delete apps/web/src/lib/mutations/todos.mutations.ts",
       "Remove todos key from apps/web/src/lib/queries/keys.ts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 3,
@@ -31,7 +31,7 @@
       "Remove todo types from packages/db/src/types.ts",
       "Run bun db:push to sync schema"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 4,

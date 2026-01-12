@@ -11,20 +11,8 @@ import {
 import { incomePeriod, incomes } from './schemas/incomes'
 import { pockets } from './schemas/pockets'
 import { snapshots } from './schemas/snapshots'
-import { todoStatus, todos } from './schemas/todos'
 
 const omits = { id: true, createdAt: true, updatedAt: true } as const
-
-// todos.ts
-export const TodoStatus = [...todoStatus.enumValues] as const
-export type TodoStatus = (typeof TodoStatus)[number]
-
-export type Todo = typeof todos.$inferSelect
-export type TodoInsert = typeof todos.$inferInsert
-export type TodoUpdate = Partial<TodoInsert>
-export const todoSchema = createSelectSchema(todos)
-export const todoInsertSchema = createInsertSchema(todos).omit({ ...omits, userId: true })
-export const todoUpdateSchema = createUpdateSchema(todos).omit({ ...omits, userId: true })
 
 // incomes.ts
 export const IncomePeriod = [...incomePeriod.enumValues] as const

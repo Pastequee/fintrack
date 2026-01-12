@@ -1,0 +1,11 @@
+## 2026-01-12 - Todo cleanup (PRD #1, #2, #3)
+
+Removed todo example code from entire codebase:
+- Deleted backend router (apps/backend/src/routers/todo/)
+- Deleted frontend components, queries, mutations
+- Deleted DB schema, types, relations
+- Updated index route to redirect to /dashboard
+
+Note: db:push not run - table still exists in DB but code is clean. Run manually if needed.
+
+Next: PRD #4-7 (pockets cleanup, multi-step demo removal)

@@ -59,6 +59,16 @@ Note: db:push not run - requires interactive confirmation. Run manually.
 
 Next: PRD #10 (tags API endpoints)
 
+## 2026-01-13 - Tags API endpoints (PRD #10)
+
+Created tags CRUD API:
+- Created apps/backend/src/routers/tag/service.ts with getUserTags, getTag, createTag, updateTag, deleteTag
+- Created apps/backend/src/routers/tag/controller.ts with GET /tags, POST /tags, PATCH /tags/:id, DELETE /tags/:id
+- Registered tagsRouter in backend index.ts
+- All routes require auth, ownership check on update/delete
+
+Next: PRD #11 (tags queries/mutations frontend)
+
 ## 2026-01-13 - Remove multi-step demo (PRD #7)
 
 Removed multi-step form demo from codebase:

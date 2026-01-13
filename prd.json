@@ -110,7 +110,7 @@
       "Register tagsRouter in apps/backend/src/index.ts",
       "Tags scoped to authenticated user"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 11,

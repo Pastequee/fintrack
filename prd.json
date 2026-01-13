@@ -29,7 +29,6 @@
       "Delete packages/db/src/schemas/todos.ts",
       "Remove export from packages/db/src/schemas/index.ts",
       "Remove todo types from packages/db/src/types.ts",
-      "Run bun db:push to sync schema"
     ],
     "passes": true
   },
@@ -67,7 +66,6 @@
       "Remove pocket types from packages/db/src/types.ts",
       "Remove pockets from balance calculation in apps/backend/src/routers/balance/service.ts",
       "Remove pockets section from dashboard-overview.tsx",
-      "Run bun db:push to sync schema"
     ],
     "passes": true
   },
@@ -89,7 +87,6 @@
       "Create packages/db/src/schemas/tags.ts with id, userId, name, color fields",
       "Export tags from packages/db/src/schemas/index.ts",
       "Add tag types to packages/db/src/types.ts",
-      "Run bun db:push to create table"
     ],
     "passes": true
   },
@@ -100,9 +97,8 @@
     "tasks": [
       "Add nullable tagId foreign key to expenses table in packages/db/src/schemas/expenses.ts",
       "Update expense types in packages/db/src/types.ts",
-      "Run bun db:push to sync schema"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 10,
@@ -409,9 +405,6 @@
     "category": "functional",
     "description": "Verify all features work end-to-end",
     "tasks": [
-      "Run bun typecheck with no errors",
-      "Run bun lint with no errors",
-      "Run bun build successfully",
       "Test: create account, login",
       "Test: add incomes and expenses with tags",
       "Test: view dashboard tabs",

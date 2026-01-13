@@ -47,3 +47,14 @@ Created tags database schema:
 Note: db:push not run - requires interactive confirmation. Run manually.
 
 Next: PRD #9 (add tagId to expenses) or PRD #10 (tags API endpoints)
+
+## 2026-01-13 - Add tagId to expenses (PRD #9)
+
+Added nullable tagId foreign key to expenses schema:
+- Added import for tags table in expenses.ts
+- Added tagId field with onDelete: 'set null' (tag deletion doesn't delete expenses)
+- Types auto-updated via Drizzle inference (no manual changes needed)
+
+Note: db:push not run - requires interactive confirmation. Run manually.
+
+Next: PRD #10 (tags API endpoints)

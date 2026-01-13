@@ -2,6 +2,7 @@ import { boolean, date, numeric, pgEnum, pgTable, text, uuid } from 'drizzle-orm
 import { id, timestamps } from '../schema-utils'
 import { users } from './auth'
 import { households } from './households'
+import { tags } from './tags'
 
 export const expenseType = pgEnum('expense_type', ['one_time', 'recurring'])
 export const expensePeriod = pgEnum('expense_period', ['daily', 'weekly', 'monthly', 'yearly'])
@@ -14,6 +15,8 @@ export const expenses = pgTable('expenses', {
 		.notNull(),
 
 	householdId: uuid('household_id').references(() => households.id, { onDelete: 'cascade' }), // nullable
+
+	tagId: uuid('tag_id').references(() => tags.id, { onDelete: 'set null' }), // nullable
 
 	name: text().notNull(),
 	amount: numeric({ precision: 12, scale: 2 }).notNull(),

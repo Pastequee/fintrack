@@ -58,3 +58,12 @@ Added nullable tagId foreign key to expenses schema:
 Note: db:push not run - requires interactive confirmation. Run manually.
 
 Next: PRD #10 (tags API endpoints)
+
+## 2026-01-13 - Remove multi-step demo (PRD #7)
+
+Removed multi-step form demo from codebase:
+- Deleted apps/web/src/routes/multi.tsx
+- Deleted apps/web/src/components/multi-step-demo/ folder (multi.tsx, step-1.tsx, step-2.tsx)
+- Regenerated router types
+
+Next: PRD #10 (tags API endpoints)

@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MultiRouteImport } from './routes/multi'
 import { Route as IncomesRouteImport } from './routes/incomes'
 import { Route as HouseholdRouteImport } from './routes/household'
 import { Route as ExpensesRouteImport } from './routes/expenses'
@@ -22,11 +21,6 @@ import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
-const MultiRoute = MultiRouteImport.update({
-  id: '/multi',
-  path: '/multi',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IncomesRoute = IncomesRouteImport.update({
   id: '/incomes',
   path: '/incomes',
@@ -89,7 +83,6 @@ export interface FileRoutesByFullPath {
   '/expenses': typeof ExpensesRoute
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
-  '/multi': typeof MultiRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -102,7 +95,6 @@ export interface FileRoutesByTo {
   '/expenses': typeof ExpensesRoute
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
-  '/multi': typeof MultiRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -117,7 +109,6 @@ export interface FileRoutesById {
   '/expenses': typeof ExpensesRoute
   '/household': typeof HouseholdRoute
   '/incomes': typeof IncomesRoute
-  '/multi': typeof MultiRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -132,7 +123,6 @@ export interface FileRouteTypes {
     | '/expenses'
     | '/household'
     | '/incomes'
-    | '/multi'
     | '/login'
     | '/register'
     | '/admin/users'
@@ -145,7 +135,6 @@ export interface FileRouteTypes {
     | '/expenses'
     | '/household'
     | '/incomes'
-    | '/multi'
     | '/login'
     | '/register'
     | '/admin/users'
@@ -159,7 +148,6 @@ export interface FileRouteTypes {
     | '/expenses'
     | '/household'
     | '/incomes'
-    | '/multi'
     | '/_auth/login'
     | '/_auth/register'
     | '/admin/users'
@@ -174,20 +162,12 @@ export interface RootRouteChildren {
   ExpensesRoute: typeof ExpensesRoute
   HouseholdRoute: typeof HouseholdRoute
   IncomesRoute: typeof IncomesRoute
-  MultiRoute: typeof MultiRoute
   AdminUsersRoute: typeof AdminUsersRoute
   InviteTokenRoute: typeof InviteTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/multi': {
-      id: '/multi'
-      path: '/multi'
-      fullPath: '/multi'
-      preLoaderRoute: typeof MultiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/incomes': {
       id: '/incomes'
       path: '/incomes'
@@ -290,7 +270,6 @@ const rootRouteChildren: RootRouteChildren = {
   ExpensesRoute: ExpensesRoute,
   HouseholdRoute: HouseholdRoute,
   IncomesRoute: IncomesRoute,
-  MultiRoute: MultiRoute,
   AdminUsersRoute: AdminUsersRoute,
   InviteTokenRoute: InviteTokenRoute,
 }

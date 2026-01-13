@@ -77,7 +77,7 @@
       "Delete apps/web/src/routes/multi.tsx",
       "Regenerate router types with bunx @tanstack/router-cli generate"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 8,

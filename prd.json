@@ -121,7 +121,7 @@
       "Create apps/web/src/lib/mutations/tags.mutations.ts with create, update, delete options",
       "Add tags key to apps/web/src/lib/queries/keys.ts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 12,

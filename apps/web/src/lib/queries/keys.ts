@@ -38,4 +38,8 @@ export const keys = {
 		all: ['snapshots'] as const,
 		month: (year: number, month: number) => [...keys.snapshots.all, year, month] as const,
 	},
+	tags: {
+		all: ['tags'] as const,
+		list: () => [...keys.tags.all, 'list'] as const,
+	},
 } as const

@@ -77,3 +77,12 @@ Removed multi-step form demo from codebase:
 - Regenerated router types
 
 Next: PRD #10 (tags API endpoints)
+
+## 2026-01-13 - Tags queries and mutations (PRD #11)
+
+Created frontend tags queries and mutations:
+- Created apps/web/src/lib/queries/tags.queries.ts with tagListOptions
+- Created apps/web/src/lib/mutations/tags.mutations.ts with create, update, delete options
+- Added tags key to apps/web/src/lib/queries/keys.ts
+
+Next: PRD #12 (tag management UI)

@@ -36,3 +36,14 @@ Removed pockets from database schema and balance calculations:
 Note: db:push requires interactive confirmation to drop tables. Run manually if needed.
 
 Next: PRD #7 (remove multi-step form demo route)
+
+## 2026-01-13 - Tags DB schema (PRD #8)
+
+Created tags database schema:
+- Created packages/db/src/schemas/tags.ts with id, userId, name, color fields
+- Exported tags from schemas/index.ts
+- Added Tag, TagInsert, TagUpdate types + zod schemas to types.ts
+
+Note: db:push not run - requires interactive confirmation. Run manually.
+
+Next: PRD #9 (add tagId to expenses) or PRD #10 (tags API endpoints)

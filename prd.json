@@ -91,7 +91,7 @@
       "Add tag types to packages/db/src/types.ts",
       "Run bun db:push to create table"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 9,

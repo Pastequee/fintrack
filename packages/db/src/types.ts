@@ -10,6 +10,7 @@ import {
 } from './schemas/households'
 import { incomePeriod, incomes } from './schemas/incomes'
 import { snapshots } from './schemas/snapshots'
+import { tags } from './schemas/tags'
 
 const omits = { id: true, createdAt: true, updatedAt: true } as const
 
@@ -98,3 +99,11 @@ export type { MonthlyBalance, SnapshotData } from './schemas/snapshots'
 export type Snapshot = typeof snapshots.$inferSelect
 export type SnapshotInsert = typeof snapshots.$inferInsert
 export const snapshotSchema = createSelectSchema(snapshots)
+
+// tags.ts
+export type Tag = typeof tags.$inferSelect
+export type TagInsert = typeof tags.$inferInsert
+export type TagUpdate = Partial<TagInsert>
+export const tagSchema = createSelectSchema(tags)
+export const tagInsertSchema = createInsertSchema(tags).omit({ ...omits, userId: true })
+export const tagUpdateSchema = createUpdateSchema(tags).omit({ ...omits, userId: true })

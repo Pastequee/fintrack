@@ -148,7 +148,7 @@
       "Create sendInvitation function with to, inviterName, householdName, token params",
       "Email contains link to /invite/:token"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 14,

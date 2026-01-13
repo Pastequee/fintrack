@@ -101,3 +101,14 @@ Created full tag management UI for expenses:
 Tag selector has "No tag", tag list, "Create tag", "Manage tags" options.
 
 Next: PRD #13 (mock email service)
+
+## 2026-01-13 - Mock email service (PRD #13)
+
+Implemented dev mode email mocking:
+- Modified packages/email/src/index.ts to check NODE_ENV
+- In dev: console.log emails with formatted output (📧 [DEV] prefix)
+- In prod: uses Resend as before
+- Added sendInvitation function with to, inviterName, householdName, token params
+- Email text in French, contains link to /invite/:token with 7-day expiry note
+
+Next: PRD #14 (send invitation email when creating invitation)

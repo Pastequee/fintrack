@@ -1,4 +1,5 @@
 import { invitationInsertSchema } from '@repo/db/types'
+import { mail } from '@repo/email'
 import { Elysia } from 'elysia'
 import z from 'zod'
 import { betterAuth } from '#middlewares/auth'
@@ -9,7 +10,6 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 	.use(betterAuth)
 	.model('tokenParam', z.object({ token: z.string().uuid() }))
 
-	// Get pending invitations for current user's household
 	.get(
 		'/invitations',
 		async ({ user }) => {
@@ -20,14 +20,12 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 		{ auth: true }
 	)
 
-	// Get pending invitations sent to current user
 	.get(
 		'/invitations/pending',
 		({ user }) => InvitationsService.getPendingInvitationsForUser(user.email),
 		{ auth: true }
 	)
 
-	// Get invitation by token (public - for invitation landing page)
 	.get(
 		'/invitations/token/:token',
 		async ({ params, status }) => {
@@ -48,7 +46,6 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 		{ params: 'tokenParam' }
 	)
 
-	// Send invitation
 	.post(
 		'/invitations',
 		async ({ body, status, user }) => {
@@ -74,12 +71,21 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 			})
 
 			const result = await InvitationsService.getInvitation(invitation.id)
+
+			if (result) {
+				await mail.sendInvitation({
+					to: body.email,
+					inviterName: result.inviter?.name ?? user.email,
+					householdName: result.household?.name ?? 'Foyer',
+					token: invitation.token,
+				})
+			}
+
 			return status('Created', result)
 		},
 		{ auth: true, body: invitationInsertSchema }
 	)
 
-	// Accept invitation
 	.post(
 		'/invitations/token/:token/accept',
 		async ({ params, status, user }) => {
@@ -112,7 +118,6 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 		{ auth: true, params: 'tokenParam' }
 	)
 
-	// Decline invitation
 	.post(
 		'/invitations/token/:token/decline',
 		async ({ params, status }) => {

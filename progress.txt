@@ -112,3 +112,18 @@ Implemented dev mode email mocking:
 - Email text in French, contains link to /invite/:token with 7-day expiry note
 
 Next: PRD #14 (send invitation email when creating invitation)
+
+## 2026-01-13 - Send invitation email (PRD #14)
+
+Integrated email sending when creating household invitations:
+- Imported mail from @repo/email in invitation controller
+- Added @repo/email as backend dependency
+- After invitation creation, calls mail.sendInvitation with:
+  - to: invitee email
+  - inviterName: from relation or fallback to user.email
+  - householdName: from relation or fallback to 'Foyer'
+  - token: for invite link
+
+In dev mode, email is logged to console. In prod, sent via Resend.
+
+Next: PRD #15 (consolidate routes into single dashboard)

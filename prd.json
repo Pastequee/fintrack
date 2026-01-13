@@ -159,7 +159,7 @@
       "Call sendInvitation after creating invitation record",
       "Include inviter name and household name in email"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 15,

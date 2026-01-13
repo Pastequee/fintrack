@@ -86,3 +86,18 @@ Created frontend tags queries and mutations:
 - Added tags key to apps/web/src/lib/queries/keys.ts
 
 Next: PRD #12 (tag management UI)
+
+## 2026-01-13 - Tag management UI (PRD #12)
+
+Created full tag management UI for expenses:
+- apps/web/src/lib/constants/tag-colors.ts - 12 preset colors
+- apps/web/src/components/tag/color-picker.tsx - reusable color picker
+- apps/web/src/components/tag/tag-badge.tsx - tag display (dot + name)
+- apps/web/src/components/tag/add-tag-dialog.tsx - create new tags
+- apps/web/src/components/tag/manage-tags-dialog.tsx - list/edit/delete tags
+- apps/web/src/components/tag/tag-selector.tsx - dropdown for expense forms
+- Updated expense-fields.tsx with tagId field + TagSelector
+
+Tag selector has "No tag", tag list, "Create tag", "Manage tags" options.
+
+Next: PRD #13 (mock email service)

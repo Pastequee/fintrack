@@ -1,7 +1,12 @@
 import type { Expense } from '@repo/db/types'
 import { ExpensePeriod, ExpenseType } from '@repo/db/types'
-import z from 'zod'
+import { z } from 'zod'
 import { withForm } from '~/lib/hooks/form-hook'
+import { TagSelector } from '../tag/tag-selector'
+
+function capitalize(s: string) {
+	return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 const typeOptions = ExpenseType.map((t) => ({
 	value: t,
@@ -10,7 +15,7 @@ const typeOptions = ExpenseType.map((t) => ({
 
 const periodOptions = ExpensePeriod.map((p) => ({
 	value: p,
-	label: p.charAt(0).toUpperCase() + p.slice(1),
+	label: capitalize(p),
 }))
 
 export const expenseFormSchema = z
@@ -22,6 +27,7 @@ export const expenseFormSchema = z
 		startDate: z.string(),
 		endDate: z.string(),
 		targetDate: z.string(),
+		tagId: z.string().nullable(),
 	})
 	.refine(
 		(data) => {
@@ -33,7 +39,7 @@ export const expenseFormSchema = z
 
 export type ExpenseFormValues = z.infer<typeof expenseFormSchema>
 
-export const toExpensePayload = (value: ExpenseFormValues) => {
+export function toExpensePayload(value: ExpenseFormValues) {
 	const isOneTime = value.type === 'one_time'
 	return {
 		name: value.name.trim(),
@@ -43,10 +49,13 @@ export const toExpensePayload = (value: ExpenseFormValues) => {
 		startDate: isOneTime ? null : value.startDate,
 		endDate: isOneTime ? null : value.endDate || null,
 		targetDate: isOneTime ? value.targetDate : null,
+		tagId: value.tagId,
 	}
 }
 
-const getDefaultDate = () => new Date().toISOString().slice(0, 10)
+function getDefaultDate() {
+	return new Date().toISOString().slice(0, 10)
+}
 
 export const defaultExpenseValues: ExpenseFormValues = {
 	name: '',
@@ -56,17 +65,21 @@ export const defaultExpenseValues: ExpenseFormValues = {
 	startDate: getDefaultDate(),
 	endDate: '',
 	targetDate: getDefaultDate(),
+	tagId: null,
 }
 
-export const expenseToFormValues = (expense: Expense): ExpenseFormValues => ({
-	name: expense.name,
-	amount: expense.amount,
-	type: expense.type,
-	period: expense.period ?? 'monthly',
-	startDate: expense.startDate ?? getDefaultDate(),
-	endDate: expense.endDate ?? '',
-	targetDate: expense.targetDate ?? getDefaultDate(),
-})
+export function expenseToFormValues(expense: Expense): ExpenseFormValues {
+	return {
+		name: expense.name,
+		amount: expense.amount,
+		type: expense.type,
+		period: expense.period ?? 'monthly',
+		startDate: expense.startDate ?? getDefaultDate(),
+		endDate: expense.endDate ?? '',
+		targetDate: expense.targetDate ?? getDefaultDate(),
+		tagId: expense.tagId ?? null,
+	}
+}
 
 export const ExpenseFields = withForm({
 	defaultValues: defaultExpenseValues,
@@ -109,6 +122,10 @@ export const ExpenseFields = withForm({
 						</>
 					)
 				}
+			</form.Subscribe>
+
+			<form.Subscribe selector={(state) => state.values.tagId}>
+				{(tagId) => <TagSelector onChange={(v) => form.setFieldValue('tagId', v)} value={tagId} />}
 			</form.Subscribe>
 		</div>
 	),

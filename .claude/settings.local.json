@@ -19,7 +19,8 @@
       "Bash(bun lint:*)",
       "Bash(bun format:*)",
       "Bash(bunx @tanstack/router-cli generate:*)",
-      "Bash(git status:*)"
+      "Bash(git status:*)",
+      "Skill(frontend-design)"
     ]
   }
 }

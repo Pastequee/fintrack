@@ -135,7 +135,7 @@
       "Add tag selector to add-expense-form.tsx",
       "Add tag selector to edit-expense-dialog.tsx"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 13,

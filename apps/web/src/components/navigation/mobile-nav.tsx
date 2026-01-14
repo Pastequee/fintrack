@@ -12,17 +12,13 @@ type NavLink = {
 }
 
 const navLinks: NavLink[] = [
-	{ to: '/dashboard', label: 'Dashboard' },
-	{ to: '/incomes', label: 'Incomes' },
-	{ to: '/expenses', label: 'Expenses' },
-	{ to: '/household', label: 'Household' },
 	{ to: '/admin/users', label: 'Admin', adminOnly: true },
 	{ to: '/account', label: 'Account' },
 ]
 
 const linkClassName = 'rounded-md px-3 py-2 font-medium text-sm transition-colors hover:bg-accent'
 
-export const MobileNav = () => {
+export function MobileNav() {
 	const [open, setOpen] = useState(false)
 	const auth = useAuth()
 	const pathname = useLocation({ select: (l) => l.pathname })

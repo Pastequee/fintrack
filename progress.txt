@@ -127,3 +127,18 @@ Integrated email sending when creating household invitations:
 In dev mode, email is logged to console. In prod, sent via Resend.
 
 Next: PRD #15 (consolidate routes into single dashboard)
+
+## 2026-01-14 - Route consolidation (PRD #15)
+
+Consolidated all separate routes into single dashboard at root:
+- Deleted apps/web/src/routes/expenses.tsx
+- Deleted apps/web/src/routes/incomes.tsx
+- Deleted apps/web/src/routes/household.tsx
+- Deleted apps/web/src/routes/dashboard.tsx
+- Transformed index.tsx to render DashboardOverview directly (was redirecting to /dashboard)
+- Updated navbar.tsx: removed Dashboard/Incomes/Expenses/Household links, kept Admin for admins
+- Updated mobile-nav.tsx: removed same links, kept Admin + Account
+- Updated household-badge.tsx: now links to "/" instead of "/household"
+- Regenerated router types
+
+Next: PRD #16-20 (dashboard tabs, personal/household tab content, dialogs, nav cleanup)

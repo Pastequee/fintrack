@@ -8,7 +8,7 @@ import { MobileNav } from './mobile-nav'
 import { NavbarLink } from './navbar-link'
 import { UserMenu } from './user-menu'
 
-export const Navbar = () => {
+export function Navbar() {
 	const auth = useAuth()
 	const isAdmin = auth?.user.role === 'admin'
 
@@ -22,10 +22,6 @@ export const Navbar = () => {
 				<LoggedIn>
 					{/* Desktop nav */}
 					<div className="hidden items-center gap-4 md:flex">
-						<NavbarLink to="/dashboard">Dashboard</NavbarLink>
-						<NavbarLink to="/incomes">Incomes</NavbarLink>
-						<NavbarLink to="/expenses">Expenses</NavbarLink>
-						<NavbarLink to="/household">Household</NavbarLink>
 						{isAdmin && <NavbarLink to="/admin/users">Admin</NavbarLink>}
 					</div>
 					<HouseholdBadge />

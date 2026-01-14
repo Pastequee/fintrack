@@ -173,7 +173,7 @@
       "Transform apps/web/src/routes/index.tsx into main dashboard",
       "Regenerate router types"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 16,

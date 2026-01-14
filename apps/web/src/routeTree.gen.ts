@@ -9,10 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IncomesRouteImport } from './routes/incomes'
-import { Route as HouseholdRouteImport } from './routes/household'
-import { Route as ExpensesRouteImport } from './routes/expenses'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -21,26 +17,6 @@ import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 
-const IncomesRoute = IncomesRouteImport.update({
-  id: '/incomes',
-  path: '/incomes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HouseholdRoute = HouseholdRouteImport.update({
-  id: '/household',
-  path: '/household',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExpensesRoute = ExpensesRouteImport.update({
-  id: '/expenses',
-  path: '/expenses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -79,10 +55,6 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
-  '/dashboard': typeof DashboardRoute
-  '/expenses': typeof ExpensesRoute
-  '/household': typeof HouseholdRoute
-  '/incomes': typeof IncomesRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -91,10 +63,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/account': typeof AccountRoute
-  '/dashboard': typeof DashboardRoute
-  '/expenses': typeof ExpensesRoute
-  '/household': typeof HouseholdRoute
-  '/incomes': typeof IncomesRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -105,10 +73,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/account': typeof AccountRoute
-  '/dashboard': typeof DashboardRoute
-  '/expenses': typeof ExpensesRoute
-  '/household': typeof HouseholdRoute
-  '/incomes': typeof IncomesRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/admin/users': typeof AdminUsersRoute
@@ -119,10 +83,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
-    | '/dashboard'
-    | '/expenses'
-    | '/household'
-    | '/incomes'
     | '/login'
     | '/register'
     | '/admin/users'
@@ -131,10 +91,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/account'
-    | '/dashboard'
-    | '/expenses'
-    | '/household'
-    | '/incomes'
     | '/login'
     | '/register'
     | '/admin/users'
@@ -144,10 +100,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/account'
-    | '/dashboard'
-    | '/expenses'
-    | '/household'
-    | '/incomes'
     | '/_auth/login'
     | '/_auth/register'
     | '/admin/users'
@@ -158,44 +110,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   AccountRoute: typeof AccountRoute
-  DashboardRoute: typeof DashboardRoute
-  ExpensesRoute: typeof ExpensesRoute
-  HouseholdRoute: typeof HouseholdRoute
-  IncomesRoute: typeof IncomesRoute
   AdminUsersRoute: typeof AdminUsersRoute
   InviteTokenRoute: typeof InviteTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/incomes': {
-      id: '/incomes'
-      path: '/incomes'
-      fullPath: '/incomes'
-      preLoaderRoute: typeof IncomesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/household': {
-      id: '/household'
-      path: '/household'
-      fullPath: '/household'
-      preLoaderRoute: typeof HouseholdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/expenses': {
-      id: '/expenses'
-      path: '/expenses'
-      fullPath: '/expenses'
-      preLoaderRoute: typeof ExpensesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -266,10 +186,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   AccountRoute: AccountRoute,
-  DashboardRoute: DashboardRoute,
-  ExpensesRoute: ExpensesRoute,
-  HouseholdRoute: HouseholdRoute,
-  IncomesRoute: IncomesRoute,
   AdminUsersRoute: AdminUsersRoute,
   InviteTokenRoute: InviteTokenRoute,
 }

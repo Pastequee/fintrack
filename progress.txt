@@ -142,3 +142,18 @@ Consolidated all separate routes into single dashboard at root:
 - Regenerated router types
 
 Next: PRD #16-20 (dashboard tabs, personal/household tab content, dialogs, nav cleanup)
+
+## 2026-01-14 - Dashboard tabs (PRD #16)
+
+Created dashboard tabs component with URL-persisted tab state:
+- Added shadcn Tabs component (bunx shadcn@latest add tabs)
+- Created apps/web/src/components/dashboard/dashboard-tabs.tsx
+  - Two tabs: "Personnel" and "Foyer" with icons (Home, Users)
+  - Tab state persisted via URL search param (?tab=personnel|foyer)
+  - Uses TanStack Router validateSearch for typed search params
+- Updated index.tsx route:
+  - Added search schema validation (zod)
+  - DashboardTabs wraps DashboardOverview (personal) and HouseholdSettings (foyer)
+- Regenerated router types
+
+Next: PRD #17-20 (personal/household tab content enhancements, dialogs, nav cleanup)

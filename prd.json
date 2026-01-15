@@ -325,7 +325,7 @@
       "Create apps/backend/src/routers/stats/controller.ts with GET routes",
       "Register statsRouter in apps/backend/src/index.ts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 28,

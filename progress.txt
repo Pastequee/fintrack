@@ -197,3 +197,18 @@ Updated number/date formatters to French locale:
   - formatMonth: "janvier"
 
 Next: PRD #22-25 (translate UI strings), PRD #27-32 (stats/charts)
+
+## 2026-01-15 - Stats API endpoints (PRD #27)
+
+Created stats API for charts:
+- Created apps/backend/src/routers/stats/service.ts with:
+  - getExpensesByTag(userId, year, month) - groups personal expenses by tag, returns tag name/color/total
+  - getMonthlyTrend(userId, monthsBack) - returns expense totals for last N months
+- Created apps/backend/src/routers/stats/controller.ts with GET routes:
+  - GET /stats/expenses-by-tag?year=&month= - expenses grouped by tag for pie chart
+  - GET /stats/monthly-trend?monthsBack= - monthly expense totals for trend chart
+- Registered statsRouter in backend index.ts
+
+Both endpoints reuse expense calculation logic from balance service (toMonthlyAmount, isActiveInMonth).
+
+Next: PRD #28 (stats queries frontend), PRD #29-32 (charts UI)

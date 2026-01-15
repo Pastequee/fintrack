@@ -225,7 +225,7 @@
       "Reuse existing edit dialogs for edit functionality",
       "All forms work via modals, no separate pages"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 20,

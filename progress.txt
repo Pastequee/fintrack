@@ -172,3 +172,16 @@ Also marked as complete (already implemented):
 - PRD #26: InsightCard component in personal-tab.tsx has all required variants
 
 Next: PRD #19 (modal dialogs), PRD #21-25 (French i18n), PRD #27-32 (stats/charts)
+
+## 2026-01-15 - Modal dialogs for CRUD (PRD #19)
+
+Created modal dialogs for adding incomes and expenses:
+- Created apps/web/src/components/income/add-income-dialog.tsx
+- Created apps/web/src/components/expense/add-expense-dialog.tsx
+- Updated personal-tab.tsx to use dialogs instead of embedded forms
+- Removed AddIncomeForm/AddExpenseForm inline usage, now uses button triggers
+- Edit dialogs already in use (EditIncomeDialog, EditExpenseDialog) via item components
+
+All forms now work via modals. French labels (Ajouter, Ajouter un revenu, Ajouter une dépense).
+
+Next: PRD #21-25 (French i18n), PRD #27-32 (stats/charts)

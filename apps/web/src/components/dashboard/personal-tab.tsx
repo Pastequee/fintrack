@@ -14,16 +14,15 @@ import { balanceOptions, snapshotOptions } from '~/lib/queries/balance.queries'
 import { cn } from '~/lib/utils/cn'
 import { formatCurrency } from '~/lib/utils/format-currency'
 import { LoggedIn } from '../auth/logged-in'
-import { AddExpenseForm } from '../expense/add-expense-form'
+import { AddExpenseDialog } from '../expense/add-expense-dialog'
 import { ExpenseList } from '../expense/expense-list'
-import { AddIncomeForm } from '../income/add-income-form'
+import { AddIncomeDialog } from '../income/add-income-dialog'
 import { IncomeList } from '../income/income-list'
 import { Alert, AlertDescription } from '../ui/alert'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 import { Loader } from '../ui/loader'
-import { Separator } from '../ui/separator'
 import { BalanceItem } from './balance-item'
 import { BalanceRow } from './balance-row'
 
@@ -140,21 +139,16 @@ export const PersonalTab = () => {
 	const isError = viewingPast ? snapshotError : balanceError
 	const data = viewingPast ? snapshot?.data : balance
 
-	const goToPreviousMonth = () => {
-		if (month === 1) {
+	const navigateMonth = (delta: 1 | -1) => {
+		const newMonth = month + delta
+		if (newMonth < 1) {
 			setYear((y) => y - 1)
 			setMonth(12)
-		} else {
-			setMonth((m) => m - 1)
-		}
-	}
-
-	const goToNextMonth = () => {
-		if (month === 12) {
+		} else if (newMonth > 12) {
 			setYear((y) => y + 1)
 			setMonth(1)
 		} else {
-			setMonth((m) => m + 1)
+			setMonth(newMonth)
 		}
 	}
 
@@ -164,7 +158,7 @@ export const PersonalTab = () => {
 		<div className="flex w-full max-w-5xl flex-col gap-6">
 			{/* Month Navigation */}
 			<div className="flex items-center justify-center gap-4">
-				<Button onClick={goToPreviousMonth} size="icon" variant="ghost">
+				<Button onClick={() => navigateMonth(-1)} size="icon" variant="ghost">
 					<ChevronLeft size={20} />
 				</Button>
 				<div className="flex flex-col items-center gap-1">
@@ -173,7 +167,7 @@ export const PersonalTab = () => {
 					</h2>
 					<ViewModeBadge viewingFuture={viewingFuture} viewingPast={viewingPast} />
 				</div>
-				<Button onClick={goToNextMonth} size="icon" variant="ghost">
+				<Button onClick={() => navigateMonth(1)} size="icon" variant="ghost">
 					<ChevronRight size={20} />
 				</Button>
 			</div>
@@ -292,15 +286,18 @@ export const PersonalTab = () => {
 				</>
 			)}
 
-			{/* Income and Expense Forms */}
+			{/* Income and Expense Lists */}
 			<div className="grid gap-6 md:grid-cols-2">
 				{/* Revenus */}
 				<Card>
 					<CardContent className="flex flex-col gap-4">
-						<h3 className="font-semibold text-base">Revenus</h3>
+						<div className="flex items-center justify-between">
+							<h3 className="font-semibold text-base">Revenus</h3>
+							<LoggedIn>
+								<AddIncomeDialog />
+							</LoggedIn>
+						</div>
 						<LoggedIn>
-							<AddIncomeForm />
-							<Separator />
 							<IncomeList />
 						</LoggedIn>
 					</CardContent>
@@ -309,10 +306,13 @@ export const PersonalTab = () => {
 				{/* Dépenses */}
 				<Card>
 					<CardContent className="flex flex-col gap-4">
-						<h3 className="font-semibold text-base">Dépenses</h3>
+						<div className="flex items-center justify-between">
+							<h3 className="font-semibold text-base">Dépenses</h3>
+							<LoggedIn>
+								<AddExpenseDialog />
+							</LoggedIn>
+						</div>
 						<LoggedIn>
-							<AddExpenseForm />
-							<Separator />
 							<ExpenseList />
 						</LoggedIn>
 					</CardContent>

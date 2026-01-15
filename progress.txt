@@ -157,3 +157,18 @@ Created dashboard tabs component with URL-persisted tab state:
 - Regenerated router types
 
 Next: PRD #17-20 (personal/household tab content enhancements, dialogs, nav cleanup)
+
+## 2026-01-15 - Household tab enhancements (PRD #17, #18, #20, #26)
+
+Enhanced household tab with shared expenses and user share display:
+- Updated household-settings.tsx with two-column grid layout
+- Added ShareCard showing user's monthly household share (violet styling)
+- Added shared expenses section with AddHouseholdExpenseForm + HouseholdExpenseList
+- All text in French (Foyer, Ma part ce mois, Membres, Dépenses partagées)
+
+Also marked as complete (already implemented):
+- PRD #17: personal-tab.tsx had all features (insight cards, income/expense lists, month nav)
+- PRD #20: Navigation cleanup done in PRD #15 (navbar/mobile-nav simplified)
+- PRD #26: InsightCard component in personal-tab.tsx has all required variants
+
+Next: PRD #19 (modal dialogs), PRD #21-25 (French i18n), PRD #27-32 (stats/charts)

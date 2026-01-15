@@ -11,5 +11,6 @@ Use this to leave a note for the next person working in the codebase. \
 6. Use the code simplifier agent (code-simplifier:code-simplifier) once you're done before committing. \
 7. Make a git commit of that feature. \
 ONLY WORK ON A SINGLE FEATURE. \
+DO NOT STOP UNLESS ALL THE 7 STEP ARE COMPLETED. \
 If, while implementing the feature, you notice the PRD is complete, output <promise>NOTHING_TO_DO</promise>. \
 "

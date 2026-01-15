@@ -199,7 +199,7 @@
       "Show charts section",
       "Monthly navigation (prev/next month)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 18,
@@ -213,7 +213,7 @@
       "Show invitation form and pending invitations",
       "Show user's share of household expenses"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 19,
@@ -237,7 +237,7 @@
       "Update mobile-nav.tsx similarly",
       "Logo/home links go to dashboard"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 21,
@@ -312,7 +312,7 @@
       "Available money card (amber, red if negative)",
       "Each card shows icon, label, formatted amount"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 27,

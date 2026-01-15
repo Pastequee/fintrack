@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import z from 'zod'
-import { DashboardOverview } from '~/components/dashboard/dashboard-overview'
 import { DashboardTabs } from '~/components/dashboard/dashboard-tabs'
+import { PersonalTab } from '~/components/dashboard/personal-tab'
 import { Footer } from '~/components/footer'
 import { HouseholdSettings } from '~/components/household/household-settings'
 import { Navbar } from '~/components/navigation/navbar'
@@ -19,11 +19,8 @@ function DashboardPage() {
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Navbar />
-			<main className="flex flex-1 items-center justify-center px-4 py-8">
-				<DashboardTabs
-					householdContent={<HouseholdSettings />}
-					personalContent={<DashboardOverview />}
-				/>
+			<main className="flex flex-1 justify-center px-4 py-8">
+				<DashboardTabs householdContent={<HouseholdSettings />} personalContent={<PersonalTab />} />
 			</main>
 			<Footer />
 		</div>

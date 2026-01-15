@@ -249,7 +249,7 @@
       "Format: 1 234,56 EUR for currency",
       "Format: 12 janvier 2024 for dates"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 22,

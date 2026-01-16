@@ -21,7 +21,8 @@
       "Bash(bunx @tanstack/router-cli generate:*)",
       "Bash(git status:*)",
       "Skill(frontend-design)",
-      "Bash(bunx shadcn@latest add:*)"
+      "Bash(bunx shadcn@latest add:*)",
+      "Bash(bunx biome check:*)"
     ]
   }
 }

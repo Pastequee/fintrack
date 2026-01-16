@@ -347,7 +347,7 @@
       "Run bunx shadcn@latest add chart",
       "Verify recharts is installed as dependency"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 30,

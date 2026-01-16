@@ -373,7 +373,7 @@
       "X-axis: month names in French",
       "Y-axis: amount in EUR"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 32,

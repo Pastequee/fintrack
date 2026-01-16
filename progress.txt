@@ -246,3 +246,17 @@ Created spending by category pie chart:
 - Integrated into personal-tab.tsx, replacing placeholder
 
 Next: PRD #31-32 (trend chart, income vs expenses chart), PRD #22-25 (French i18n)
+
+## 2026-01-16 - Spending trend chart (PRD #31)
+
+Created spending trend bar chart:
+- Created apps/web/src/components/dashboard/spending-trend-chart.tsx
+- Bar chart with Recharts BarChart via shadcn ChartContainer
+- Fetches data from monthlyTrendOptions(6) - last 6 months
+- X-axis: French month names (abbreviated), Y-axis: EUR amounts
+- Slate color bars with rounded top corners
+- Custom tooltip with full month name + formatted amount
+- Loading/empty states matching pie chart style
+- Integrated into personal-tab.tsx in 2-column grid with pie chart
+
+Next: PRD #32 (income vs expenses chart), PRD #22-25 (French i18n)

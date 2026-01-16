@@ -25,6 +25,7 @@ import { Loader } from '../ui/loader'
 import { BalanceItem } from './balance-item'
 import { BalanceRow } from './balance-row'
 import { SpendingPieChart } from './spending-pie-chart'
+import { SpendingTrendChart } from './spending-trend-chart'
 
 const getMonthName = (month: number) =>
 	new Date(2000, month - 1, 1).toLocaleDateString('fr-FR', { month: 'long' })
@@ -320,7 +321,10 @@ export const PersonalTab = () => {
 			</div>
 
 			{/* Charts */}
-			<SpendingPieChart month={month} year={year} />
+			<div className="grid gap-6 md:grid-cols-2">
+				<SpendingPieChart month={month} year={year} />
+				<SpendingTrendChart />
+			</div>
 		</div>
 	)
 }

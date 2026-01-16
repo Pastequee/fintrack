@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import {
 	AlertTriangle,
 	Archive,
-	BarChart3,
 	ChevronLeft,
 	ChevronRight,
 	TrendingDown,
@@ -25,6 +24,7 @@ import { Card, CardContent } from '../ui/card'
 import { Loader } from '../ui/loader'
 import { BalanceItem } from './balance-item'
 import { BalanceRow } from './balance-row'
+import { SpendingPieChart } from './spending-pie-chart'
 
 const getMonthName = (month: number) =>
 	new Date(2000, month - 1, 1).toLocaleDateString('fr-FR', { month: 'long' })
@@ -319,15 +319,8 @@ export const PersonalTab = () => {
 				</Card>
 			</div>
 
-			{/* Charts Placeholder */}
-			<Card>
-				<CardContent className="flex flex-col items-center justify-center gap-3 py-12">
-					<div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-						<BarChart3 className="text-muted-foreground" size={24} />
-					</div>
-					<p className="text-muted-foreground text-sm">Graphiques à venir</p>
-				</CardContent>
-			</Card>
+			{/* Charts */}
+			<SpendingPieChart month={month} year={year} />
 		</div>
 	)
 }

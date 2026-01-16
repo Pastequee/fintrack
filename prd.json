@@ -360,7 +360,7 @@
       "Use tag colors for pie slices",
       "Show legend with tag names and amounts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 31,

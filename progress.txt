@@ -232,3 +232,17 @@ Installed shadcn charts component for data visualization:
 - Fixed biome lint issues in generated files
 
 Next: PRD #30-32 (chart components), PRD #22-25 (French i18n)
+
+## 2026-01-16 - Spending pie chart (PRD #30)
+
+Created spending by category pie chart:
+- Created apps/web/src/components/dashboard/spending-pie-chart.tsx
+- Donut chart (inner radius) with Recharts PieChart via shadcn ChartContainer
+- Fetches data from expensesByTagOptions(year, month)
+- Uses tag colors for slices, slate for untagged ("Sans tag")
+- Custom tooltip with tag color dot + formatted EUR amount
+- Legend below chart with tag names + amounts
+- Empty state when no expenses
+- Integrated into personal-tab.tsx, replacing placeholder
+
+Next: PRD #31-32 (trend chart, income vs expenses chart), PRD #22-25 (French i18n)

@@ -260,3 +260,17 @@ Created spending trend bar chart:
 - Integrated into personal-tab.tsx in 2-column grid with pie chart
 
 Next: PRD #32 (income vs expenses chart), PRD #22-25 (French i18n)
+
+## 2026-01-16 - Income vs expenses chart (PRD #32)
+
+Created income vs expenses bar chart:
+- Created apps/web/src/components/dashboard/income-vs-expenses-chart.tsx
+- Bar chart with 3 bars: Revenus (green), Dépenses perso (slate), Part foyer (violet)
+- Uses recharts BarChart via shadcn ChartContainer
+- Tooltip with colored dots + formatted EUR amounts
+- Legend below chart with amounts
+- Empty state when no data
+- Takes income/personalExpenses/householdShare as props from balance data
+- Integrated into personal-tab.tsx below existing charts grid
+
+Next: PRD #22-25 (French i18n), PRD #33 (styling)

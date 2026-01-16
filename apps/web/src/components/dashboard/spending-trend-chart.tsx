@@ -6,6 +6,7 @@ import { formatCurrency } from '~/lib/utils/format-currency'
 import { formatMonth } from '~/lib/utils/format-date'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { ChartContainer } from '../ui/chart'
+import { ChartEmptyState, ChartLoadingState } from './chart-shared'
 
 const BAR_COLOR = '#475569'
 
@@ -14,7 +15,7 @@ type ChartDataItem = {
 	total: number
 }
 
-const CustomTooltip = ({
+const TrendTooltip = ({
 	active,
 	payload,
 }: {
@@ -35,21 +36,6 @@ const CustomTooltip = ({
 	)
 }
 
-const EmptyState = () => (
-	<div className="flex flex-col items-center justify-center py-8">
-		<div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
-			<TrendingUp className="text-muted-foreground/60" size={20} />
-		</div>
-		<p className="mt-3 text-muted-foreground text-sm">Aucune donnée disponible</p>
-	</div>
-)
-
-const LoadingState = () => (
-	<div className="flex h-[200px] items-center justify-center">
-		<div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground/20 border-t-muted-foreground" />
-	</div>
-)
-
 const ChartContent = ({ data }: { data: ChartDataItem[] }) => (
 	<ChartContainer className="h-[220px] w-full" config={{}}>
 		<BarChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
@@ -68,7 +54,7 @@ const ChartContent = ({ data }: { data: ChartDataItem[] }) => (
 				tickMargin={4}
 				width={50}
 			/>
-			<Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
+			<Tooltip content={<TrendTooltip />} cursor={{ fill: 'hsl(var(--muted))' }} />
 			<Bar dataKey="total" fill={BAR_COLOR} radius={[4, 4, 0, 0]} />
 		</BarChart>
 	</ChartContainer>
@@ -86,9 +72,9 @@ export const SpendingTrendChart = () => {
 	const hasData = chartData.length > 0 && chartData.some((d) => d.total > 0)
 
 	const renderContent = () => {
-		if (isLoading) return <LoadingState />
+		if (isLoading) return <ChartLoadingState />
 		if (hasData) return <ChartContent data={chartData} />
-		return <EmptyState />
+		return <ChartEmptyState icon={TrendingUp} message="Aucune donnée disponible" />
 	}
 
 	return (

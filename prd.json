@@ -385,7 +385,7 @@
       "Show for current month or selectable period",
       "Green for income, red/blue for expenses"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 33,

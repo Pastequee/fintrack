@@ -24,6 +24,7 @@ import { Card, CardContent } from '../ui/card'
 import { Loader } from '../ui/loader'
 import { BalanceItem } from './balance-item'
 import { BalanceRow } from './balance-row'
+import { IncomeVsExpensesChart } from './income-vs-expenses-chart'
 import { SpendingPieChart } from './spending-pie-chart'
 import { SpendingTrendChart } from './spending-trend-chart'
 
@@ -325,6 +326,15 @@ export const PersonalTab = () => {
 				<SpendingPieChart month={month} year={year} />
 				<SpendingTrendChart />
 			</div>
+
+			{/* Income vs Expenses Chart */}
+			{data && (
+				<IncomeVsExpensesChart
+					householdShare={data.householdShare.total}
+					income={data.income}
+					personalExpenses={data.personalExpenses.total}
+				/>
+			)}
 		</div>
 	)
 }

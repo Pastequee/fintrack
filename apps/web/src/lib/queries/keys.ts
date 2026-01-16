@@ -42,4 +42,9 @@ export const keys = {
 		all: ['tags'] as const,
 		list: () => [...keys.tags.all, 'list'] as const,
 	},
+	stats: {
+		all: ['stats'] as const,
+		byTag: (year: number, month: number) => [...keys.stats.all, 'byTag', year, month] as const,
+		trend: (monthsBack: number) => [...keys.stats.all, 'trend', monthsBack] as const,
+	},
 } as const

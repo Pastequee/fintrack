@@ -337,7 +337,7 @@
       "monthlyTrendOptions()",
       "Add stats key to keys.ts"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 29,

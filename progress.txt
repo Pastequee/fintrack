@@ -212,3 +212,13 @@ Created stats API for charts:
 Both endpoints reuse expense calculation logic from balance service (toMonthlyAmount, isActiveInMonth).
 
 Next: PRD #28 (stats queries frontend), PRD #29-32 (charts UI)
+
+## 2026-01-16 - Stats queries frontend (PRD #28)
+
+Created frontend stats queries for chart data fetching:
+- Created apps/web/src/lib/queries/stats.queries.ts with:
+  - expensesByTagOptions(year, month) - fetches expenses grouped by tag for pie chart
+  - monthlyTrendOptions(monthsBack) - fetches monthly expense totals for trend chart
+- Added stats key to keys.ts with byTag and trend query keys
+
+Next: PRD #29 (install shadcn charts), PRD #30-32 (chart components)

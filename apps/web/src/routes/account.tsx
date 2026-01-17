@@ -30,22 +30,30 @@ function Account() {
 		<div className="flex min-h-screen flex-col">
 			<Navbar />
 			<main className="flex flex-1 flex-col items-center gap-6 px-4 py-8">
-				<div className="w-full max-w-lg space-y-6">
+				<div className="w-full max-w-3xl space-y-6">
 					<h1 className="font-bold text-2xl">Paramètres du compte</h1>
 
-					<ProfileForm defaultName={user.name} />
-					<EmailForm currentEmail={user.email} />
-					<PasswordForm />
+					<div className="space-y-6 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+						{/* Left column: Profile + Email */}
+						<div className="space-y-6">
+							<ProfileForm defaultName={user.name} />
+							<EmailForm currentEmail={user.email} />
+						</div>
 
-					<Card>
-						<CardHeader>
-							<CardTitle>Session</CardTitle>
-							<CardDescription>Gérer votre session actuelle</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<LogoutButton />
-						</CardContent>
-					</Card>
+						{/* Right column: Password + Session */}
+						<div className="space-y-6">
+							<PasswordForm />
+							<Card>
+								<CardHeader>
+									<CardTitle>Session</CardTitle>
+									<CardDescription>Gérer votre session actuelle</CardDescription>
+								</CardHeader>
+								<CardContent>
+									<LogoutButton />
+								</CardContent>
+							</Card>
+						</div>
+					</div>
 				</div>
 			</main>
 			<Footer />

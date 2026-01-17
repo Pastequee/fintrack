@@ -35,6 +35,12 @@
 - Date fields remain side-by-side as before
 - Files changed: apps/web/src/components/expense/expense-fields.tsx
 
+### PRD #41 - Redesign account page layout (DONE)
+- Changed max-w-lg to max-w-3xl for wider layout
+- Added responsive 2-col grid (lg:grid lg:grid-cols-2 lg:gap-6)
+- Left column: Profile + Email forms
+- Right column: Password + Session cards
+- Files changed: apps/web/src/routes/account.tsx
+
 ### Next priority suggestions:
-- PRD #41 (account page layout) - UI fix
 - PRD #42 (verify UI/UX fixes) - testing

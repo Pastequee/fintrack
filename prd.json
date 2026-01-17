@@ -71,7 +71,7 @@
       "Group Profile + Email in left column",
       "Group Password + Session in right column"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 42,

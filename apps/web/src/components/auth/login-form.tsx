@@ -12,8 +12,8 @@ import { PasswordInput } from '../ui/password-input'
 import { Separator } from '../ui/separator'
 
 const formSchema = z.object({
-	email: z.string().nonempty('Email is required'),
-	password: z.string().nonempty('Password is required'),
+	email: z.string().email('Adresse email invalide'),
+	password: z.string().nonempty('Le mot de passe est requis'),
 })
 
 export const LoginForm = () => {
@@ -29,7 +29,7 @@ export const LoginForm = () => {
 			})
 
 			if (error) {
-				setErrorMessage(error.message ?? 'An unknown error occurred, please try again later.')
+				setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
 				return
 			}
 
@@ -48,7 +48,7 @@ export const LoginForm = () => {
 		})
 
 		if (error) {
-			setErrorMessage(error.message ?? 'An unknown error occurred, please try again later.')
+			setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
 			return
 		}
 	}
@@ -77,18 +77,22 @@ export const LoginForm = () => {
 
 			<form.AppField
 				children={(field) => (
-					<field.TextField autoComplete="current-password" input={PasswordInput} label="Password" />
+					<field.TextField
+						autoComplete="current-password"
+						input={PasswordInput}
+						label="Mot de passe"
+					/>
 				)}
 				name="password"
 			/>
 
 			<form.AppForm>
-				<form.SubmitButton label="Sign in" />
+				<form.SubmitButton label="Se connecter" />
 			</form.AppForm>
 
 			<div className="my-2 flex items-center gap-4">
 				<Separator className="flex-1" />
-				<span className="text-muted-foreground text-sm">OR</span>
+				<span className="text-muted-foreground text-sm">OU</span>
 				<Separator className="flex-1" />
 			</div>
 
@@ -98,7 +102,7 @@ export const LoginForm = () => {
 				variant="outline"
 			>
 				<img alt="Google" className="size-4" height={16} src={googleIcon} width={16} />
-				Continue with Google
+				Continuer avec Google
 			</Button>
 		</form>
 	)

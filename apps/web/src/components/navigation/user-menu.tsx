@@ -39,12 +39,12 @@ export const UserMenu = () => {
 					<DropdownMenuSeparator />
 					<DropdownMenuItem render={<Link to="/account" />}>
 						<Settings className="size-4" />
-						Account
+						Compte
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem onClick={handleLogout} variant="destructive">
 						<LogOut className="size-4" />
-						Logout
+						Déconnexion
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>

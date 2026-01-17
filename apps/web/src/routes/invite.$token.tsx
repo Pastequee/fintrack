@@ -35,9 +35,9 @@ function InvitationPage() {
 		...acceptInvitationOptions(token),
 		onSuccess: () => navigate({ to: '/' }),
 		onError: (err) => {
-			const message = getErrorMessage(err, 'Failed to accept invitation')
+			const message = getErrorMessage(err, "Échec de l'acceptation de l'invitation")
 			if (message.includes('Already a member')) {
-				setError('You are already a member of a household. Leave your current household first.')
+				setError("Vous êtes déjà membre d'un foyer. Quittez d'abord votre foyer actuel.")
 			} else {
 				setError(message)
 			}
@@ -47,7 +47,7 @@ function InvitationPage() {
 	const declineMutation = useMutation({
 		...declineInvitationOptions(token),
 		onSuccess: () => navigate({ to: '/' }),
-		onError: (err) => setError(getErrorMessage(err, 'Failed to decline invitation')),
+		onError: (err) => setError(getErrorMessage(err, "Échec du refus de l'invitation")),
 	})
 
 	const isPending = acceptMutation.isPending || declineMutation.isPending
@@ -61,7 +61,7 @@ function InvitationPage() {
 					<CardContent className="flex flex-col gap-4">
 						<div className="flex items-center gap-2">
 							<Users className="size-5" />
-							<h2 className="font-semibold text-lg">Household Invitation</h2>
+							<h2 className="font-semibold text-lg">Invitation au foyer</h2>
 						</div>
 
 						{isLoading && <Loader className="text-muted-foreground" />}
@@ -101,14 +101,14 @@ function InvalidInvitation({ onGoHome }: InvalidInvitationProps) {
 		<div className="flex flex-col gap-4">
 			<Alert variant="destructive">
 				<AlertCircle className="size-4" />
-				<AlertTitle>Invalid Invitation</AlertTitle>
+				<AlertTitle>Invitation invalide</AlertTitle>
 				<AlertDescription>
-					This invitation link is invalid, expired, or has already been used.
+					Ce lien d'invitation est invalide, expiré ou a déjà été utilisé.
 				</AlertDescription>
 			</Alert>
 			<Button onClick={onGoHome} variant="outline">
 				<Home className="size-4" />
-				Go Home
+				Retour à l'accueil
 			</Button>
 		</div>
 	)
@@ -142,15 +142,17 @@ function InvitationDetails({
 	return (
 		<>
 			<div className="flex flex-col gap-2 rounded-lg border p-4">
-				<p className="text-muted-foreground text-sm">You've been invited to join</p>
+				<p className="text-muted-foreground text-sm">Vous avez été invité(e) à rejoindre</p>
 				<p className="font-medium text-xl">{householdName}</p>
-				{inviterName && <p className="text-muted-foreground text-sm">Invited by {inviterName}</p>}
+				{inviterName && (
+					<p className="text-muted-foreground text-sm">Invité(e) par {inviterName}</p>
+				)}
 			</div>
 
 			{error && (
 				<Alert variant="destructive">
 					<AlertCircle className="size-4" />
-					<AlertTitle>Error</AlertTitle>
+					<AlertTitle>Erreur</AlertTitle>
 					<AlertDescription>{error}</AlertDescription>
 				</Alert>
 			)}
@@ -158,18 +160,18 @@ function InvitationDetails({
 			{isAuthenticated ? (
 				<div className="flex gap-2">
 					<Button className="flex-1" disabled={isPending} onClick={onDecline} variant="outline">
-						{isDeclining ? 'Declining...' : 'Decline'}
+						{isDeclining ? 'Refus en cours...' : 'Refuser'}
 					</Button>
 					<Button className="flex-1" disabled={isPending} onClick={onAccept}>
-						{isAccepting ? 'Accepting...' : 'Accept'}
+						{isAccepting ? 'Acceptation en cours...' : 'Accepter'}
 					</Button>
 				</div>
 			) : (
 				<div className="flex flex-col gap-2">
 					<p className="text-center text-muted-foreground text-sm">
-						Please log in to accept this invitation
+						Veuillez vous connecter pour accepter cette invitation
 					</p>
-					<Button onClick={onLogin}>Log In</Button>
+					<Button onClick={onLogin}>Se connecter</Button>
 				</div>
 			)}
 		</>

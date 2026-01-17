@@ -12,9 +12,12 @@ import { PasswordInput } from '../ui/password-input'
 import { Separator } from '../ui/separator'
 
 const formSchema = z.object({
-	email: z.email('Invalid email address').nonempty('Name is required'),
-	name: z.string().nonempty('Name is required'),
-	password: z.string().nonempty('Name is required').min(8, 'Must be at least 8 characters long'),
+	email: z.email('Adresse email invalide').nonempty("L'email est requis"),
+	name: z.string().nonempty('Le nom est requis'),
+	password: z
+		.string()
+		.nonempty('Le mot de passe est requis')
+		.min(8, 'Doit contenir au moins 8 caractères'),
 })
 
 export const RegisterForm = () => {
@@ -32,7 +35,7 @@ export const RegisterForm = () => {
 
 			if (error) {
 				setSignUpResponseError(
-					error.message ?? 'An unknown error occurred, please try again later.'
+					error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.'
 				)
 				return
 			}
@@ -49,7 +52,9 @@ export const RegisterForm = () => {
 		})
 
 		if (error) {
-			setSignUpResponseError(error.message ?? 'An unknown error occurred, please try again later.')
+			setSignUpResponseError(
+				error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.'
+			)
 			return
 		}
 	}
@@ -57,6 +62,7 @@ export const RegisterForm = () => {
 	return (
 		<form
 			className="flex flex-col gap-4"
+			noValidate
 			onSubmit={(e) => {
 				e.preventDefault()
 				e.stopPropagation()
@@ -71,7 +77,7 @@ export const RegisterForm = () => {
 			)}
 
 			<form.AppField
-				children={(field) => <field.TextField autoComplete="name" label="Name" />}
+				children={(field) => <field.TextField autoComplete="name" label="Nom" />}
 				name="name"
 			/>
 
@@ -81,17 +87,17 @@ export const RegisterForm = () => {
 			/>
 
 			<form.AppField
-				children={(field) => <field.TextField input={PasswordInput} label="Password" />}
+				children={(field) => <field.TextField input={PasswordInput} label="Mot de passe" />}
 				name="password"
 			/>
 
 			<form.AppForm>
-				<form.SubmitButton label="Create account" />
+				<form.SubmitButton label="Créer un compte" />
 			</form.AppForm>
 
 			<div className="my-2 flex items-center gap-4">
 				<Separator className="flex-1" />
-				<span className="text-muted-foreground text-sm">OR</span>
+				<span className="text-muted-foreground text-sm">OU</span>
 				<Separator className="flex-1" />
 			</div>
 
@@ -101,7 +107,7 @@ export const RegisterForm = () => {
 				variant="outline"
 			>
 				<img alt="Google" className="size-4" height={16} src={googleIcon} width={16} />
-				Continue with Google
+				Continuer avec Google
 			</Button>
 		</form>
 	)

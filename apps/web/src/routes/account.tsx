@@ -31,22 +31,16 @@ function Account() {
 			<Navbar />
 			<main className="flex flex-1 flex-col items-center gap-6 px-4 py-8">
 				<div className="w-full max-w-lg space-y-6">
-					<h1 className="font-bold text-2xl">Account Settings</h1>
+					<h1 className="font-bold text-2xl">Paramètres du compte</h1>
 
-					{/* Profile Section - Update name */}
 					<ProfileForm defaultName={user.name} />
-
-					{/* Email Section - Update email */}
 					<EmailForm currentEmail={user.email} />
-
-					{/* Password Section - Change password */}
 					<PasswordForm />
 
-					{/* Logout Section */}
 					<Card>
 						<CardHeader>
 							<CardTitle>Session</CardTitle>
-							<CardDescription>Manage your current session</CardDescription>
+							<CardDescription>Gérer votre session actuelle</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<LogoutButton />
@@ -59,11 +53,8 @@ function Account() {
 	)
 }
 
-// --- Profile Form ---
-// Allows user to update their display name
-
 const profileSchema = z.object({
-	name: z.string().nonempty('Name is required'),
+	name: z.string().nonempty('Le nom est requis'),
 })
 
 function ProfileForm({ defaultName }: { defaultName: string }) {
@@ -80,19 +71,19 @@ function ProfileForm({ defaultName }: { defaultName: string }) {
 			})
 
 			if (result.error) {
-				setError(result.error.message ?? 'Failed to update profile')
+				setError(result.error.message ?? 'Échec de la mise à jour du profil')
 				return
 			}
 
-			toast.success('Profile updated successfully')
+			toast.success('Profil mis à jour avec succès')
 		},
 	})
 
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Profile</CardTitle>
-				<CardDescription>Update your display name</CardDescription>
+				<CardTitle>Profil</CardTitle>
+				<CardDescription>Modifier votre nom d'affichage</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form
@@ -110,11 +101,11 @@ function ProfileForm({ defaultName }: { defaultName: string }) {
 					)}
 
 					<form.AppField name="name">
-						{(field) => <field.TextField autoComplete="name" label="Name" />}
+						{(field) => <field.TextField autoComplete="name" label="Nom" />}
 					</form.AppField>
 
 					<form.AppForm>
-						<form.SubmitButton label="Update Profile" />
+						<form.SubmitButton label="Mettre à jour le profil" />
 					</form.AppForm>
 				</form>
 			</CardContent>
@@ -122,12 +113,8 @@ function ProfileForm({ defaultName }: { defaultName: string }) {
 	)
 }
 
-// --- Email Form ---
-// Allows user to change their email address
-// Note: Requires changeEmail to be enabled in backend auth config
-
 const emailSchema = z.object({
-	newEmail: z.string().email('Invalid email address').nonempty('Email is required'),
+	newEmail: z.string().email('Adresse email invalide'),
 })
 
 function EmailForm({ currentEmail }: { currentEmail: string }) {
@@ -141,7 +128,7 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 
 			// Skip if same as current email
 			if (value.newEmail === currentEmail) {
-				setError('New email must be different from current email')
+				setError("Le nouvel email doit être différent de l'email actuel")
 				return
 			}
 
@@ -151,11 +138,11 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 			})
 
 			if (result.error) {
-				setError(result.error.message ?? 'Failed to change email')
+				setError(result.error.message ?? "Échec du changement d'email")
 				return
 			}
 
-			toast.success('Verification email sent. Please check your inbox.')
+			toast.success('Email de vérification envoyé. Veuillez vérifier votre boîte de réception.')
 			form.reset()
 		},
 	})
@@ -165,7 +152,7 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 			<CardHeader>
 				<CardTitle>Email</CardTitle>
 				<CardDescription>
-					Current email: <span className="font-medium">{currentEmail}</span>
+					Email actuel : <span className="font-medium">{currentEmail}</span>
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -184,11 +171,11 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 					)}
 
 					<form.AppField name="newEmail">
-						{(field) => <field.TextField autoComplete="email" label="New Email" type="email" />}
+						{(field) => <field.TextField autoComplete="email" label="Nouvel email" type="email" />}
 					</form.AppField>
 
 					<form.AppForm>
-						<form.SubmitButton label="Change Email" />
+						<form.SubmitButton label="Changer l'email" />
 					</form.AppForm>
 				</form>
 			</CardContent>
@@ -196,17 +183,14 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 	)
 }
 
-// --- Password Form ---
-// Allows user to change their password
-
 const passwordSchema = z
 	.object({
-		currentPassword: z.string().nonempty('Current password is required'),
-		newPassword: z.string().min(8, 'Password must be at least 8 characters'),
-		confirmPassword: z.string().nonempty('Please confirm your password'),
+		currentPassword: z.string().nonempty('Le mot de passe actuel est requis'),
+		newPassword: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
+		confirmPassword: z.string().nonempty('Veuillez confirmer votre mot de passe'),
 	})
 	.refine((data) => data.newPassword === data.confirmPassword, {
-		message: 'Passwords do not match',
+		message: 'Les mots de passe ne correspondent pas',
 		path: ['confirmPassword'],
 	})
 
@@ -226,11 +210,11 @@ function PasswordForm() {
 			})
 
 			if (result.error) {
-				setError(result.error.message ?? 'Failed to change password')
+				setError(result.error.message ?? 'Échec du changement de mot de passe')
 				return
 			}
 
-			toast.success('Password changed successfully')
+			toast.success('Mot de passe modifié avec succès')
 			form.reset()
 		},
 	})
@@ -238,8 +222,8 @@ function PasswordForm() {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Password</CardTitle>
-				<CardDescription>Update your password</CardDescription>
+				<CardTitle>Mot de passe</CardTitle>
+				<CardDescription>Modifier votre mot de passe</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<form
@@ -261,7 +245,7 @@ function PasswordForm() {
 							<field.TextField
 								autoComplete="current-password"
 								input={PasswordInput}
-								label="Current Password"
+								label="Mot de passe actuel"
 							/>
 						)}
 					</form.AppField>
@@ -271,7 +255,7 @@ function PasswordForm() {
 							<field.TextField
 								autoComplete="new-password"
 								input={PasswordInput}
-								label="New Password"
+								label="Nouveau mot de passe"
 							/>
 						)}
 					</form.AppField>
@@ -281,13 +265,13 @@ function PasswordForm() {
 							<field.TextField
 								autoComplete="new-password"
 								input={PasswordInput}
-								label="Confirm New Password"
+								label="Confirmer le nouveau mot de passe"
 							/>
 						)}
 					</form.AppField>
 
 					<form.AppForm>
-						<form.SubmitButton label="Change Password" />
+						<form.SubmitButton label="Changer le mot de passe" />
 					</form.AppForm>
 				</form>
 			</CardContent>

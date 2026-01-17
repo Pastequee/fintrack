@@ -10,5 +10,5 @@ export const LogoutButton = () => {
 		router.navigate({ to: '/login', replace: true })
 	}
 
-	return <Button onClick={handleLogout}>Logout</Button>
+	return <Button onClick={handleLogout}>Déconnexion</Button>
 }

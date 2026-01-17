@@ -31,8 +31,8 @@ export function Navbar() {
 
 				<LoggedOut>
 					<div className="flex gap-2">
-						<NavbarLink to="/login">Login</NavbarLink>
-						<NavbarLink to="/register">Register</NavbarLink>
+						<NavbarLink to="/login">Connexion</NavbarLink>
+						<NavbarLink to="/register">Inscription</NavbarLink>
 					</div>
 				</LoggedOut>
 

@@ -94,37 +94,47 @@ export const ExpenseFields = withForm({
 				{(field) => <field.TextField label="Montant (€)" type="number" />}
 			</form.AppField>
 
-			<form.AppField name="type">
-				{(field) => <field.SelectField label="Type" options={typeOptions} />}
-			</form.AppField>
-
 			<form.Subscribe selector={(state) => state.values.type}>
-				{(type) =>
-					type === 'one_time' ? (
-						<form.AppField name="targetDate">
-							{(field) => <field.TextField label="Date" type="date" />}
-						</form.AppField>
-					) : (
+				{(type) => {
+					const isOneTime = type === 'one_time'
+					return (
 						<>
-							<form.AppField name="period">
-								{(field) => <field.SelectField label="Période" options={periodOptions} />}
-							</form.AppField>
-
 							<div className="flex gap-2">
 								<div className="flex-1">
-									<form.AppField name="startDate">
-										{(field) => <field.TextField label="Date de début" type="date" />}
+									<form.AppField name="type">
+										{(field) => <field.SelectField label="Type" options={typeOptions} />}
 									</form.AppField>
 								</div>
-								<div className="flex-1">
-									<form.AppField name="endDate">
-										{(field) => <field.TextField label="Date de fin (optionnel)" type="date" />}
-									</form.AppField>
-								</div>
+								{!isOneTime && (
+									<div className="flex-1">
+										<form.AppField name="period">
+											{(field) => <field.SelectField label="Période" options={periodOptions} />}
+										</form.AppField>
+									</div>
+								)}
 							</div>
+
+							{isOneTime ? (
+								<form.AppField name="targetDate">
+									{(field) => <field.TextField label="Date" type="date" />}
+								</form.AppField>
+							) : (
+								<div className="flex gap-2">
+									<div className="flex-1">
+										<form.AppField name="startDate">
+											{(field) => <field.TextField label="Date de début" type="date" />}
+										</form.AppField>
+									</div>
+									<div className="flex-1">
+										<form.AppField name="endDate">
+											{(field) => <field.TextField label="Date de fin (optionnel)" type="date" />}
+										</form.AppField>
+									</div>
+								</div>
+							)}
 						</>
 					)
-				}
+				}}
 			</form.Subscribe>
 
 			<form.Subscribe selector={(state) => state.values.tagId}>

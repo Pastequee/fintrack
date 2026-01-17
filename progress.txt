@@ -30,6 +30,11 @@
 - Dashboard now uses ~1024px max width on desktop
 - Files changed: apps/web/src/components/dashboard/dashboard-tabs.tsx
 
+### PRD #40 - Improve expense form layout (DONE)
+- Grouped Type + Period selects side-by-side for recurring expenses
+- Date fields remain side-by-side as before
+- Files changed: apps/web/src/components/expense/expense-fields.tsx
+
 ### Next priority suggestions:
-- PRD #40 (expense form layout) - UI fix
 - PRD #41 (account page layout) - UI fix
+- PRD #42 (verify UI/UX fixes) - testing

@@ -59,7 +59,7 @@
       "Group Type and Period selects side-by-side with flex gap-2",
       "Keep date fields side-by-side as currently implemented"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 41,

@@ -24,7 +24,12 @@
 - Selects now take full container width
 - Files changed: apps/web/src/components/ui/select.tsx
 
+### PRD #35 - Widen dashboard layout (DONE)
+- Changed max-w-md to max-w-5xl in DashboardTabs
+- PersonalTab and HouseholdSettings already have max-w-5xl and responsive grids
+- Dashboard now uses ~1024px max width on desktop
+- Files changed: apps/web/src/components/dashboard/dashboard-tabs.tsx
+
 ### Next priority suggestions:
-- PRD #35 (widen dashboard layout) - UI fix
 - PRD #40 (expense form layout) - UI fix
 - PRD #41 (account page layout) - UI fix

@@ -17,7 +17,7 @@ export function DashboardTabs({ personalContent, householdContent }: DashboardTa
 
 	return (
 		<Tabs
-			className="w-full max-w-md"
+			className="w-full max-w-5xl"
 			onValueChange={(value) => navigate({ to: '/', search: { tab: value }, replace: true })}
 			value={currentTab}
 		>

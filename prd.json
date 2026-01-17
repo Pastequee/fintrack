@@ -7,7 +7,7 @@
       "Change max-w-md to max-w-5xl in apps/web/src/components/dashboard/dashboard-tabs.tsx",
       "Verify PersonalTab and HouseholdTab expand properly"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 36,

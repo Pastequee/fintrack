@@ -19,7 +19,12 @@
 - Reduced button gap to gap-1
 - Files changed: apps/web/src/components/expense/expense-item.tsx
 
+### PRD #39 - Fix select trigger width (DONE)
+- Changed w-fit to w-full in SelectTrigger component
+- Selects now take full container width
+- Files changed: apps/web/src/components/ui/select.tsx
+
 ### Next priority suggestions:
 - PRD #35 (widen dashboard layout) - UI fix
-- PRD #39 (select trigger width) - simple one-liner
 - PRD #40 (expense form layout) - UI fix
+- PRD #41 (account page layout) - UI fix

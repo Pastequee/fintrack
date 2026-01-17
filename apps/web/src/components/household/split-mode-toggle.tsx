@@ -10,10 +10,13 @@ type SplitModeToggleProps = {
 }
 
 const splitModeConfig: Record<SplitMode, { label: string; description: string }> = {
-	equal: { label: 'Equal Split', description: 'Expenses split equally among members' },
+	equal: {
+		label: 'Partage égal',
+		description: 'Dépenses réparties équitablement entre les membres',
+	},
 	income_proportional: {
-		label: 'Income Proportional',
-		description: 'Expenses split based on income ratio',
+		label: 'Proportionnel aux revenus',
+		description: 'Dépenses réparties selon les revenus',
 	},
 }
 
@@ -22,7 +25,7 @@ export const SplitModeToggle = ({ householdId, currentMode }: SplitModeTogglePro
 
 	return (
 		<div className="flex flex-col gap-2">
-			<Label>Split Mode</Label>
+			<Label>Mode de partage</Label>
 			<Select
 				disabled={isPending}
 				onValueChange={(value) => mutate({ splitMode: value as SplitMode })}

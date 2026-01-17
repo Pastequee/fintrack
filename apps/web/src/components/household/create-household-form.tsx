@@ -4,7 +4,7 @@ import { useAppForm } from '~/lib/hooks/form-hook'
 import { createHouseholdOptions } from '~/lib/mutations/households.mutations'
 
 const createSchema = z.object({
-	name: z.string().nonempty('Name is required'),
+	name: z.string().nonempty('Nom requis'),
 })
 
 type CreateFormValues = z.infer<typeof createSchema>
@@ -29,7 +29,7 @@ export const CreateHouseholdForm = () => {
 	return (
 		<div className="flex flex-col gap-4">
 			<p className="text-center text-muted-foreground text-sm">
-				You&apos;re not in a household yet. Create one to share expenses with others.
+				Vous n&apos;avez pas encore de foyer. Créez-en un pour partager vos dépenses.
 			</p>
 			<form
 				className="flex flex-col gap-4"
@@ -39,17 +39,17 @@ export const CreateHouseholdForm = () => {
 				}}
 			>
 				<form.AppField name="name">
-					{(field) => <field.TextField label="Household Name" />}
+					{(field) => <field.TextField label="Nom du foyer" />}
 				</form.AppField>
 
 				{error && (
 					<p className="text-destructive text-xs">
-						{(error as { error?: string })?.error || 'Failed to create household'}
+						{(error as { error?: string })?.error || 'Échec de la création du foyer'}
 					</p>
 				)}
 
 				<form.AppForm>
-					<form.SubmitButton disabled={isPending} label="Create Household" />
+					<form.SubmitButton disabled={isPending} label="Créer le foyer" />
 				</form.AppForm>
 			</form>
 		</div>

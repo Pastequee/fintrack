@@ -39,7 +39,7 @@ export const EditHouseholdExpenseDialog = ({
 		<Dialog onOpenChange={onOpenChange} open={open}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Edit Household Expense</DialogTitle>
+					<DialogTitle>Modifier la dépense du foyer</DialogTitle>
 				</DialogHeader>
 
 				<form
@@ -52,7 +52,7 @@ export const EditHouseholdExpenseDialog = ({
 					<ExpenseFields form={form} />
 
 					<form.AppForm>
-						<form.SubmitButton disabled={isPending} label="Save" />
+						<form.SubmitButton disabled={isPending} label="Enregistrer" />
 					</form.AppForm>
 				</form>
 			</DialogContent>

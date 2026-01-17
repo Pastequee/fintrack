@@ -13,7 +13,7 @@ export const HouseholdExpenseCard = () => {
 		return (
 			<Card className="mx-auto w-[90vw] max-w-md">
 				<CardContent className="flex flex-col gap-4">
-					<h2 className="font-semibold text-lg">Household Expenses</h2>
+					<h2 className="font-semibold text-lg">Dépenses du foyer</h2>
 					<Loader className="text-muted-foreground" />
 				</CardContent>
 			</Card>
@@ -24,9 +24,9 @@ export const HouseholdExpenseCard = () => {
 		return (
 			<Card className="mx-auto w-[90vw] max-w-md">
 				<CardContent className="flex flex-col gap-4">
-					<h2 className="font-semibold text-lg">Household Expenses</h2>
+					<h2 className="font-semibold text-lg">Dépenses du foyer</h2>
 					<p className="text-center text-muted-foreground text-sm">
-						Join or create a household to manage shared expenses
+						Rejoignez ou créez un foyer pour gérer les dépenses partagées
 					</p>
 				</CardContent>
 			</Card>
@@ -37,11 +37,11 @@ export const HouseholdExpenseCard = () => {
 		<Card className="mx-auto w-[90vw] max-w-md">
 			<CardContent className="flex flex-col gap-4">
 				<div className="flex flex-col gap-1">
-					<h2 className="font-semibold text-lg">Household Expenses</h2>
+					<h2 className="font-semibold text-lg">Dépenses du foyer</h2>
 					<span className="text-muted-foreground text-xs">
-						{household.name} • {household.members.length} member
+						{household.name} • {household.members.length} membre
 						{household.members.length !== 1 ? 's' : ''} •{' '}
-						{household.splitMode === 'equal' ? 'Split equally' : 'Split by income'}
+						{household.splitMode === 'equal' ? 'Partage égal' : 'Proportionnel aux revenus'}
 					</span>
 				</div>
 

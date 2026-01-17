@@ -11,8 +11,8 @@ type PendingInvitationItemProps = {
 function formatExpiry(date: Date) {
 	const msPerDay = 1000 * 60 * 60 * 24
 	const days = Math.ceil((new Date(date).getTime() - Date.now()) / msPerDay)
-	if (days <= 0) return 'Expired'
-	return `${days} day${days === 1 ? '' : 's'} left`
+	if (days <= 0) return 'Expiré'
+	return `${days} jour${days === 1 ? '' : 's'} restant${days === 1 ? '' : 's'}`
 }
 
 export const PendingInvitationItem = ({ invitation }: PendingInvitationItemProps) => (

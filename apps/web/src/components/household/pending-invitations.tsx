@@ -12,7 +12,7 @@ export const PendingInvitations = () => {
 
 	return (
 		<div className="flex flex-col gap-3">
-			<h3 className="font-medium text-sm">Pending Invitations</h3>
+			<h3 className="font-medium text-sm">Invitations en attente</h3>
 			<div className="flex flex-col gap-2">
 				{invitations.map((inv) => (
 					<PendingInvitationItem invitation={inv} key={inv.id} />

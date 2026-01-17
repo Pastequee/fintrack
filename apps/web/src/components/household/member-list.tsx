@@ -22,7 +22,7 @@ export const MemberList = ({ members }: MemberListProps) => {
 
 	return (
 		<div className="flex flex-col gap-3">
-			<h3 className="font-medium text-sm">Members</h3>
+			<h3 className="font-medium text-sm">Membres</h3>
 			<div className="flex flex-col gap-2">
 				{validMembers.map((member) => (
 					<MemberItem

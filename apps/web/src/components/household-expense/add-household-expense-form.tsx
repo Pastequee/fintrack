@@ -34,7 +34,7 @@ export const AddHouseholdExpenseForm = () => {
 			<ExpenseFields form={form} />
 
 			<form.AppForm>
-				<form.SubmitButton disabled={isPending} label="Add Expense" />
+				<form.SubmitButton disabled={isPending} label="Ajouter une dépense" />
 			</form.AppForm>
 		</form>
 	)

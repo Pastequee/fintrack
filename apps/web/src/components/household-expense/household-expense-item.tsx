@@ -14,6 +14,7 @@ import {
 	deleteHouseholdExpenseOptions,
 	updateHouseholdExpenseOptions,
 } from '~/lib/mutations/households.mutations'
+import { cn } from '~/lib/utils/cn'
 import {
 	formatExpenseAmount,
 	formatShortDate,
@@ -39,7 +40,7 @@ type HouseholdExpenseItemProps = {
 	splitMode: SplitMode
 }
 
-const getExpenseIcon = (isDisabled: boolean, isOneTime: boolean) => {
+function getExpenseIcon(isDisabled: boolean, isOneTime: boolean) {
 	if (isDisabled) return <AlertTriangle className="text-amber-500" size={16} />
 	if (isOneTime) return <CalendarDays className="text-muted-foreground" size={16} />
 	return <Repeat className="text-muted-foreground" size={16} />
@@ -64,10 +65,12 @@ export const HouseholdExpenseItem = ({
 	const isDisabled = !expense.active
 	const remaining = isOneTime ? null : getRemainingDuration(expense.endDate)
 	const splitLabel =
-		splitMode === 'equal' ? getSplitAmount(expense.amount, memberCount) : 'split by income'
+		splitMode === 'equal'
+			? getSplitAmount(expense.amount, memberCount)
+			: 'proportionnel aux revenus'
 
 	return (
-		<div className={`flex items-center gap-4 ${isDisabled ? 'opacity-50' : ''}`}>
+		<div className={cn('flex items-center gap-4', isDisabled && 'opacity-50')}>
 			<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted">
 				{getExpenseIcon(isDisabled, isOneTime)}
 			</div>
@@ -77,7 +80,7 @@ export const HouseholdExpenseItem = ({
 					<span className="truncate font-semibold text-sm">{expense.name}</span>
 					{isDisabled && (
 						<span className="rounded bg-amber-100 px-1.5 py-0.5 text-amber-700 text-xs">
-							Disabled
+							Désactivé
 						</span>
 					)}
 				</div>
@@ -88,7 +91,7 @@ export const HouseholdExpenseItem = ({
 					{splitLabel && <span className="text-muted-foreground text-xs">• {splitLabel}</span>}
 					{isOneTime && expense.targetDate && (
 						<span className="text-muted-foreground text-xs">
-							on {formatShortDate(expense.targetDate)}
+							le {formatShortDate(expense.targetDate)}
 						</span>
 					)}
 					{remaining && <span className="text-muted-foreground text-xs">• {remaining}</span>}
@@ -128,14 +131,14 @@ export const HouseholdExpenseItem = ({
 			<AlertDialog onOpenChange={setIsDeleteOpen} open={isDeleteOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete household expense?</AlertDialogTitle>
+						<AlertDialogTitle>Supprimer la dépense du foyer ?</AlertDialogTitle>
 						<AlertDialogDescription>
-							This will permanently delete &quot;{expense.name}&quot; for all household members.
+							Cette dépense sera définitivement supprimée pour tous les membres du foyer.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={() => deleteMutation({})}>Delete</AlertDialogAction>
+						<AlertDialogCancel>Annuler</AlertDialogCancel>
+						<AlertDialogAction onClick={() => deleteMutation({})}>Supprimer</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

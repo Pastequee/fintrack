@@ -16,7 +16,7 @@ export const MemberItem = ({ member, isCurrentUser }: MemberItemProps) => (
 		<div className="flex min-w-0 flex-1 flex-col">
 			<span className="truncate font-medium text-sm">
 				{member.user.name}
-				{isCurrentUser && <span className="text-muted-foreground"> (you)</span>}
+				{isCurrentUser && <span className="text-muted-foreground"> (vous)</span>}
 			</span>
 			<span className="truncate text-muted-foreground text-xs">{member.user.email}</span>
 		</div>

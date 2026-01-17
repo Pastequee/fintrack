@@ -32,20 +32,20 @@ export const LeaveHouseholdButton = ({ householdId, householdName }: LeaveHouseh
 				variant="destructive"
 			>
 				{isPending ? <Loader2 className="animate-spin" size={16} /> : <LogOut size={16} />}
-				<span className="ml-2">Leave Household</span>
+				<span className="ml-2">Quitter le foyer</span>
 			</Button>
 
 			<AlertDialog onOpenChange={setIsOpen} open={isOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Leave household?</AlertDialogTitle>
+						<AlertDialogTitle>Quitter le foyer ?</AlertDialogTitle>
 						<AlertDialogDescription>
-							You will leave &quot;{householdName}&quot;. Your household expenses will be disabled.
+							Vous quitterez &quot;{householdName}&quot;. Vos dépenses de foyer seront désactivées.
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={() => mutate({})}>Leave</AlertDialogAction>
+						<AlertDialogCancel>Annuler</AlertDialogCancel>
+						<AlertDialogAction onClick={() => mutate({})}>Quitter</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

@@ -304,3 +304,21 @@ Translated all expense and income components to French:
 - add-income-form.tsx: "Add Income" → "Ajouter un revenu"
 
 Next: PRD #24-25 (household/auth French i18n), PRD #33 (styling)
+
+## 2026-01-17 - Household French i18n (PRD #24)
+
+Translated all household and household-expense components to French:
+- member-item.tsx: "(you)" → "(vous)"
+- invite-form.tsx: "Invite Member" → "Inviter un membre", "Send Invite" → "Envoyer l'invitation"
+- leave-household-button.tsx: "Leave Household" → "Quitter le foyer", dialog in French
+- create-household-form.tsx: "Create Household" → "Créer le foyer", all labels/errors
+- pending-invitation-item.tsx: "Expired" → "Expiré", "days left" → "jours restants"
+- pending-invitations.tsx: "Pending Invitations" → "Invitations en attente"
+- member-list.tsx: "Members" → "Membres"
+- split-mode-toggle.tsx: "Split Mode" → "Mode de partage", mode labels/descriptions
+- household-expense-card.tsx: "Household Expenses" → "Dépenses du foyer"
+- edit-household-expense-dialog.tsx: "Edit Household Expense" → "Modifier la dépense du foyer"
+- add-household-expense-form.tsx: "Add Expense" → "Ajouter une dépense"
+- household-expense-item.tsx: "Disabled" → "Désactivé", delete dialog in French
+
+Next: PRD #25 (auth/nav French i18n), PRD #33 (styling)

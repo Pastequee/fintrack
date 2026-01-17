@@ -29,7 +29,7 @@
       "Wrap edit/delete buttons in shrink-0 container",
       "Reduce gap between buttons from gap-4 to gap-1"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 38,

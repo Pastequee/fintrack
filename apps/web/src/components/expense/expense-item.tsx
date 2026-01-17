@@ -45,7 +45,7 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 
 	return (
 		<div
-			className="relative flex items-center gap-4 rounded-lg py-2 pr-2 pl-4 transition-colors hover:bg-muted/50"
+			className="relative flex items-center gap-4 rounded-lg p-3 transition-colors hover:bg-muted/50"
 			style={{
 				borderLeft: `3px solid ${tagColor}`,
 			}}
@@ -79,18 +79,19 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 				</div>
 			</div>
 
-			<Button onClick={() => setIsEditOpen(true)} size="icon" variant="ghost">
-				<Pencil size={16} />
-			</Button>
-
-			<Button
-				disabled={isDeleting}
-				onClick={() => setIsDeleteOpen(true)}
-				size="icon"
-				variant="destructive"
-			>
-				{isDeleting ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
-			</Button>
+			<div className="flex shrink-0 gap-1">
+				<Button onClick={() => setIsEditOpen(true)} size="icon" variant="ghost">
+					<Pencil size={16} />
+				</Button>
+				<Button
+					disabled={isDeleting}
+					onClick={() => setIsDeleteOpen(true)}
+					size="icon"
+					variant="destructive"
+				>
+					{isDeleting ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
+				</Button>
+			</div>
 
 			<EditExpenseDialog expense={expense} onOpenChange={setIsEditOpen} open={isEditOpen} />
 

@@ -13,6 +13,13 @@
 - Charts/balance now update immediately on data changes
 - Files changed: apps/web/src/lib/mutations/{expenses,incomes,tags}.mutations.ts
 
+### PRD #37 - Fix expense item layout overlap (DONE)
+- Changed asymmetric padding py-2 pr-2 pl-4 to p-3
+- Wrapped edit/delete buttons in shrink-0 container
+- Reduced button gap to gap-1
+- Files changed: apps/web/src/components/expense/expense-item.tsx
+
 ### Next priority suggestions:
-- PRD #37 (expense item layout) - UI fix
 - PRD #35 (widen dashboard layout) - UI fix
+- PRD #39 (select trigger width) - simple one-liner
+- PRD #40 (expense form layout) - UI fix

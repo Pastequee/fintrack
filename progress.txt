@@ -338,3 +338,20 @@ Translated all auth and navigation components to French:
   - Profile/Email/Password sections fully translated
 
 Next: PRD #33 (styling), PRD #34 (end-to-end testing)
+
+## 2026-01-17 - Modern colorful styling (PRD #33)
+
+Applied tag colors to expense items:
+- Added tag relation to expenses in packages/db/src/relations.ts
+- Updated expense service to include tag data via left join
+- Updated expense-item.tsx with tag color styling:
+  - 3px left border accent using tag color
+  - Small colored dot next to expense name
+  - Tag name displayed in parentheses when present
+  - Hover state with subtle background
+  - Default slate color (#64748b) for untagged expenses
+
+Insight cards already had solid bg colors (emerald/slate/violet/amber/red).
+Clean spacing and modern typography already in place from earlier PRDs.
+
+Next: PRD #34 (end-to-end testing)

@@ -21,9 +21,15 @@ import {
 import { Button } from '../ui/button'
 import { EditExpenseDialog } from './edit-expense-dialog'
 
-type ExpenseItemProps = {
-	expense: Expense
+type ExpenseWithTag = Expense & {
+	tag: { id: string; name: string; color: string } | null
 }
+
+type ExpenseItemProps = {
+	expense: ExpenseWithTag
+}
+
+const DEFAULT_TAG_COLOR = '#64748b' // slate-500
 
 export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 	const [isEditOpen, setIsEditOpen] = useState(false)
@@ -35,9 +41,15 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 
 	const isOneTime = expense.type === 'one_time'
 	const remaining = isOneTime ? null : getRemainingDuration(expense.endDate)
+	const tagColor = expense.tag?.color ?? DEFAULT_TAG_COLOR
 
 	return (
-		<div className="flex items-center gap-4">
+		<div
+			className="relative flex items-center gap-4 rounded-lg py-2 pr-2 pl-4 transition-colors hover:bg-muted/50"
+			style={{
+				borderLeft: `3px solid ${tagColor}`,
+			}}
+		>
 			<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted">
 				{isOneTime ? (
 					<CalendarDays className="text-muted-foreground" size={16} />
@@ -47,7 +59,13 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 			</div>
 
 			<div className="flex min-w-0 flex-1 flex-col gap-0.5">
-				<span className="truncate font-semibold text-sm">{expense.name}</span>
+				<div className="flex items-center gap-2">
+					<span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: tagColor }} />
+					<span className="truncate font-semibold text-sm">{expense.name}</span>
+					{expense.tag && (
+						<span className="text-muted-foreground text-xs">({expense.tag.name})</span>
+					)}
+				</div>
 				<div className="flex items-center gap-2">
 					<span className="text-muted-foreground text-xs">
 						{formatExpenseAmount(expense.amount, expense.type, expense.period)}

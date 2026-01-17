@@ -398,7 +398,7 @@
       "Clean spacing and modern typography",
       "Ensure good contrast and accessibility"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 34,

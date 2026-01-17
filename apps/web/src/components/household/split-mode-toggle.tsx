@@ -1,4 +1,5 @@
 import type { SplitMode } from '@repo/db/types'
+import { typedObjectEntries } from '@repo/utils'
 import { useMutation } from '@tanstack/react-query'
 import { updateHouseholdOptions } from '~/lib/mutations/households.mutations'
 import { Label } from '../ui/label'
@@ -20,6 +21,11 @@ const splitModeConfig: Record<SplitMode, { label: string; description: string }>
 	},
 }
 
+const splitModeOptions = typedObjectEntries(splitModeConfig).map(([value, { label }]) => ({
+	value,
+	label,
+}))
+
 export const SplitModeToggle = ({ householdId, currentMode }: SplitModeToggleProps) => {
 	const { mutate, isPending } = useMutation(updateHouseholdOptions(householdId))
 
@@ -28,6 +34,7 @@ export const SplitModeToggle = ({ householdId, currentMode }: SplitModeTogglePro
 			<Label>Mode de partage</Label>
 			<Select
 				disabled={isPending}
+				items={splitModeOptions}
 				onValueChange={(value) => mutate({ splitMode: value as SplitMode })}
 				value={currentMode}
 			>
@@ -35,10 +42,11 @@ export const SplitModeToggle = ({ householdId, currentMode }: SplitModeTogglePro
 					<SelectValue />
 				</SelectTrigger>
 				<SelectContent>
-					<SelectItem value="equal">{splitModeConfig.equal.label}</SelectItem>
-					<SelectItem value="income_proportional">
-						{splitModeConfig.income_proportional.label}
-					</SelectItem>
+					{splitModeOptions.map(({ value, label }) => (
+						<SelectItem key={value} value={value}>
+							{label}
+						</SelectItem>
+					))}
 				</SelectContent>
 			</Select>
 			<p className="text-muted-foreground text-xs">{splitModeConfig[currentMode].description}</p>

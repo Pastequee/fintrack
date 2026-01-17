@@ -18,7 +18,7 @@
       "Add beforeLoad guard redirecting to /login if not authenticated",
       "Follow same pattern as routes/account.tsx"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 37,

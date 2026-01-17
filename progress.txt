@@ -1,0 +1,11 @@
+## 2026-01-17
+
+### PRD #36 - Auth protection for dashboard (DONE)
+- Added beforeLoad guard to routes/index.tsx
+- Redirects unauthenticated users to /login
+- Same pattern as routes/account.tsx
+- Files changed: apps/web/src/routes/index.tsx
+
+### Next priority suggestions:
+- PRD #38 (query invalidation) - data consistency
+- PRD #37 (expense item layout) - UI fix

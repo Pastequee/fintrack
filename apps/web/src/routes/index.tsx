@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import z from 'zod'
 import { DashboardTabs } from '~/components/dashboard/dashboard-tabs'
 import { PersonalTab } from '~/components/dashboard/personal-tab'
@@ -13,6 +13,11 @@ const searchSchema = z.object({
 export const Route = createFileRoute('/')({
 	component: DashboardPage,
 	validateSearch: searchSchema,
+	beforeLoad: ({ context }) => {
+		if (!context.auth) {
+			throw redirect({ to: '/login' })
+		}
+	},
 })
 
 function DashboardPage() {

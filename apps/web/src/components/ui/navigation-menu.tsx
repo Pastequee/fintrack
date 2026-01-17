@@ -21,6 +21,7 @@ function NavigationMenu({ className, children, ...props }: NavigationMenuPrimiti
 
 function NavigationMenuList({ className, ...props }: NavigationMenuPrimitive.List.Props) {
 	return (
+		// @ts-expect-error
 		<NavigationMenuPrimitive.List
 			className={cn('group flex flex-1 list-none items-center justify-center gap-0', className)}
 			data-slot="navigation-menu-list"
@@ -31,6 +32,7 @@ function NavigationMenuList({ className, ...props }: NavigationMenuPrimitive.Lis
 
 function NavigationMenuItem({ className, ...props }: NavigationMenuPrimitive.Item.Props) {
 	return (
+		// @ts-expect-error
 		<NavigationMenuPrimitive.Item
 			className={cn('relative', className)}
 			data-slot="navigation-menu-item"
@@ -120,6 +122,7 @@ function NavigationMenuLink({ className, ...props }: NavigationMenuPrimitive.Lin
 
 function NavigationMenuIndicator({ className, ...props }: NavigationMenuPrimitive.Icon.Props) {
 	return (
+		// @ts-expect-error
 		<NavigationMenuPrimitive.Icon
 			className={cn(
 				'data-[state=hidden]:fade-out data-[state=visible]:fade-in top-full z-1 flex h-1.5 items-end justify-center overflow-hidden data-[state=hidden]:animate-out data-[state=visible]:animate-in',

@@ -23,6 +23,7 @@ export function SelectField({ label, options, placeholder, disabled }: SelectFie
 			<Label htmlFor={field.name}>{label}</Label>
 			<Select
 				disabled={disabled}
+				items={options}
 				onValueChange={(v) => v && field.handleChange(v)}
 				value={field.state.value}
 			>

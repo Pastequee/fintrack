@@ -288,3 +288,19 @@ Translated all dashboard components to French:
 - personal-tab.tsx: Already French (done with earlier PRDs)
 
 Next: PRD #23-25 (expense/income/household/auth French i18n), PRD #33 (styling)
+
+## 2026-01-17 - Expense/income French i18n (PRD #23)
+
+Translated all expense and income components to French:
+- expense-fields.tsx: Type (Ponctuel/Récurrent), Period (Quotidien/Hebdomadaire/Mensuel/Annuel), all labels, validation
+- expense-item.tsx: Delete dialog (Supprimer/Annuler), "on" → "le"
+- expense-list-card.tsx: "Expenses" → "Dépenses", login message
+- edit-expense-dialog.tsx: "Edit Expense" → "Modifier la dépense", "Save" → "Enregistrer"
+- add-expense-form.tsx: "Add Expense" → "Ajouter une dépense"
+- income-fields.tsx: Period labels, all field labels, validation messages
+- income-item.tsx: Period abbreviations (/jour, /sem, /mois, /an), fr-FR locale for amounts
+- income-list-card.tsx: "Incomes" → "Revenus", login message
+- edit-income-dialog.tsx: "Edit Income" → "Modifier le revenu", "Save" → "Enregistrer"
+- add-income-form.tsx: "Add Income" → "Ajouter un revenu"
+
+Next: PRD #24-25 (household/auth French i18n), PRD #33 (styling)

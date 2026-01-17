@@ -8,10 +8,10 @@ import { ExpenseList } from './expense-list'
 export const ExpenseListCard = () => (
 	<Card className="mx-auto w-[90vw] max-w-md">
 		<CardContent className="flex flex-col gap-4">
-			<h2 className="font-semibold text-lg">Expenses</h2>
+			<h2 className="font-semibold text-lg">Dépenses</h2>
 			<LoggedOut>
 				<p className="text-center text-muted-foreground text-sm">
-					You must be logged in to manage expenses
+					Connectez-vous pour gérer vos dépenses
 				</p>
 			</LoggedOut>
 			<AddExpenseForm />

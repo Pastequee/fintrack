@@ -3,21 +3,18 @@ import { useMutation } from '@tanstack/react-query'
 import { useAppForm } from '~/lib/hooks/form-hook'
 import { updateIncomeOptions } from '~/lib/mutations/incomes.mutations'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
-import { IncomeFields, type IncomeFormValues, incomeFormSchema } from './income-fields'
+import {
+	IncomeFields,
+	incomeFormSchema,
+	incomeToFormValues,
+	toIncomePayload,
+} from './income-fields'
 
 type EditIncomeDialogProps = {
 	income: Income
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
-
-const incomeToFormValues = (income: Income): IncomeFormValues => ({
-	name: income.name,
-	amount: income.amount,
-	period: income.period,
-	startDate: income.startDate,
-	endDate: income.endDate ?? '',
-})
 
 export const EditIncomeDialog = ({ income, open, onOpenChange }: EditIncomeDialogProps) => {
 	const { isPending, mutate } = useMutation(updateIncomeOptions(income.id))
@@ -30,16 +27,7 @@ export const EditIncomeDialog = ({ income, open, onOpenChange }: EditIncomeDialo
 			onSubmit: incomeFormSchema,
 		},
 		onSubmit: ({ value }) => {
-			mutate(
-				{
-					name: value.name.trim(),
-					amount: value.amount,
-					period: value.period,
-					startDate: value.startDate,
-					endDate: value.endDate || null,
-				},
-				{ onSuccess: () => onOpenChange(false) }
-			)
+			mutate(toIncomePayload(value), { onSuccess: () => onOpenChange(false) })
 		},
 	})
 
@@ -47,7 +35,7 @@ export const EditIncomeDialog = ({ income, open, onOpenChange }: EditIncomeDialo
 		<Dialog onOpenChange={onOpenChange} open={open}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Edit Income</DialogTitle>
+					<DialogTitle>Modifier le revenu</DialogTitle>
 				</DialogHeader>
 
 				<form
@@ -57,19 +45,10 @@ export const EditIncomeDialog = ({ income, open, onOpenChange }: EditIncomeDialo
 						form.handleSubmit()
 					}}
 				>
-					<IncomeFields
-						fields={{
-							name: 'name',
-							amount: 'amount',
-							period: 'period',
-							startDate: 'startDate',
-							endDate: 'endDate',
-						}}
-						form={form}
-					/>
+					<IncomeFields form={form} />
 
 					<form.AppForm>
-						<form.SubmitButton disabled={isPending} label="Save" />
+						<form.SubmitButton disabled={isPending} label="Enregistrer" />
 					</form.AppForm>
 				</form>
 			</DialogContent>

@@ -35,7 +35,7 @@ export const EditExpenseDialog = ({ expense, open, onOpenChange }: EditExpenseDi
 		<Dialog onOpenChange={onOpenChange} open={open}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Edit Expense</DialogTitle>
+					<DialogTitle>Modifier la dépense</DialogTitle>
 				</DialogHeader>
 
 				<form
@@ -48,7 +48,7 @@ export const EditExpenseDialog = ({ expense, open, onOpenChange }: EditExpenseDi
 					<ExpenseFields form={form} />
 
 					<form.AppForm>
-						<form.SubmitButton disabled={isPending} label="Save" />
+						<form.SubmitButton disabled={isPending} label="Enregistrer" />
 					</form.AppForm>
 				</form>
 			</DialogContent>

@@ -8,10 +8,10 @@ import { IncomeList } from './income-list'
 export const IncomeListCard = () => (
 	<Card className="mx-auto w-[90vw] max-w-md">
 		<CardContent className="flex flex-col gap-4">
-			<h2 className="font-semibold text-lg">Incomes</h2>
+			<h2 className="font-semibold text-lg">Revenus</h2>
 			<LoggedOut>
 				<p className="text-center text-muted-foreground text-sm">
-					You must be logged in to manage incomes
+					Connectez-vous pour gérer vos revenus
 				</p>
 			</LoggedOut>
 			<AddIncomeForm />

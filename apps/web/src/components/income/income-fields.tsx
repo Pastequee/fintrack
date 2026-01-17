@@ -1,17 +1,25 @@
+import type { Income } from '@repo/db/types'
 import { IncomePeriod } from '@repo/db/types'
-import z from 'zod'
-import { withFieldGroup } from '~/lib/hooks/form-hook'
+import { z } from 'zod'
+import { withForm } from '~/lib/hooks/form-hook'
+
+const periodLabels: Record<string, string> = {
+	daily: 'Quotidien',
+	weekly: 'Hebdomadaire',
+	monthly: 'Mensuel',
+	yearly: 'Annuel',
+}
 
 const periodOptions = IncomePeriod.map((p) => ({
 	value: p,
-	label: p.charAt(0).toUpperCase() + p.slice(1),
+	label: periodLabels[p] ?? p,
 }))
 
 export const incomeFormSchema = z.object({
-	name: z.string().nonempty('Name is required'),
-	amount: z.string().nonempty('Amount is required'),
+	name: z.string().nonempty('Nom requis'),
+	amount: z.string().nonempty('Montant requis'),
 	period: z.enum(IncomePeriod),
-	startDate: z.string().nonempty('Start date is required'),
+	startDate: z.string().nonempty('Date de début requise'),
 	endDate: z.string(),
 })
 
@@ -25,30 +33,50 @@ export const defaultIncomeValues: IncomeFormValues = {
 	endDate: '',
 }
 
-export const IncomeFields = withFieldGroup({
+export function toIncomePayload(value: IncomeFormValues) {
+	return {
+		name: value.name.trim(),
+		amount: value.amount,
+		period: value.period,
+		startDate: value.startDate,
+		endDate: value.endDate || null,
+	}
+}
+
+export function incomeToFormValues(income: Income): IncomeFormValues {
+	return {
+		name: income.name,
+		amount: income.amount,
+		period: income.period,
+		startDate: income.startDate,
+		endDate: income.endDate ?? '',
+	}
+}
+
+export const IncomeFields = withForm({
 	defaultValues: defaultIncomeValues,
-	render: ({ group }) => (
+	render: ({ form }) => (
 		<div className="flex flex-col gap-4">
-			<group.AppField name="name">{(field) => <field.TextField label="Name" />}</group.AppField>
+			<form.AppField name="name">{(field) => <field.TextField label="Nom" />}</form.AppField>
 
-			<group.AppField name="amount">
-				{(field) => <field.TextField label="Amount (€)" type="number" />}
-			</group.AppField>
+			<form.AppField name="amount">
+				{(field) => <field.TextField label="Montant (€)" type="number" />}
+			</form.AppField>
 
-			<group.AppField name="period">
-				{(field) => <field.SelectField label="Period" options={periodOptions} />}
-			</group.AppField>
+			<form.AppField name="period">
+				{(field) => <field.SelectField label="Période" options={periodOptions} />}
+			</form.AppField>
 
 			<div className="flex gap-2">
 				<div className="flex-1">
-					<group.AppField name="startDate">
-						{(field) => <field.TextField label="Start Date" type="date" />}
-					</group.AppField>
+					<form.AppField name="startDate">
+						{(field) => <field.TextField label="Date de début" type="date" />}
+					</form.AppField>
 				</div>
 				<div className="flex-1">
-					<group.AppField name="endDate">
-						{(field) => <field.TextField label="End Date (optional)" type="date" />}
-					</group.AppField>
+					<form.AppField name="endDate">
+						{(field) => <field.TextField label="Date de fin (optionnel)" type="date" />}
+					</form.AppField>
 				</div>
 			</div>
 		</div>

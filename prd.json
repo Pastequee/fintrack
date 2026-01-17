@@ -273,7 +273,7 @@
       "Ajouter, Modifier, Supprimer, Enregistrer, Annuler",
       "Recurrent, Ponctuel, Mensuel, Hebdomadaire, etc."
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 24,

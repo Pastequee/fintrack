@@ -5,7 +5,12 @@ import { useAppForm } from '~/lib/hooks/form-hook'
 import { createIncomeOptions } from '~/lib/mutations/incomes.mutations'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
-import { defaultIncomeValues, IncomeFields, incomeFormSchema } from './income-fields'
+import {
+	defaultIncomeValues,
+	IncomeFields,
+	incomeFormSchema,
+	toIncomePayload,
+} from './income-fields'
 
 export const AddIncomeDialog = () => {
 	const [open, setOpen] = useState(false)
@@ -19,20 +24,12 @@ export const AddIncomeDialog = () => {
 			onSubmit: incomeFormSchema,
 		},
 		onSubmit: ({ value }) => {
-			mutate(
-				{
-					name: value.name.trim(),
-					amount: value.amount,
-					period: value.period,
-					startDate: value.startDate,
+			mutate(toIncomePayload(value), {
+				onSuccess: () => {
+					form.reset()
+					setOpen(false)
 				},
-				{
-					onSuccess: () => {
-						form.reset()
-						setOpen(false)
-					},
-				}
-			)
+			})
 		},
 	})
 
@@ -58,16 +55,7 @@ export const AddIncomeDialog = () => {
 						form.handleSubmit()
 					}}
 				>
-					<IncomeFields
-						fields={{
-							name: 'name',
-							amount: 'amount',
-							period: 'period',
-							startDate: 'startDate',
-							endDate: 'endDate',
-						}}
-						form={form}
-					/>
+					<IncomeFields form={form} />
 
 					<form.AppForm>
 						<form.SubmitButton disabled={isPending} label="Ajouter" />

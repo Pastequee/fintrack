@@ -54,7 +54,7 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 					</span>
 					{isOneTime && expense.targetDate && (
 						<span className="text-muted-foreground text-xs">
-							on {formatShortDate(expense.targetDate)}
+							le {formatShortDate(expense.targetDate)}
 						</span>
 					)}
 					{remaining && <span className="text-muted-foreground text-xs">• {remaining}</span>}
@@ -79,14 +79,14 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 			<AlertDialog onOpenChange={setIsDeleteOpen} open={isDeleteOpen}>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete expense?</AlertDialogTitle>
+						<AlertDialogTitle>Supprimer la dépense ?</AlertDialogTitle>
 						<AlertDialogDescription>
-							This will permanently delete &quot;{expense.name}&quot;.
+							Ceci supprimera définitivement « {expense.name} ».
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={() => deleteMutation({})}>Delete</AlertDialogAction>
+						<AlertDialogCancel>Annuler</AlertDialogCancel>
+						<AlertDialogAction onClick={() => deleteMutation({})}>Supprimer</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

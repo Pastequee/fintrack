@@ -11,15 +11,15 @@ type IncomeItemProps = {
 }
 
 const periodLabels: Record<IncomePeriod, string> = {
-	daily: '/day',
-	weekly: '/week',
-	monthly: '/mo',
-	yearly: '/year',
+	daily: '/jour',
+	weekly: '/sem',
+	monthly: '/mois',
+	yearly: '/an',
 }
 
 const formatAmount = (amount: string, period: IncomePeriod) => {
 	const num = Number.parseFloat(amount)
-	return `€${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${periodLabels[period]}`
+	return `${num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €${periodLabels[period]}`
 }
 
 export const IncomeItem = ({ income }: IncomeItemProps) => {

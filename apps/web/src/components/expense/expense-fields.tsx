@@ -4,24 +4,27 @@ import { z } from 'zod'
 import { withForm } from '~/lib/hooks/form-hook'
 import { TagSelector } from '../tag/tag-selector'
 
-function capitalize(s: string) {
-	return s.charAt(0).toUpperCase() + s.slice(1)
+const periodLabels: Record<string, string> = {
+	daily: 'Quotidien',
+	weekly: 'Hebdomadaire',
+	monthly: 'Mensuel',
+	yearly: 'Annuel',
 }
 
 const typeOptions = ExpenseType.map((t) => ({
 	value: t,
-	label: t === 'one_time' ? 'One-time' : 'Recurring',
+	label: t === 'one_time' ? 'Ponctuel' : 'Récurrent',
 }))
 
 const periodOptions = ExpensePeriod.map((p) => ({
 	value: p,
-	label: capitalize(p),
+	label: periodLabels[p] ?? p,
 }))
 
 export const expenseFormSchema = z
 	.object({
-		name: z.string().nonempty('Name is required'),
-		amount: z.string().nonempty('Amount is required'),
+		name: z.string().nonempty('Nom requis'),
+		amount: z.string().nonempty('Montant requis'),
 		type: z.enum(ExpenseType),
 		period: z.enum(ExpensePeriod).optional(),
 		startDate: z.string(),
@@ -34,7 +37,7 @@ export const expenseFormSchema = z
 			if (data.type === 'one_time') return !!data.targetDate
 			return !!data.period && !!data.startDate
 		},
-		{ message: 'One-time needs date, recurring needs period + start date' }
+		{ message: 'Ponctuel nécessite une date, récurrent nécessite période + date début' }
 	)
 
 export type ExpenseFormValues = z.infer<typeof expenseFormSchema>
@@ -85,10 +88,10 @@ export const ExpenseFields = withForm({
 	defaultValues: defaultExpenseValues,
 	render: ({ form }) => (
 		<div className="flex flex-col gap-4">
-			<form.AppField name="name">{(field) => <field.TextField label="Name" />}</form.AppField>
+			<form.AppField name="name">{(field) => <field.TextField label="Nom" />}</form.AppField>
 
 			<form.AppField name="amount">
-				{(field) => <field.TextField label="Amount (€)" type="number" />}
+				{(field) => <field.TextField label="Montant (€)" type="number" />}
 			</form.AppField>
 
 			<form.AppField name="type">
@@ -104,18 +107,18 @@ export const ExpenseFields = withForm({
 					) : (
 						<>
 							<form.AppField name="period">
-								{(field) => <field.SelectField label="Period" options={periodOptions} />}
+								{(field) => <field.SelectField label="Période" options={periodOptions} />}
 							</form.AppField>
 
 							<div className="flex gap-2">
 								<div className="flex-1">
 									<form.AppField name="startDate">
-										{(field) => <field.TextField label="Start Date" type="date" />}
+										{(field) => <field.TextField label="Date de début" type="date" />}
 									</form.AppField>
 								</div>
 								<div className="flex-1">
 									<form.AppField name="endDate">
-										{(field) => <field.TextField label="End Date (optional)" type="date" />}
+										{(field) => <field.TextField label="Date de fin (optionnel)" type="date" />}
 									</form.AppField>
 								</div>
 							</div>

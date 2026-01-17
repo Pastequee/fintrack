@@ -6,6 +6,13 @@
 - Same pattern as routes/account.tsx
 - Files changed: apps/web/src/routes/index.tsx
 
+### PRD #38 - Query invalidation for real-time updates (DONE)
+- Added stats.all + balance.all to expenses mutations
+- Added balance.all to incomes mutations
+- Added stats.all to tags mutations
+- Charts/balance now update immediately on data changes
+- Files changed: apps/web/src/lib/mutations/{expenses,incomes,tags}.mutations.ts
+
 ### Next priority suggestions:
-- PRD #38 (query invalidation) - data consistency
 - PRD #37 (expense item layout) - UI fix
+- PRD #35 (widen dashboard layout) - UI fix

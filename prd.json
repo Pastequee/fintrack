@@ -40,7 +40,7 @@
       "Add keys.balance.all to incomes mutations invalidation",
       "Add keys.stats.all to tags mutations invalidation"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 39,

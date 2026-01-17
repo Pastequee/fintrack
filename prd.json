@@ -261,7 +261,7 @@
       "Update month names to French",
       "Update period labels (/jour, /semaine, /mois, /an)"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 23,

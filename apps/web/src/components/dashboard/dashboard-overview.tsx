@@ -13,15 +13,14 @@ import { BalanceRow } from './balance-row'
 
 const getMonthName = (month: number) => {
 	const date = new Date(2000, month - 1, 1)
-	return date.toLocaleDateString('en-US', { month: 'long' })
+	return date.toLocaleDateString('fr-FR', { month: 'long' })
 }
 
 function getMonthOffset(year: number, month: number) {
 	const now = new Date()
 	const currentYear = now.getFullYear()
 	const currentMonth = now.getMonth() + 1
-	const totalMonthsDiff = (year - currentYear) * 12 + (month - currentMonth)
-	return totalMonthsDiff
+	return (year - currentYear) * 12 + (month - currentMonth)
 }
 
 type ViewModeBadgeProps = {
@@ -34,7 +33,7 @@ const ViewModeBadge = ({ viewingPast, viewingFuture }: ViewModeBadgeProps) => {
 		return (
 			<Badge className="gap-1" variant="secondary">
 				<Archive size={12} />
-				Archived
+				Archivé
 			</Badge>
 		)
 	}
@@ -108,7 +107,7 @@ export const DashboardOverview = () => {
 		return (
 			<Card className="w-full max-w-md">
 				<CardContent>
-					<p className="text-muted-foreground text-sm">Failed to load balance data</p>
+					<p className="text-muted-foreground text-sm">Échec du chargement des données</p>
 				</CardContent>
 			</Card>
 		)
@@ -133,7 +132,7 @@ export const DashboardOverview = () => {
 				</CardHeader>
 				<CardContent>
 					<p className="text-center text-muted-foreground text-sm">
-						No archived data for this month
+						Aucune donnée archivée pour ce mois
 					</p>
 				</CardContent>
 			</Card>
@@ -168,17 +167,17 @@ export const DashboardOverview = () => {
 					<Alert className="mb-4" variant="destructive">
 						<AlertTriangle size={16} />
 						<AlertDescription>
-							Deficit of {formatCurrency(Math.abs(data.remaining))} this month
+							Déficit de {formatCurrency(Math.abs(data.remaining))} ce mois-ci
 						</AlertDescription>
 					</Alert>
 				)}
 
-				<BalanceRow amount={data.income} label="Income" variant="positive" />
+				<BalanceRow amount={data.income} label="Revenus" variant="positive" />
 
 				<BalanceRow
 					amount={data.personalExpenses.total}
 					expandable={data.personalExpenses.items.length > 0}
-					label="Personal Expenses"
+					label="Dépenses personnelles"
 				>
 					{data.personalExpenses.items.map((item) => (
 						<BalanceItem
@@ -194,7 +193,7 @@ export const DashboardOverview = () => {
 				<BalanceRow
 					amount={data.householdShare.total}
 					expandable={data.householdShare.items.length > 0}
-					label="Household Share"
+					label="Part du foyer"
 				>
 					{data.householdShare.items.map((item) => (
 						<BalanceItem amount={item.yourShare} key={item.name} name={item.name} />
@@ -204,7 +203,7 @@ export const DashboardOverview = () => {
 				<div className="mt-2 border-t pt-2">
 					<BalanceRow
 						amount={data.remaining}
-						label="Remaining"
+						label="Solde"
 						variant={isDeficit ? 'negative' : 'positive'}
 					/>
 				</div>

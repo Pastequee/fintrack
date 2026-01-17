@@ -274,3 +274,17 @@ Created income vs expenses bar chart:
 - Integrated into personal-tab.tsx below existing charts grid
 
 Next: PRD #22-25 (French i18n), PRD #33 (styling)
+
+## 2026-01-17 - Dashboard French i18n (PRD #22)
+
+Translated all dashboard components to French:
+- balance-item.tsx: "ending soon" → "fin proche"
+- dashboard-overview.tsx: Already had most translations, verified all complete:
+  - Month locale fr-FR, "Archivé", "Projection", "Échec du chargement des données"
+  - "Aucune donnée archivée pour ce mois", "Déficit de ... ce mois-ci"
+  - "Revenus", "Dépenses personnelles", "Part du foyer", "Solde"
+- dashboard-tabs.tsx: "Personnel" and "Foyer" already French
+- Charts (pie, trend, income-vs-expenses): Already French (done with chart PRDs)
+- personal-tab.tsx: Already French (done with earlier PRDs)
+
+Next: PRD #23-25 (expense/income/household/auth French i18n), PRD #33 (styling)

@@ -5,9 +5,9 @@ type LoggedInProps = {
 }
 
 export const LoggedIn = ({ children }: LoggedInProps) => {
-	const auth = useAuth()
+	const { user } = useAuth()
 
-	if (!auth) {
+	if (!user) {
 		return
 	}
 

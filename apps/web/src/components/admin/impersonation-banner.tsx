@@ -10,13 +10,13 @@ import { useAuth } from '~/lib/hooks/use-auth'
 // Uses better-auth session to detect impersonation status
 
 export function ImpersonationBanner() {
-	const auth = useAuth()
+	const { session, user } = useAuth()
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
 
-	if (!auth) return null
+	if (!session || !user) return null
 
-	const impersonatedBy = auth.session.impersonatedBy
+	const impersonatedBy = session.impersonatedBy
 
 	if (!impersonatedBy) {
 		return null
@@ -44,7 +44,7 @@ export function ImpersonationBanner() {
 			<div className="flex items-center gap-2">
 				<UserCheck className="size-4" />
 				<span className="font-medium text-sm">
-					You are currently impersonating <span className="font-bold">{auth.user.name}</span>
+					You are currently impersonating <span className="font-bold">{user.name}</span>
 				</span>
 			</div>
 			<Button

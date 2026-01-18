@@ -14,9 +14,9 @@ import { useAppForm } from '~/lib/hooks/form-hook'
 
 export const Route = createFileRoute('/account')({
 	component: Account,
-	beforeLoad: ({ context }) => {
+	beforeLoad: ({ context, location }) => {
 		if (!context.auth) {
-			throw redirect({ to: '/login' })
+			throw redirect({ to: '/login', search: { redirect: location.href } })
 		}
 
 		return { user: context.auth.user }

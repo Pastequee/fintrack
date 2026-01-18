@@ -1,5 +1,5 @@
 import { env } from '@repo/env/web'
-import { useRouter } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 import z from 'zod'
@@ -12,16 +12,13 @@ import { PasswordInput } from '../ui/password-input'
 import { Separator } from '../ui/separator'
 
 const formSchema = z.object({
-	email: z.string().email('Adresse email invalide'),
+	email: z.email('Adresse email invalide'),
 	password: z.string().nonempty('Le mot de passe est requis'),
 })
 
-type LoginFormProps = {
-	redirect?: string
-}
-
-export function LoginForm({ redirect }: LoginFormProps) {
-	const router = useRouter()
+export function LoginForm() {
+	const navigate = useNavigate({ from: '/login' })
+	const { redirect } = useSearch({ from: '/_auth' })
 	const [errorMessage, setErrorMessage] = useState<string>()
 
 	const form = useAppForm({
@@ -39,7 +36,7 @@ export function LoginForm({ redirect }: LoginFormProps) {
 				return
 			}
 
-			router.navigate({ to: redirect ?? '/', replace: true })
+			navigate({ to: redirect ?? '/', replace: true })
 		},
 	})
 

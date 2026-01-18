@@ -5,9 +5,9 @@ type LoggedOutProps = {
 }
 
 export const LoggedOut = ({ children }: LoggedOutProps) => {
-	const auth = useAuth()
+	const { user } = useAuth()
 
-	if (auth) {
+	if (user) {
 		return
 	}
 

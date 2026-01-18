@@ -9,8 +9,8 @@ import { NavbarLink } from './navbar-link'
 import { UserMenu } from './user-menu'
 
 export function Navbar() {
-	const auth = useAuth()
-	const isAdmin = auth?.user.role === 'admin'
+	const { user } = useAuth()
+	const isAdmin = user?.role === 'admin'
 
 	return (
 		<header className="sticky top-0 z-10 flex items-center justify-center gap-4 border-b bg-background p-4">

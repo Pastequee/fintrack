@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { AlertCircle, Home, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Footer } from '~/components/footer'
@@ -25,8 +25,10 @@ function getErrorMessage(err: unknown, fallback: string) {
 
 function InvitationPage() {
 	const { token } = Route.useParams()
-	const navigate = useNavigate()
-	const auth = useAuth()
+	const navigate = Route.useNavigate()
+	const router = useRouter()
+
+	const { user } = useAuth()
 	const [error, setError] = useState<string | null>(null)
 
 	const { data: invitation, isLoading, isError } = useQuery(invitationByTokenOptions(token))
@@ -76,14 +78,16 @@ function InvitationPage() {
 								householdName={invitation.household.name}
 								inviterName={invitation.inviter?.name || invitation.inviter?.email}
 								isAccepting={acceptMutation.isPending}
-								isAuthenticated={!!auth}
+								isAuthenticated={!!user}
 								isDeclining={declineMutation.isPending}
 								isPending={isPending}
 								onAccept={() => acceptMutation.mutate({})}
 								onDecline={() => declineMutation.mutate({})}
-								onLogin={() => navigate({ to: '/login', search: { redirect: `/invite/${token}` } })}
+								onLogin={() =>
+									navigate({ to: '/login', search: { redirect: router.state.location.href } })
+								}
 								onRegister={() =>
-									navigate({ to: '/register', search: { redirect: `/invite/${token}` } })
+									navigate({ to: '/register', search: { redirect: router.state.location.href } })
 								}
 							/>
 						)}

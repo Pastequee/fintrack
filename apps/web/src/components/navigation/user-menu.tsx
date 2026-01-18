@@ -1,6 +1,5 @@
-import { Link, useRouter } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { LogOut, Settings, User } from 'lucide-react'
-import { authClient } from '~/lib/clients/auth-client'
 import { useAuth } from '~/lib/hooks/use-auth'
 import { Button } from '../ui/button'
 import {
@@ -14,15 +13,9 @@ import {
 } from '../ui/dropdown-menu'
 
 export const UserMenu = () => {
-	const auth = useAuth()
-	const router = useRouter()
+	const { user, logout } = useAuth()
 
-	if (!auth) return null
-
-	const handleLogout = async () => {
-		await authClient.signOut()
-		router.navigate({ to: '/login', replace: true })
-	}
+	if (!user) return null
 
 	return (
 		<DropdownMenu>
@@ -35,14 +28,14 @@ export const UserMenu = () => {
 			/>
 			<DropdownMenuContent align="end" sideOffset={8}>
 				<DropdownMenuGroup>
-					<DropdownMenuLabel>{auth.user.name || auth.user.email}</DropdownMenuLabel>
+					<DropdownMenuLabel>{user.name || user.email}</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem render={<Link to="/account" />}>
 						<Settings className="size-4" />
 						Compte
 					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={handleLogout} variant="destructive">
+					<DropdownMenuItem onClick={logout} variant="destructive">
 						<LogOut className="size-4" />
 						Déconnexion
 					</DropdownMenuItem>

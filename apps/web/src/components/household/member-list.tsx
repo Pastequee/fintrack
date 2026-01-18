@@ -11,8 +11,8 @@ type MemberListProps = {
 }
 
 export const MemberList = ({ members }: MemberListProps) => {
-	const auth = useAuth()
-	const currentUserId = auth?.user.id
+	const { user } = useAuth()
+	const currentUserId = user?.id
 
 	const validMembers = members.filter(
 		(m): m is Member & { user: NonNullable<Member['user']> } => m.user !== null

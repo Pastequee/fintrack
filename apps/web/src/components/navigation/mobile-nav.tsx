@@ -20,9 +20,9 @@ const linkClassName = 'rounded-md px-3 py-2 font-medium text-sm transition-color
 
 export function MobileNav() {
 	const [open, setOpen] = useState(false)
-	const auth = useAuth()
+	const { user } = useAuth()
 	const pathname = useLocation({ select: (l) => l.pathname })
-	const isAdmin = auth?.user.role === 'admin'
+	const isAdmin = user?.role === 'admin'
 
 	const visibleLinks = navLinks.filter((link) => !link.adminOnly || isAdmin)
 

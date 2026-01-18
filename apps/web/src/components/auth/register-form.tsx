@@ -1,5 +1,5 @@
 import { env } from '@repo/env/web'
-import { useRouter } from '@tanstack/react-router'
+import { useNavigate, useSearch } from '@tanstack/react-router'
 import { AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 import z from 'zod'
@@ -20,12 +20,10 @@ const formSchema = z.object({
 		.min(8, 'Doit contenir au moins 8 caractères'),
 })
 
-type RegisterFormProps = {
-	redirect?: string
-}
+export function RegisterForm() {
+	const navigate = useNavigate({ from: '/register' })
+	const { redirect } = useSearch({ from: '/_auth' })
 
-export function RegisterForm({ redirect }: RegisterFormProps) {
-	const router = useRouter()
 	const [errorMessage, setErrorMessage] = useState<string>()
 
 	const form = useAppForm({
@@ -43,7 +41,7 @@ export function RegisterForm({ redirect }: RegisterFormProps) {
 				return
 			}
 
-			router.navigate({ to: '/login', search: { redirect }, replace: true })
+			navigate({ to: '/login', search: { redirect }, replace: true })
 		},
 	})
 

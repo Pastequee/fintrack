@@ -118,5 +118,24 @@
       "Update invite page to pass current path as redirect param"
     ],
     "passes": true
+  },
+  {
+    "id": 47,
+    "category": "functional",
+    "description": "Ability to revoke/delete an invitation to your household",
+    "tasks": [
+      "I need to be able to revoke a invitation (pending) to my household",
+      "Before revocation happens I need a confirmation dialog"
+    ],
+    "passes": false
+  },
+  {
+    "id": 46,
+    "category": "functional",
+    "description": "I can't send a household invitation a member that is already in it (including myself)",
+    "tasks": [
+      "Once sending an invitation to an email, I see an error message saying you cannot send it to someone already in it"
+    ],
+    "passes": true
   }
 ]

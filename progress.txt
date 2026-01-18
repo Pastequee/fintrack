@@ -64,5 +64,13 @@
 - Both buttons pass redirect param to preserve invite path
 - Files changed: apps/web/src/routes/invite.$token.tsx
 
+### PRD #46 - Prevent inviting existing household members (DONE)
+- Added validation in POST /invitations to check if email is already a member
+- Gets household members, compares email (case-insensitive)
+- Returns 409 Conflict with error message if already member
+- Includes check for self-invitation since user is also a member
+- Files changed: apps/backend/src/routers/invitation/controller.ts
+
 ### Next priority suggestions:
+- PRD #47 (revoke/delete invitation) - needs backend endpoint + UI w/ confirmation
 - PRD #42 (verify UI/UX fixes) - testing task

@@ -54,8 +54,21 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 				return status('Forbidden', { error: 'You must be in a household to send invitations' })
 			}
 
+			const household = await HouseholdsService.getHouseholdWithMembers(membership.householdId)
+			if (!household) {
+				return status('Forbidden', { error: 'You must be in a household to send invitations' })
+			}
+
+			const normalizedEmail = body.email.trim().toLowerCase()
+			const isAlreadyMember = household.members.some(
+				(m) => m.user?.email.toLowerCase() === normalizedEmail
+			)
+			if (isAlreadyMember) {
+				return status('Conflict', { error: 'This user is already a member of your household' })
+			}
+
 			const existing = await InvitationsService.getInvitationByEmail(
-				body.email,
+				normalizedEmail,
 				membership.householdId
 			)
 			if (existing?.status === 'pending') {
@@ -65,7 +78,7 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 			const invitation = await InvitationsService.createInvitation({
 				householdId: membership.householdId,
 				invitedBy: user.id,
-				email: body.email,
+				email: normalizedEmail,
 				token: InvitationsService.generateToken(),
 				expiresAt: InvitationsService.getExpirationDate(),
 			})
@@ -74,7 +87,7 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 
 			if (result) {
 				await mail.sendInvitation({
-					to: body.email,
+					to: normalizedEmail,
 					inviterName: result.inviter?.name ?? user.email,
 					householdName: result.household?.name ?? 'Foyer',
 					token: invitation.token,

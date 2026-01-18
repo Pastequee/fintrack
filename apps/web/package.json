@@ -44,7 +44,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@repo/backend": "workspace:*",
+    "@repo/server": "workspace:*",
     "@tanstack/devtools-vite": "^0.4.1",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",

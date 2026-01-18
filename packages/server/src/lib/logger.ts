@@ -1,4 +1,4 @@
-import { env } from '@repo/env/backend'
+import { env } from '@repo/env/server'
 import { isProduction } from 'elysia/error'
 import pino from 'pino'
 

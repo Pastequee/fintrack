@@ -26,7 +26,7 @@ export const env = createEnv({
 		REDIS_URL: z.url(),
 	},
 
-	runtimeEnv: import.meta.env,
+	runtimeEnv: process.env,
 
 	emptyStringAsUndefined: true,
 })

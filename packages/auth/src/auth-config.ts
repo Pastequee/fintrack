@@ -1,22 +1,12 @@
 import { db } from '@repo/db'
 import { mail } from '@repo/email'
-import { env } from '@repo/env/backend'
+import { env } from '@repo/env/server'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { betterAuth } from 'better-auth/minimal'
 import { admin, lastLoginMethod, openAPI } from 'better-auth/plugins'
-import { RedisClient } from 'bun'
-
-const redisClient = new RedisClient(env.REDIS_URL)
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, { provider: 'pg', usePlural: true }),
-
-	secondaryStorage: {
-		get: async (key) => await redisClient.get(key),
-		set: async (key, value, ttl) =>
-			ttl ? await redisClient.set(key, value, 'EX', ttl) : await redisClient.set(key, value),
-		delete: async (key) => (await redisClient.del(key)).toString(),
-	},
 
 	secret: env.BETTER_AUTH_SECRET,
 	trustedOrigins: [env.FRONTEND_URL],

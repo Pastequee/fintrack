@@ -154,14 +154,14 @@ Use the Eden client with query/mutation option factories:
 // queries/todos.queries.ts
 export const todoListOptions = () =>
   edenQueryOption({
-    edenQuery: eden.todos.get,
+    edenQuery: eden().todos.get,
     queryKey: keys.todos.list(),
   })
 
 // mutations/todos.mutations.ts
 export const createTodoOptions = () =>
   edenMutationOption({
-    edenMutation: eden.todos.post,
+    edenMutation: eden().todos.post,
     meta: { invalidate: [keys.todos.list()] },
   })
 ```

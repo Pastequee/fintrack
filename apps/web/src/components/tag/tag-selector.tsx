@@ -59,13 +59,13 @@ export function TagSelector({ value, onChange, label = 'Tag' }: TagSelectorProps
 							{selectedTag ? (
 								<TagBadge color={selectedTag.color} name={selectedTag.name} />
 							) : (
-								<span className="text-muted-foreground">No tag</span>
+								<span className="text-muted-foreground">Pas de tag</span>
 							)}
 						</SelectValue>
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value={NONE_VALUE}>
-							<span className="text-muted-foreground">No tag</span>
+							<span className="text-muted-foreground">Pas de tag</span>
 						</SelectItem>
 
 						{tags.map((tag) => (
@@ -79,14 +79,14 @@ export function TagSelector({ value, onChange, label = 'Tag' }: TagSelectorProps
 						<SelectItem value={CREATE_VALUE}>
 							<span className="flex items-center gap-2 text-muted-foreground">
 								<PlusIcon className="size-3" />
-								Create tag
+								Créer un tag
 							</span>
 						</SelectItem>
 
 						<SelectItem value={MANAGE_VALUE}>
 							<span className="flex items-center gap-2 text-muted-foreground">
 								<SettingsIcon className="size-3" />
-								Manage tags
+								Gérer les tags
 							</span>
 						</SelectItem>
 					</SelectContent>

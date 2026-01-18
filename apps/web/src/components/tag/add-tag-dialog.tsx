@@ -46,12 +46,12 @@ export function AddTagDialog({ open, onOpenChange, onCreated }: AddTagDialogProp
 		<Dialog onOpenChange={onOpenChange} open={open}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Create Tag</DialogTitle>
+					<DialogTitle>Créer un tag</DialogTitle>
 				</DialogHeader>
 
 				<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
 					<div className="flex flex-col gap-2">
-						<Label htmlFor="tag-name">Name</Label>
+						<Label htmlFor="tag-name">Nom</Label>
 						<Input
 							autoFocus
 							id="tag-name"

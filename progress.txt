@@ -71,6 +71,15 @@
 - Includes check for self-invitation since user is also a member
 - Files changed: apps/backend/src/routers/invitation/controller.ts
 
-### Next priority suggestions:
-- PRD #47 (revoke/delete invitation) - needs backend endpoint + UI w/ confirmation
+### PRD #47 - Revoke/delete household invitation (DONE)
+- Added DELETE /invitations/:id endpoint in backend
+- Added deleteInvitation method to InvitationsService
+- Validates user is member of invitation's household before deletion
+- Added revokeInvitationOptions mutation in frontend
+- Updated PendingInvitationItem with X button and confirmation dialog
+- Dialog shows "Révoquer l'invitation ?" with email in description
+- Invalidates invitations list after revoke
+- Files changed: apps/backend/src/routers/invitation/{controller,service}.ts, apps/web/src/components/household/pending-invitation-item.tsx, apps/web/src/lib/mutations/households.mutations.ts
+
+### Next priority:
 - PRD #42 (verify UI/UX fixes) - testing task

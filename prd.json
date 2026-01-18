@@ -127,7 +127,7 @@
       "I need to be able to revoke a invitation (pending) to my household",
       "Before revocation happens I need a confirmation dialog"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 46,

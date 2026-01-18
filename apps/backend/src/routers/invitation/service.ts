@@ -50,6 +50,9 @@ export const InvitationsService = {
 			// biome-ignore lint/style/noNonNullAssertion: always returns
 			.then(([inv]) => inv!),
 
+	deleteInvitation: async (id: Invitation['id']) =>
+		db.delete(invitations).where(eq(invitations.id, id)),
+
 	invalidateExpiredInvitations: async () =>
 		db
 			.update(invitations)

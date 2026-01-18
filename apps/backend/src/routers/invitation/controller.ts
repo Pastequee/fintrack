@@ -146,3 +146,20 @@ export const invitationsRouter = new Elysia({ name: 'invitations', tags: ['Invit
 		},
 		{ auth: true, params: 'tokenParam' }
 	)
+
+	.delete(
+		'/invitations/:id',
+		async ({ params, status, user }) => {
+			const invitation = await InvitationsService.getInvitation(params.id)
+			if (!invitation) return status('Not Found')
+
+			const membership = await HouseholdsService.getUserMembership(user.id)
+			if (!membership || membership.householdId !== invitation.householdId) {
+				return status('Forbidden', { error: 'You can only revoke invitations from your household' })
+			}
+
+			await InvitationsService.deleteInvitation(params.id)
+			return status('No Content')
+		},
+		{ auth: true, params: z.object({ id: z.string().uuid() }) }
+	)

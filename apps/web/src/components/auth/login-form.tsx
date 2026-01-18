@@ -16,12 +16,18 @@ const formSchema = z.object({
 	password: z.string().nonempty('Le mot de passe est requis'),
 })
 
-export const LoginForm = () => {
+type LoginFormProps = {
+	redirect?: string
+}
+
+export function LoginForm({ redirect }: LoginFormProps) {
 	const router = useRouter()
 	const [errorMessage, setErrorMessage] = useState<string>()
 
 	const form = useAppForm({
 		defaultValues: { email: '', password: '' },
+		defaultState: { canSubmit: false },
+		validators: { onChange: formSchema, onMount: formSchema, onSubmit: formSchema },
 		onSubmit: async ({ value }) => {
 			const { error } = await authClient.signIn.email({
 				email: value.email,
@@ -33,23 +39,18 @@ export const LoginForm = () => {
 				return
 			}
 
-			router.navigate({ to: '/', replace: true })
+			router.navigate({ to: redirect ?? '/', replace: true })
 		},
-		defaultState: {
-			canSubmit: false,
-		},
-		validators: { onChange: formSchema, onMount: formSchema, onSubmit: formSchema },
 	})
 
-	const handleSocialSignIn = async ({ provider }: { provider: 'google' }) => {
+	async function handleGoogleSignIn() {
 		const { error } = await authClient.signIn.social({
-			provider,
+			provider: 'google',
 			callbackURL: env.VITE_FRONTEND_URL,
 		})
 
 		if (error) {
 			setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
-			return
 		}
 	}
 
@@ -96,11 +97,7 @@ export const LoginForm = () => {
 				<Separator className="flex-1" />
 			</div>
 
-			<Button
-				className="w-full"
-				onClick={() => handleSocialSignIn({ provider: 'google' })}
-				variant="outline"
-			>
+			<Button className="w-full" onClick={handleGoogleSignIn} variant="outline">
 				<img alt="Google" className="size-4" height={16} src={googleIcon} width={16} />
 				Continuer avec Google
 			</Button>

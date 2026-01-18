@@ -1,14 +1,22 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
+import z from 'zod'
 
 import { LoginForm } from '~/components/auth/login-form'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 
-export const Route = createFileRoute('/_auth/login')({
-	component: LoginPageComponent,
+const searchSchema = z.object({
+	redirect: z.string().optional(),
 })
 
-function LoginPageComponent() {
+export const Route = createFileRoute('/_auth/login')({
+	component: LoginPage,
+	validateSearch: searchSchema,
+})
+
+function LoginPage() {
+	const { redirect } = Route.useSearch()
+
 	return (
 		<Card className="w-md max-w-[90vw]">
 			<CardHeader>
@@ -16,10 +24,14 @@ function LoginPageComponent() {
 				<CardDescription>Please enter your credentials to sign in.</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<LoginForm />
+				<LoginForm redirect={redirect} />
 				<p className="mt-4 flex flex-wrap justify-center gap-1 text-muted-foreground text-sm">
 					Don&apos;t have an account yet?{' '}
-					<Link className="flex items-center gap-1 text-primary" to="/register">
+					<Link
+						className="flex items-center gap-1 text-primary"
+						search={{ redirect }}
+						to="/register"
+					>
 						Create an account <ArrowRight size={14} />
 					</Link>
 				</p>

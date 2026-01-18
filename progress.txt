@@ -42,5 +42,15 @@
 - Right column: Password + Session cards
 - Files changed: apps/web/src/routes/account.tsx
 
+## 2026-01-18
+
+### PRD #44 - Add redirect param to auth routes (DONE)
+- Added redirect search param validation to _auth/login.tsx and _auth/register.tsx
+- LoginForm accepts redirect prop, navigates to redirect URL after successful login
+- RegisterForm accepts redirect prop, preserves it when navigating to login
+- Link between login/register preserves redirect param
+- Files changed: apps/web/src/routes/_auth/login.tsx, apps/web/src/routes/_auth/register.tsx, apps/web/src/components/auth/login-form.tsx, apps/web/src/components/auth/register-form.tsx
+
 ### Next priority suggestions:
-- PRD #42 (verify UI/UX fixes) - testing
+- PRD #45 (redirect back to invite after login) - uses the redirect param from #44
+- PRD #43 (add register button to invite page) - can pass redirect param

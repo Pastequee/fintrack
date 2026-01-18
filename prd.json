@@ -86,5 +86,37 @@
       "Test: account page shows 2-col grid on lg screens"
     ],
     "passes": false
+  },
+  {
+    "id": 43,
+    "category": "functional",
+    "description": "Add register button to invite page",
+    "tasks": [
+      "Add onRegister prop to InvitationDetails component",
+      "Add register button next to login button when not authenticated"
+    ],
+    "passes": false
+  },
+  {
+    "id": 44,
+    "category": "functional",
+    "description": "Add redirect param to auth routes",
+    "tasks": [
+      "Add redirect search param validation to _auth/login.tsx",
+      "Add redirect search param validation to _auth/register.tsx",
+      "Pass redirect param to LoginForm/RegisterForm components"
+    ],
+    "passes": true
+  },
+  {
+    "id": 45,
+    "category": "functional",
+    "description": "Redirect back to invite after login",
+    "tasks": [
+      "Update login-form.tsx to use redirect param after successful login",
+      "Update register-form.tsx to preserve redirect when navigating to login",
+      "Update invite page to pass current path as redirect param"
+    ],
+    "passes": false
   }
 ]

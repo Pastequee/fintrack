@@ -20,12 +20,17 @@ const formSchema = z.object({
 		.min(8, 'Doit contenir au moins 8 caractères'),
 })
 
-export const RegisterForm = () => {
+type RegisterFormProps = {
+	redirect?: string
+}
+
+export function RegisterForm({ redirect }: RegisterFormProps) {
 	const router = useRouter()
-	const [signUpResponseError, setSignUpResponseError] = useState<string>()
+	const [errorMessage, setErrorMessage] = useState<string>()
 
 	const form = useAppForm({
 		defaultValues: { email: '', name: '', password: '' },
+		validators: { onChange: formSchema, onMount: formSchema, onSubmit: formSchema },
 		onSubmit: async ({ value }) => {
 			const { error } = await authClient.signUp.email({
 				email: value.email,
@@ -34,28 +39,22 @@ export const RegisterForm = () => {
 			})
 
 			if (error) {
-				setSignUpResponseError(
-					error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.'
-				)
+				setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
 				return
 			}
 
-			router.navigate({ to: '/login', replace: true })
+			router.navigate({ to: '/login', search: { redirect }, replace: true })
 		},
-		validators: { onChange: formSchema, onMount: formSchema, onSubmit: formSchema },
 	})
 
-	const handleSocialSignIn = async ({ provider }: { provider: 'google' }) => {
+	async function handleGoogleSignIn() {
 		const { error } = await authClient.signIn.social({
-			provider,
+			provider: 'google',
 			callbackURL: env.VITE_FRONTEND_URL,
 		})
 
 		if (error) {
-			setSignUpResponseError(
-				error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.'
-			)
-			return
+			setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
 		}
 	}
 
@@ -69,10 +68,10 @@ export const RegisterForm = () => {
 				form.handleSubmit()
 			}}
 		>
-			{signUpResponseError && (
+			{errorMessage && (
 				<Alert variant="destructive">
 					<AlertCircle />
-					<AlertTitle>{signUpResponseError}</AlertTitle>
+					<AlertTitle>{errorMessage}</AlertTitle>
 				</Alert>
 			)}
 
@@ -87,7 +86,9 @@ export const RegisterForm = () => {
 			/>
 
 			<form.AppField
-				children={(field) => <field.TextField input={PasswordInput} label="Mot de passe" />}
+				children={(field) => (
+					<field.TextField autoComplete="new-password" input={PasswordInput} label="Mot de passe" />
+				)}
 				name="password"
 			/>
 
@@ -101,11 +102,7 @@ export const RegisterForm = () => {
 				<Separator className="flex-1" />
 			</div>
 
-			<Button
-				className="w-full"
-				onClick={() => handleSocialSignIn({ provider: 'google' })}
-				variant="outline"
-			>
+			<Button className="w-full" onClick={handleGoogleSignIn} variant="outline">
 				<img alt="Google" className="size-4" height={16} src={googleIcon} width={16} />
 				Continuer avec Google
 			</Button>

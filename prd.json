@@ -117,6 +117,6 @@
       "Update register-form.tsx to preserve redirect when navigating to login",
       "Update invite page to pass current path as redirect param"
     ],
-    "passes": false
+    "passes": true
   }
 ]

@@ -81,7 +81,7 @@ function InvitationPage() {
 								isPending={isPending}
 								onAccept={() => acceptMutation.mutate({})}
 								onDecline={() => declineMutation.mutate({})}
-								onLogin={() => navigate({ to: '/login' })}
+								onLogin={() => navigate({ to: '/login', search: { redirect: `/invite/${token}` } })}
 							/>
 						)}
 					</CardContent>

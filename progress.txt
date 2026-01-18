@@ -51,6 +51,12 @@
 - Link between login/register preserves redirect param
 - Files changed: apps/web/src/routes/_auth/login.tsx, apps/web/src/routes/_auth/register.tsx, apps/web/src/components/auth/login-form.tsx, apps/web/src/components/auth/register-form.tsx
 
+### PRD #45 - Redirect back to invite after login (DONE)
+- login-form.tsx and register-form.tsx already handle redirect from #44
+- Updated invite page to pass current path (/invite/$token) as redirect param
+- User now redirects back to invite after login
+- Files changed: apps/web/src/routes/invite.$token.tsx
+
 ### Next priority suggestions:
-- PRD #45 (redirect back to invite after login) - uses the redirect param from #44
 - PRD #43 (add register button to invite page) - can pass redirect param
+- PRD #42 (verify UI/UX fixes) - testing task

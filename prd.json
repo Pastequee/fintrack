@@ -95,7 +95,7 @@
       "Add onRegister prop to InvitationDetails component",
       "Add register button next to login button when not authenticated"
     ],
-    "passes": false
+    "passes": true
   },
   {
     "id": 44,

@@ -57,6 +57,12 @@
 - User now redirects back to invite after login
 - Files changed: apps/web/src/routes/invite.$token.tsx
 
+### PRD #43 - Add register button to invite page (DONE)
+- Added onRegister prop to InvitationDetails component
+- Added register button next to login button when not authenticated
+- Register button uses outline variant, login button uses default
+- Both buttons pass redirect param to preserve invite path
+- Files changed: apps/web/src/routes/invite.$token.tsx
+
 ### Next priority suggestions:
-- PRD #43 (add register button to invite page) - can pass redirect param
 - PRD #42 (verify UI/UX fixes) - testing task

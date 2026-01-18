@@ -82,6 +82,9 @@ function InvitationPage() {
 								onAccept={() => acceptMutation.mutate({})}
 								onDecline={() => declineMutation.mutate({})}
 								onLogin={() => navigate({ to: '/login', search: { redirect: `/invite/${token}` } })}
+								onRegister={() =>
+									navigate({ to: '/register', search: { redirect: `/invite/${token}` } })
+								}
 							/>
 						)}
 					</CardContent>
@@ -125,6 +128,7 @@ type InvitationDetailsProps = {
 	onAccept: () => void
 	onDecline: () => void
 	onLogin: () => void
+	onRegister: () => void
 }
 
 function InvitationDetails({
@@ -138,6 +142,7 @@ function InvitationDetails({
 	onAccept,
 	onDecline,
 	onLogin,
+	onRegister,
 }: InvitationDetailsProps) {
 	return (
 		<>
@@ -171,7 +176,14 @@ function InvitationDetails({
 					<p className="text-center text-muted-foreground text-sm">
 						Veuillez vous connecter pour accepter cette invitation
 					</p>
-					<Button onClick={onLogin}>Se connecter</Button>
+					<div className="flex gap-2">
+						<Button className="flex-1" onClick={onRegister} variant="outline">
+							S'inscrire
+						</Button>
+						<Button className="flex-1" onClick={onLogin}>
+							Se connecter
+						</Button>
+					</div>
 				</div>
 			)}
 		</>

@@ -83,4 +83,35 @@ export default defineSchema({
 		name: v.string(),
 		color: v.string(),
 	}).index('by_user', ['userId']),
+
+	snapshots: defineTable({
+		userId: v.id('users'),
+		year: v.number(),
+		month: v.number(), // 1-12
+		data: v.object({
+			income: v.number(), // stored as cents
+			personalExpenses: v.object({
+				total: v.number(), // stored as cents
+				items: v.array(
+					v.object({
+						id: v.id('expenses'),
+						name: v.string(),
+						amount: v.number(), // stored as cents
+					})
+				),
+			}),
+			householdShare: v.object({
+				total: v.number(), // stored as cents
+				items: v.array(
+					v.object({
+						id: v.id('expenses'),
+						name: v.string(),
+						amount: v.number(), // stored as cents
+						yourShare: v.number(), // stored as cents
+					})
+				),
+			}),
+			remaining: v.number(), // stored as cents (can be negative)
+		}),
+	}).index('by_user_month', ['userId', 'year', 'month']),
 })

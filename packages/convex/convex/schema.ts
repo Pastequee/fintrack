@@ -1,17 +1,25 @@
+import { authTables } from '@convex-dev/auth/server'
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
 
 export default defineSchema({
+	...authTables,
+	// Override users table with auth fields + custom fields
 	users: defineTable({
-		name: v.string(),
-		email: v.string(),
-		emailVerified: v.boolean(),
+		// Auth fields (required by @convex-dev/auth)
+		name: v.optional(v.string()),
 		image: v.optional(v.string()),
-		role: v.union(v.literal('admin'), v.literal('user')),
-		banned: v.boolean(),
+		email: v.optional(v.string()),
+		emailVerificationTime: v.optional(v.number()),
+		phone: v.optional(v.string()),
+		phoneVerificationTime: v.optional(v.number()),
+		isAnonymous: v.optional(v.boolean()),
+		// Custom fields
+		role: v.optional(v.union(v.literal('admin'), v.literal('user'))),
+		banned: v.optional(v.boolean()),
 		banReason: v.optional(v.string()),
 		banExpires: v.optional(v.number()),
-	}).index('by_email', ['email']),
+	}).index('email', ['email']),
 
 	households: defineTable({
 		name: v.string(),

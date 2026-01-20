@@ -26,4 +26,22 @@ export default defineSchema({
 		.index('by_household', ['householdId'])
 		.index('by_user', ['userId'])
 		.index('by_household_user', ['householdId', 'userId']),
+
+	invitations: defineTable({
+		householdId: v.id('households'),
+		invitedBy: v.id('users'),
+		email: v.string(),
+		token: v.string(),
+		status: v.union(
+			v.literal('pending'),
+			v.literal('accepted'),
+			v.literal('declined'),
+			v.literal('expired')
+		),
+		expiresAt: v.number(),
+	})
+		.index('by_household', ['householdId'])
+		.index('by_email', ['email'])
+		.index('by_token', ['token'])
+		.index('by_status', ['status']),
 })

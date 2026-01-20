@@ -20,7 +20,9 @@
     "auth:gen": "bun -F ./packages/auth generate",
     "docker:up": "docker compose -f infra/docker/docker-compose.dev.yml up -d",
     "docker:down": "docker compose -f infra/docker/docker-compose.dev.yml down -v",
-    "docker:reset": "bun docker:down && bun docker:up"
+    "docker:reset": "bun docker:down && bun docker:up",
+    "convex:dev": "bun -F @repo/convex dev",
+    "convex:deploy": "bun -F @repo/convex deploy"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",

@@ -1,0 +1,15 @@
+{
+	"name": "@repo/convex",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "convex dev",
+		"deploy": "convex deploy"
+	},
+	"dependencies": {
+		"@auth/core": "^0.34.3",
+		"@convex-dev/auth": "^0.0.90",
+		"convex": "^1.31.5"
+	}
+}

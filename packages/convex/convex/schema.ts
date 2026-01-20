@@ -44,4 +44,43 @@ export default defineSchema({
 		.index('by_email', ['email'])
 		.index('by_token', ['token'])
 		.index('by_status', ['status']),
+
+	expenses: defineTable({
+		userId: v.id('users'),
+		householdId: v.optional(v.id('households')),
+		tagId: v.optional(v.id('tags')),
+		name: v.string(),
+		amount: v.number(), // stored as cents (1234 = $12.34)
+		type: v.union(v.literal('one_time'), v.literal('recurring')),
+		period: v.optional(
+			v.union(v.literal('daily'), v.literal('weekly'), v.literal('monthly'), v.literal('yearly'))
+		),
+		startDate: v.optional(v.string()),
+		endDate: v.optional(v.string()),
+		targetDate: v.optional(v.string()),
+		active: v.boolean(),
+	})
+		.index('by_user', ['userId'])
+		.index('by_household', ['householdId'])
+		.index('by_user_personal', ['userId', 'householdId']),
+
+	incomes: defineTable({
+		userId: v.id('users'),
+		name: v.string(),
+		amount: v.number(), // stored as cents (1234 = $12.34)
+		period: v.union(
+			v.literal('daily'),
+			v.literal('weekly'),
+			v.literal('monthly'),
+			v.literal('yearly')
+		),
+		startDate: v.string(),
+		endDate: v.optional(v.string()),
+	}).index('by_user', ['userId']),
+
+	tags: defineTable({
+		userId: v.id('users'),
+		name: v.string(),
+		color: v.string(),
+	}).index('by_user', ['userId']),
 })

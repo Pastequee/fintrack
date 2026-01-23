@@ -1,5 +1,4 @@
 import { ConvexError, v } from 'convex/values'
-// @ts-expect-error - generated file created by `convex dev`
 import { internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import type { MutationCtx, QueryCtx } from './_generated/server'

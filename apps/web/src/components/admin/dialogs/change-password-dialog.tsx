@@ -11,8 +11,8 @@ import {
 
 type AdminUser = {
 	id: Id<'users'>
-	name: string
-	email: string
+	name?: string
+	email?: string
 }
 
 type Props = {

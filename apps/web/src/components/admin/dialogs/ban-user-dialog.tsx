@@ -33,8 +33,8 @@ const BAN_DURATIONS = [
 
 type UserWithRole = {
 	id: Id<'users'>
-	name: string
-	email: string
+	name?: string
+	email?: string
 	banned?: boolean
 	banReason?: string
 }

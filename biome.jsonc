@@ -25,7 +25,8 @@
         "useConsistentTypeDefinitions": {
           "level": "warn",
           "options": { "style": "type" }
-        }
+        },
+        "useFilenamingConvention": "off"
       },
       "performance": {
         "noBarrelFile": "off",

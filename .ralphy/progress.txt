@@ -1,0 +1,28 @@
+# Ralphy Progress Log
+
+- [✓] 2026-01-20 23:35 - 1.1 Create Convex Project
+- [✓] 2026-01-20 23:38 - 1.2 Configure TypeScript for Convex
+- [✓] 2026-01-20 23:39 - 2.1 Create Users Schema
+- [✓] 2026-01-20 23:40 - 2.2 Create Households Schema
+- [✓] 2026-01-20 23:41 - 2.3 Create Invitations Schema
+- [✓] 2026-01-20 23:42 - 2.4 Create Financial Data Schemas
+- [✓] 2026-01-20 23:43 - 2.5 Create Snapshots Schema
+- [✓] 2026-01-20 23:50 - 3.1 Configure Convex Auth
+- [✓] 2026-01-20 23:53 - 3.2 Implement Role-Based Access Control
+- [✓] 2026-01-23 17:36 - 3.3 Add User Management Queries
+- [✓] 2026-01-23 17:37 - 4.1 Implement Income Functions
+- [✓] 2026-01-23 17:38 - 4.2 Implement Tag Functions
+- [✓] 2026-01-23 17:41 - 4.3 Implement Personal Expense Functions
+- [✓] 2026-01-23 17:44 - 4.4 Implement Household Expense Functions
+- [✓] 2026-01-23 17:46 - 5.1 Implement Household Functions
+- [✓] 2026-01-23 17:48 - 5.2 Implement Invitation Functions
+- [✓] 2026-01-23 17:51 - 5.3 Add Email Sending Action
+- [✓] 2026-01-23 17:53 - 6.1 Implement Balance Calculation Helpers
+- [✓] 2026-01-23 17:55 - 6.2 Implement Monthly Balance Query
+- [✓] 2026-01-23 17:55 - 6.3 Implement Balance Projection Query
+- [✓] 2026-01-23 17:57 - 6.4 Implement Stats Functions
+- [✓] 2026-01-23 17:59 - 7.1 Implement Snapshot CRUD
+- [✓] 2026-01-23 18:02 - 8.1 Set Up Convex Provider
+- [✗] 2026-01-23 19:22 - 8.2 Update Auth Hooks
+- [✗] 2026-01-23 19:22 - 8.2 Update Auth Hooks
+- [✗] 2026-01-23 19:22 - 8.2 Update Auth Hooks

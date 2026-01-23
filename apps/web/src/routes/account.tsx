@@ -49,13 +49,13 @@ function Account() {
 					<div className="space-y-6 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
 						{/* Left column: Profile + Email */}
 						<div className="space-y-6">
-							<ProfileForm defaultName={user.name} />
-							<EmailCard currentEmail={user.email} />
+							<ProfileForm defaultName={user.name ?? ''} />
+							<EmailCard currentEmail={user.email ?? ''} />
 						</div>
 
 						{/* Right column: Password + Session */}
 						<div className="space-y-6">
-							<PasswordForm email={user.email} />
+							<PasswordForm email={user.email ?? ''} />
 							<Card>
 								<CardHeader>
 									<CardTitle>Session</CardTitle>

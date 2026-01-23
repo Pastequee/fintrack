@@ -5,8 +5,8 @@ import type { Id } from '@repo/convex/_generated/dataModel'
 
 export type UserWithRole = {
 	id: Id<'users'>
-	name: string
-	email: string
+	name?: string
+	email?: string
 	image?: string
 	role: 'admin' | 'user'
 	banned: boolean

@@ -118,7 +118,7 @@ Create user-related queries.
 
 ## Phase 4: Core CRUD Functions
 
-- [ ] 4.1 Implement Income Functions
+- [x] 4.1 Implement Income Functions
 CRUD operations for incomes.
 
 **Requirements:**
@@ -129,7 +129,7 @@ CRUD operations for incomes.
 - Mutation `incomes.remove(id)`: delete income (validate ownership)
 - Arg validation matches current incomeInsertSchema (name, amount, period, startDate, endDate optional)
 
-- [ ] 4.2 Implement Tag Functions
+- [x] 4.2 Implement Tag Functions
 CRUD operations for tags.
 
 **Requirements:**
@@ -139,7 +139,7 @@ CRUD operations for tags.
 - Mutation `tags.remove(id)`: delete tag (expenses with this tag should have tagId set to undefined - NOT deleted)
 - Validate color is hex format
 
-- [ ] 4.3 Implement Personal Expense Functions
+- [x] 4.3 Implement Personal Expense Functions
 CRUD for personal expenses (no household).
 
 **Requirements:**

@@ -150,7 +150,7 @@ CRUD for personal expenses (no household).
 - Mutation `expenses.remove(id)`: delete expense (validate ownership)
 - Include tag data in list query (join manually)
 
-- [ ] 4.4 Implement Household Expense Functions
+- [x] 4.4 Implement Household Expense Functions
 CRUD for shared household expenses.
 
 **Requirements:**
@@ -164,7 +164,7 @@ CRUD for shared household expenses.
 
 ## Phase 5: Household & Invitation Functions
 
-- [ ] 5.1 Implement Household Functions
+- [x] 5.1 Implement Household Functions
 Household CRUD and membership management.
 
 **Requirements:**
@@ -173,7 +173,7 @@ Household CRUD and membership management.
 - Mutation `households.update(id, data)`: update name/splitMode (validate membership)
 - Mutation `households.leave(id)`: remove membership, disable user's household expenses (set active=false), delete household if empty (cascade delete expenses + invitations)
 
-- [ ] 5.2 Implement Invitation Functions
+- [x] 5.2 Implement Invitation Functions
 Full invitation workflow.
 
 **Requirements:**

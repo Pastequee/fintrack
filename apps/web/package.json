@@ -44,11 +44,13 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@convex-dev/auth": "^0.0.90",
     "@repo/server": "workspace:*",
     "@tanstack/devtools-vite": "^0.4.1",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
+    "convex": "^1.31.6",
     "elysia": "catalog:",
     "nitro": "^3.0.1-alpha.1",
     "tw-animate-css": "^1.4.0"

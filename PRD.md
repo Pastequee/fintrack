@@ -185,7 +185,7 @@ Full invitation workflow.
 - Mutation `invitations.decline(token)`: mark invitation declined
 - Mutation `invitations.revoke(id)`: delete invitation (validate sender is household member)
 
-- [ ] 5.3 Add Email Sending Action
+- [x] 5.3 Add Email Sending Action
 Send invitation emails via Resend.
 
 **Requirements:**
@@ -199,7 +199,7 @@ Send invitation emails via Resend.
 
 ## Phase 6: Balance & Stats Functions
 
-- [ ] 6.1 Implement Balance Calculation Helpers
+- [x] 6.1 Implement Balance Calculation Helpers
 Port balance calculation logic from BalanceService.
 
 **Requirements:**
@@ -209,7 +209,7 @@ Port balance calculation logic from BalanceService.
 - Helper `getExpenseMonthlyAmount(expense, year, month)`: calculate single expense's monthly impact
 - All calculations done in cents (integers), frontend divides by 100 for display
 
-- [ ] 6.2 Implement Monthly Balance Query
+- [x] 6.2 Implement Monthly Balance Query
 Main balance calculation endpoint.
 
 **Requirements:**

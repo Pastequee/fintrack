@@ -1,26 +1,15 @@
-import type { UserRole } from '@repo/db/types'
-import type { Prettify } from '@repo/utils'
-import { queryOptions } from '@tanstack/react-query'
-import type { UserWithRole as BetterAuthUserWithRole } from 'better-auth/plugins'
-import { authClient } from '~/lib/clients/auth-client'
-import { keys } from './keys'
+import type { Id } from '@repo/convex/_generated/dataModel'
 
-export const adminUsersOptions = () =>
-	queryOptions({
-		queryKey: keys.admin.users.list(),
-		queryFn: async () => {
-			const { data, error } = await authClient.admin.listUsers({ query: {} })
+// Admin users are now fetched via Convex useQuery(api.users.list)
+// This file is kept for type exports only
 
-			if (error) {
-				throw new Error(error.message ?? 'Failed to fetch users')
-			}
-
-			return data.users as UserWithRole[]
-		},
-	})
-
-export type UserWithRole = Prettify<
-	BetterAuthUserWithRole & {
-		role: UserRole
-	}
->
+export type UserWithRole = {
+	id: Id<'users'>
+	name: string
+	email: string
+	image?: string
+	role: 'admin' | 'user'
+	banned: boolean
+	banReason?: string
+	banExpires?: number
+}

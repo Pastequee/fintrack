@@ -238,7 +238,7 @@ Statistics and aggregation queries.
 
 ## Phase 7: Snapshot Functions
 
-- [ ] 7.1 Implement Snapshot CRUD
+- [x] 7.1 Implement Snapshot CRUD
 Snapshot management for archived data.
 
 **Requirements:**
@@ -251,7 +251,7 @@ Snapshot management for archived data.
 
 ## Phase 8: Frontend Migration
 
-- [ ] 8.1 Set Up Convex Provider
+- [x] 8.1 Set Up Convex Provider
 Configure Convex client in frontend app.
 
 **Requirements:**
@@ -262,7 +262,7 @@ Configure Convex client in frontend app.
 - Update env: add `VITE_CONVEX_URL`
 - Verify Convex connection works
 
-- [ ] 8.2 Update Auth Hooks
+- [x] 8.2 Update Auth Hooks
 Replace better-auth hooks with Convex auth.
 
 **Requirements:**

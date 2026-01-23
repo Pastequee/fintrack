@@ -1,3 +1,6 @@
+import { api } from '@repo/convex/_generated/api'
+import type { Id } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '~/components/ui/button'
@@ -18,8 +21,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '~/components/ui/select'
-import { authClient } from '~/lib/clients/auth-client'
-import type { UserWithRole } from '~/lib/queries/admin.queries'
 
 // Ban duration options in seconds
 const BAN_DURATIONS = [
@@ -30,6 +31,14 @@ const BAN_DURATIONS = [
 	{ label: 'Permanent', value: 0 },
 ] as const
 
+type UserWithRole = {
+	id: Id<'users'>
+	name: string
+	email: string
+	banned?: boolean
+	banReason?: string
+}
+
 type Props = {
 	user: UserWithRole
 	open: boolean
@@ -39,6 +48,7 @@ type Props = {
 
 export function BanUserDialog({ user, open, onOpenChange, onSuccess }: Props) {
 	const isBanned = user.banned ?? false
+	const banMutation = useMutation(api.users.ban)
 
 	// Form state for ban action
 	const [banReason, setBanReason] = useState('')
@@ -48,43 +58,43 @@ export function BanUserDialog({ user, open, onOpenChange, onSuccess }: Props) {
 	const handleBan = async () => {
 		setIsSubmitting(true)
 
-		const result = await authClient.admin.banUser({
-			userId: user.id,
-			banReason: banReason || undefined,
-			// 0 = permanent ban (no expiry)
-			banExpiresIn: banDuration === 0 ? undefined : banDuration,
-		})
+		try {
+			await banMutation({
+				userId: user.id,
+				banned: true,
+				reason: banReason || undefined,
+				// 0 = permanent ban (no expiry), otherwise convert seconds to timestamp
+				expiresAt: banDuration === 0 ? undefined : Date.now() + banDuration * 1000,
+			})
 
-		setIsSubmitting(false)
-
-		if (result.error) {
-			toast.error(result.error.message ?? 'Failed to ban user')
-			return
+			toast.success(`${user.name} has been blocked`)
+			resetForm()
+			onOpenChange(false)
+			onSuccess()
+		} catch (err) {
+			toast.error(err instanceof Error ? err.message : 'Failed to ban user')
+		} finally {
+			setIsSubmitting(false)
 		}
-
-		toast.success(`${user.name} has been blocked`)
-		resetForm()
-		onOpenChange(false)
-		onSuccess()
 	}
 
 	const handleUnban = async () => {
 		setIsSubmitting(true)
 
-		const result = await authClient.admin.unbanUser({
-			userId: user.id,
-		})
+		try {
+			await banMutation({
+				userId: user.id,
+				banned: false,
+			})
 
-		setIsSubmitting(false)
-
-		if (result.error) {
-			toast.error(result.error.message ?? 'Failed to unban user')
-			return
+			toast.success(`${user.name} has been unblocked`)
+			onOpenChange(false)
+			onSuccess()
+		} catch (err) {
+			toast.error(err instanceof Error ? err.message : 'Failed to unban user')
+		} finally {
+			setIsSubmitting(false)
 		}
-
-		toast.success(`${user.name} has been unblocked`)
-		onOpenChange(false)
-		onSuccess()
 	}
 
 	const resetForm = () => {

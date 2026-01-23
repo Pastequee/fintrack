@@ -1,11 +1,10 @@
-import { env } from '@repo/env/web'
+import { useAuthActions } from '@convex-dev/auth/react'
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { AlertCircle } from 'lucide-react'
 import { useState } from 'react'
 import z from 'zod'
 import googleIcon from '~/assets/google.svg'
 import { Alert, AlertTitle } from '~/components/ui/alert'
-import { authClient } from '~/lib/clients/auth-client'
 import { useAppForm } from '~/lib/hooks/form-hook'
 import { Button } from '../ui/button'
 import { PasswordInput } from '../ui/password-input'
@@ -20,34 +19,33 @@ export function LoginForm() {
 	const navigate = useNavigate({ from: '/login' })
 	const { redirect } = useSearch({ from: '/_auth' })
 	const [errorMessage, setErrorMessage] = useState<string>()
+	const { signIn } = useAuthActions()
 
 	const form = useAppForm({
 		defaultValues: { email: '', password: '' },
 		defaultState: { canSubmit: false },
 		validators: { onChange: formSchema, onMount: formSchema, onSubmit: formSchema },
 		onSubmit: async ({ value }) => {
-			const { error } = await authClient.signIn.email({
-				email: value.email,
-				password: value.password,
-			})
-
-			if (error) {
-				setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
-				return
+			try {
+				await signIn('password', {
+					email: value.email,
+					password: value.password,
+					flow: 'signIn',
+				})
+				navigate({ to: redirect ?? '/', replace: true })
+			} catch (error) {
+				const message = error instanceof Error ? error.message : 'Une erreur est survenue'
+				setErrorMessage(message)
 			}
-
-			navigate({ to: redirect ?? '/', replace: true })
 		},
 	})
 
 	async function handleGoogleSignIn() {
-		const { error } = await authClient.signIn.social({
-			provider: 'google',
-			callbackURL: env.VITE_FRONTEND_URL,
-		})
-
-		if (error) {
-			setErrorMessage(error.message ?? 'Une erreur est survenue, veuillez réessayer plus tard.')
+		try {
+			await signIn('google')
+		} catch (error) {
+			const message = error instanceof Error ? error.message : 'Une erreur est survenue'
+			setErrorMessage(message)
 		}
 	}
 

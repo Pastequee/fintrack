@@ -1,4 +1,6 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createFileRoute, Outlet, useNavigate, useSearch } from '@tanstack/react-router'
+import { useConvexAuth } from 'convex/react'
+import { useEffect } from 'react'
 import z from 'zod'
 import { Navbar } from '~/components/navigation/navbar'
 
@@ -7,15 +9,31 @@ export const Route = createFileRoute('/_auth')({
 	validateSearch: z.object({
 		redirect: z.string().optional(),
 	}),
-	beforeLoad: ({ context, search }) => {
-		// If user is already authenticated, redirect to home
-		if (context.auth) {
-			throw redirect({ to: search.redirect ?? '/' })
-		}
-	},
 })
 
 function AuthLayout() {
+	const { isAuthenticated, isLoading } = useConvexAuth()
+	const navigate = useNavigate()
+	const { redirect: redirectTo } = useSearch({ from: '/_auth' })
+
+	useEffect(() => {
+		if (!isLoading && isAuthenticated) {
+			navigate({ to: redirectTo ?? '/', replace: true })
+		}
+	}, [isLoading, isAuthenticated, navigate, redirectTo])
+
+	// Show loading or content
+	if (isLoading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<div className="text-muted-foreground">Chargement...</div>
+			</div>
+		)
+	}
+
+	// If authenticated, we'll redirect above, so don't render the form
+	if (isAuthenticated) return null
+
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Navbar />

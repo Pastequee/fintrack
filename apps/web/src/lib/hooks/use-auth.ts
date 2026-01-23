@@ -1,15 +1,23 @@
-import { useNavigate, useRouteContext } from '@tanstack/react-router'
-import { authClient } from '../clients/auth-client'
+import { useAuthActions } from '@convex-dev/auth/react'
+import { api } from '@repo/convex/_generated/api'
+import { useNavigate } from '@tanstack/react-router'
+import { useConvexAuth, useQuery } from 'convex/react'
 
 export const useAuth = () => {
-	const { auth, queryClient } = useRouteContext({ from: '__root__' })
+	const { isAuthenticated, isLoading } = useConvexAuth()
+	const user = useQuery(api.users.me)
+	const { signOut } = useAuthActions()
 	const navigate = useNavigate()
 
 	const logout = async () => {
-		await authClient.signOut()
-		queryClient.clear()
+		await signOut()
 		navigate({ to: '/login', replace: true })
 	}
 
-	return { ...auth, logout }
+	return {
+		isAuthenticated,
+		isLoading,
+		user,
+		logout,
+	}
 }

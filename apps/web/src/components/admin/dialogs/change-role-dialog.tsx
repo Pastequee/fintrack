@@ -1,4 +1,6 @@
-import { UserRole } from '@repo/db/types'
+import { api } from '@repo/convex/_generated/api'
+import type { Id } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '~/components/ui/button'
@@ -18,8 +20,16 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '~/components/ui/select'
-import { authClient } from '~/lib/clients/auth-client'
-import type { UserWithRole } from '~/lib/queries/admin.queries'
+
+const ROLES = ['admin', 'user'] as const
+type Role = (typeof ROLES)[number]
+
+type UserWithRole = {
+	id: Id<'users'>
+	name: string
+	email: string
+	role: Role
+}
 
 type Props = {
 	user: UserWithRole
@@ -30,8 +40,9 @@ type Props = {
 
 export function ChangeRoleDialog({ user, open, onOpenChange, onSuccess }: Props) {
 	const currentRole = user.role
-	const [selectedRole, setSelectedRole] = useState(currentRole)
+	const [selectedRole, setSelectedRole] = useState<Role>(currentRole)
 	const [isSubmitting, setIsSubmitting] = useState(false)
+	const updateRole = useMutation(api.users.updateRole)
 
 	const handleSubmit = async () => {
 		if (selectedRole === currentRole) {
@@ -41,21 +52,20 @@ export function ChangeRoleDialog({ user, open, onOpenChange, onSuccess }: Props)
 
 		setIsSubmitting(true)
 
-		const result = await authClient.admin.setRole({
-			userId: user.id,
-			role: selectedRole,
-		})
+		try {
+			await updateRole({
+				userId: user.id,
+				role: selectedRole,
+			})
 
-		setIsSubmitting(false)
-
-		if (result.error) {
-			toast.error(result.error.message ?? 'Failed to change role')
-			return
+			toast.success(`Role changed to ${selectedRole} for ${user.name}`)
+			onOpenChange(false)
+			onSuccess()
+		} catch (err) {
+			toast.error(err instanceof Error ? err.message : 'Failed to change role')
+		} finally {
+			setIsSubmitting(false)
 		}
-
-		toast.success(`Role changed to ${selectedRole} for ${user.name}`)
-		onOpenChange(false)
-		onSuccess()
 	}
 
 	// Reset selection when dialog opens
@@ -78,13 +88,13 @@ export function ChangeRoleDialog({ user, open, onOpenChange, onSuccess }: Props)
 
 				<div className="space-y-2">
 					<Label htmlFor="role-select">Role</Label>
-					<Select onValueChange={(v) => setSelectedRole(v as UserRole)} value={selectedRole}>
+					<Select onValueChange={(v) => setSelectedRole(v as Role)} value={selectedRole}>
 						<SelectTrigger id="role-select">
 							<SelectValue>Select a role</SelectValue>
 						</SelectTrigger>
 
 						<SelectContent>
-							{UserRole.map((role) => (
+							{ROLES.map((role) => (
 								<SelectItem key={role} value={role}>
 									{role.charAt(0).toUpperCase() + role.slice(1)}
 								</SelectItem>

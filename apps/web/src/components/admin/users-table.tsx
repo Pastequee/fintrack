@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
 import {
 	type ColumnDef,
 	flexRender,
@@ -8,6 +8,7 @@ import {
 	type SortingState,
 	useReactTable,
 } from '@tanstack/react-table'
+import { useQuery } from 'convex/react'
 import { ArrowUpDown, Ban, KeyRound, MoreHorizontal, Shield, UserCheck, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Badge } from '~/components/ui/badge'
@@ -22,8 +23,7 @@ import {
 } from '~/components/ui/dropdown-menu'
 import { Input } from '~/components/ui/input'
 import { Loader } from '~/components/ui/loader'
-import { adminUsersOptions, type UserWithRole } from '~/lib/queries/admin.queries'
-import { keys } from '~/lib/queries/keys'
+import type { UserWithRole } from '~/lib/queries/admin.queries'
 import { BanUserDialog } from './dialogs/ban-user-dialog'
 import { ChangePasswordDialog } from './dialogs/change-password-dialog'
 import { ChangeRoleDialog } from './dialogs/change-role-dialog'
@@ -65,16 +65,7 @@ const columns: ColumnDef<UserWithRole>[] = [
 				<ArrowUpDown className="ml-2 size-4" />
 			</Button>
 		),
-		cell: ({ row }) => (
-			<div className="flex items-center gap-2">
-				<span>{row.original.email}</span>
-				{row.original.emailVerified && (
-					<Badge className="text-xs" variant="outline">
-						Verified
-					</Badge>
-				)}
-			</div>
-		),
+		cell: ({ row }) => <span>{row.original.email}</span>,
 	},
 	{
 		accessorKey: 'role',
@@ -97,19 +88,6 @@ const columns: ColumnDef<UserWithRole>[] = [
 		},
 	},
 	{
-		accessorKey: 'createdAt',
-		header: ({ column }) => (
-			<Button onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')} variant="ghost">
-				Created
-				<ArrowUpDown className="ml-2 size-4" />
-			</Button>
-		),
-		cell: ({ row }) => {
-			const date = new Date(row.original.createdAt)
-			return <span className="text-muted-foreground text-sm">{date.toLocaleDateString()}</span>
-		},
-	},
-	{
 		id: 'actions',
 		header: 'Actions',
 		cell: ({ row }) => <UserActions user={row.original} />,
@@ -118,17 +96,15 @@ const columns: ColumnDef<UserWithRole>[] = [
 
 // Actions dropdown for each user row
 function UserActions({ user }: { user: UserWithRole }) {
-	const queryClient = useQueryClient()
-
 	// Dialog states
 	const [passwordDialogOpen, setPasswordDialogOpen] = useState(false)
 	const [roleDialogOpen, setRoleDialogOpen] = useState(false)
 	const [banDialogOpen, setBanDialogOpen] = useState(false)
 	const [impersonateDialogOpen, setImpersonateDialogOpen] = useState(false)
 
-	// Callback to invalidate users query after action
+	// Convex auto-updates, no need for manual invalidation
 	const onActionComplete = () => {
-		queryClient.invalidateQueries({ queryKey: keys.admin.users.list() })
+		// No-op: Convex reactivity handles UI updates
 	}
 
 	return (
@@ -214,7 +190,7 @@ function UserActions({ user }: { user: UserWithRole }) {
 
 // Main users table component
 export function UsersTable() {
-	const { data: users, isLoading, isError, error } = useQuery(adminUsersOptions())
+	const users = useQuery(api.users.list)
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [globalFilter, setGlobalFilter] = useState('')
 
@@ -232,18 +208,10 @@ export function UsersTable() {
 		},
 	})
 
-	if (isLoading) {
+	if (users === undefined) {
 		return (
 			<div className="flex items-center justify-center py-12">
 				<Loader />
-			</div>
-		)
-	}
-
-	if (isError) {
-		return (
-			<div className="rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive">
-				Failed to load users: {error.message}
 			</div>
 		)
 	}

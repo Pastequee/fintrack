@@ -1,24 +1,38 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useEffect } from 'react'
 import { UsersTable } from '~/components/admin/users-table'
 import { Footer } from '~/components/footer'
 import { Navbar } from '~/components/navigation/navbar'
+import { useAuth } from '~/lib/hooks/use-auth'
 
 export const Route = createFileRoute('/admin/users')({
 	component: AdminUsersPage,
-	beforeLoad: ({ context }) => {
-		if (!context.auth) {
-			throw redirect({ to: '/login' })
-		}
-
-		if (context.auth.user.role !== 'admin') {
-			throw redirect({ to: '/' })
-		}
-
-		return { auth: context.auth }
-	},
 })
 
 function AdminUsersPage() {
+	const { user, isLoading, isAuthenticated } = useAuth()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (!isLoading) {
+			if (!isAuthenticated) {
+				navigate({ to: '/login', replace: true })
+			} else if (user?.role !== 'admin') {
+				navigate({ to: '/', replace: true })
+			}
+		}
+	}, [isLoading, isAuthenticated, user, navigate])
+
+	if (isLoading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<div className="text-muted-foreground">Chargement...</div>
+			</div>
+		)
+	}
+
+	if (!user || user.role !== 'admin') return null
+
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Navbar />

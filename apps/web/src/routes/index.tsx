@@ -1,4 +1,6 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useConvexAuth } from 'convex/react'
+import { useEffect } from 'react'
 import z from 'zod'
 import { DashboardTabs } from '~/components/dashboard/dashboard-tabs'
 import { PersonalTab } from '~/components/dashboard/personal-tab'
@@ -13,14 +15,28 @@ const searchSchema = z.object({
 export const Route = createFileRoute('/')({
 	component: DashboardPage,
 	validateSearch: searchSchema,
-	beforeLoad: ({ context }) => {
-		if (!context.auth) {
-			throw redirect({ to: '/login' })
-		}
-	},
 })
 
 function DashboardPage() {
+	const { isAuthenticated, isLoading } = useConvexAuth()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (!isLoading && !isAuthenticated) {
+			navigate({ to: '/login', replace: true })
+		}
+	}, [isLoading, isAuthenticated, navigate])
+
+	if (isLoading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<div className="text-muted-foreground">Chargement...</div>
+			</div>
+		)
+	}
+
+	if (!isAuthenticated) return null
+
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Navbar />

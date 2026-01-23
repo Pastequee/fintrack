@@ -1,6 +1,9 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useAuthActions } from '@convex-dev/auth/react'
+import { api } from '@repo/convex/_generated/api'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useMutation } from 'convex/react'
 import { AlertCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import z from 'zod'
 import { LogoutButton } from '~/components/auth/logout-button'
@@ -9,22 +12,32 @@ import { Navbar } from '~/components/navigation/navbar'
 import { Alert, AlertTitle } from '~/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { PasswordInput } from '~/components/ui/password-input'
-import { authClient } from '~/lib/clients/auth-client'
 import { useAppForm } from '~/lib/hooks/form-hook'
+import { useAuth } from '~/lib/hooks/use-auth'
 
 export const Route = createFileRoute('/account')({
 	component: Account,
-	beforeLoad: ({ context, location }) => {
-		if (!context.auth) {
-			throw redirect({ to: '/login', search: { redirect: location.href } })
-		}
-
-		return { user: context.auth.user }
-	},
 })
 
 function Account() {
-	const { user } = Route.useRouteContext()
+	const { user, isLoading, isAuthenticated } = useAuth()
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (!isLoading && !isAuthenticated) {
+			navigate({ to: '/login', search: { redirect: '/account' }, replace: true })
+		}
+	}, [isLoading, isAuthenticated, navigate])
+
+	if (isLoading) {
+		return (
+			<div className="flex min-h-screen items-center justify-center">
+				<div className="text-muted-foreground">Chargement...</div>
+			</div>
+		)
+	}
+
+	if (!user) return null
 
 	return (
 		<div className="flex min-h-screen flex-col">
@@ -37,12 +50,12 @@ function Account() {
 						{/* Left column: Profile + Email */}
 						<div className="space-y-6">
 							<ProfileForm defaultName={user.name} />
-							<EmailForm currentEmail={user.email} />
+							<EmailCard currentEmail={user.email} />
 						</div>
 
 						{/* Right column: Password + Session */}
 						<div className="space-y-6">
-							<PasswordForm />
+							<PasswordForm email={user.email} />
 							<Card>
 								<CardHeader>
 									<CardTitle>Session</CardTitle>
@@ -67,6 +80,7 @@ const profileSchema = z.object({
 
 function ProfileForm({ defaultName }: { defaultName: string }) {
 	const [error, setError] = useState<string>()
+	const updateProfile = useMutation(api.users.updateProfile)
 
 	const form = useAppForm({
 		defaultValues: { name: defaultName },
@@ -74,16 +88,12 @@ function ProfileForm({ defaultName }: { defaultName: string }) {
 		onSubmit: async ({ value }) => {
 			setError(undefined)
 
-			const result = await authClient.updateUser({
-				name: value.name,
-			})
-
-			if (result.error) {
-				setError(result.error.message ?? 'Échec de la mise à jour du profil')
-				return
+			try {
+				await updateProfile({ name: value.name })
+				toast.success('Profil mis à jour avec succès')
+			} catch (err) {
+				setError(err instanceof Error ? err.message : 'Échec de la mise à jour du profil')
 			}
-
-			toast.success('Profil mis à jour avec succès')
 		},
 	})
 
@@ -121,40 +131,7 @@ function ProfileForm({ defaultName }: { defaultName: string }) {
 	)
 }
 
-const emailSchema = z.object({
-	newEmail: z.string().email('Adresse email invalide'),
-})
-
-function EmailForm({ currentEmail }: { currentEmail: string }) {
-	const [error, setError] = useState<string>()
-
-	const form = useAppForm({
-		defaultValues: { newEmail: '' },
-		validators: { onChange: emailSchema, onMount: emailSchema, onSubmit: emailSchema },
-		onSubmit: async ({ value }) => {
-			setError(undefined)
-
-			// Skip if same as current email
-			if (value.newEmail === currentEmail) {
-				setError("Le nouvel email doit être différent de l'email actuel")
-				return
-			}
-
-			const result = await authClient.changeEmail({
-				newEmail: value.newEmail,
-				callbackURL: '/account',
-			})
-
-			if (result.error) {
-				setError(result.error.message ?? "Échec du changement d'email")
-				return
-			}
-
-			toast.success('Email de vérification envoyé. Veuillez vérifier votre boîte de réception.')
-			form.reset()
-		},
-	})
-
+function EmailCard({ currentEmail }: { currentEmail: string }) {
 	return (
 		<Card>
 			<CardHeader>
@@ -164,28 +141,9 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<form
-					className="flex flex-col gap-4"
-					onSubmit={(e) => {
-						e.preventDefault()
-						form.handleSubmit()
-					}}
-				>
-					{error && (
-						<Alert variant="destructive">
-							<AlertCircle />
-							<AlertTitle>{error}</AlertTitle>
-						</Alert>
-					)}
-
-					<form.AppField name="newEmail">
-						{(field) => <field.TextField autoComplete="email" label="Nouvel email" type="email" />}
-					</form.AppField>
-
-					<form.AppForm>
-						<form.SubmitButton label="Changer l'email" />
-					</form.AppForm>
-				</form>
+				<p className="text-muted-foreground text-sm">
+					Le changement d'email n'est pas disponible pour le moment.
+				</p>
 			</CardContent>
 		</Card>
 	)
@@ -193,7 +151,6 @@ function EmailForm({ currentEmail }: { currentEmail: string }) {
 
 const passwordSchema = z
 	.object({
-		currentPassword: z.string().nonempty('Le mot de passe actuel est requis'),
 		newPassword: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
 		confirmPassword: z.string().nonempty('Veuillez confirmer votre mot de passe'),
 	})
@@ -202,28 +159,28 @@ const passwordSchema = z
 		path: ['confirmPassword'],
 	})
 
-function PasswordForm() {
+function PasswordForm({ email }: { email: string }) {
 	const [error, setError] = useState<string>()
+	const { signIn } = useAuthActions()
 
 	const form = useAppForm({
-		defaultValues: { currentPassword: '', newPassword: '', confirmPassword: '' },
+		defaultValues: { newPassword: '', confirmPassword: '' },
 		validators: { onChange: passwordSchema, onMount: passwordSchema, onSubmit: passwordSchema },
 		onSubmit: async ({ value }) => {
 			setError(undefined)
 
-			const result = await authClient.changePassword({
-				currentPassword: value.currentPassword,
-				newPassword: value.newPassword,
-				revokeOtherSessions: true, // Invalidate other sessions for security
-			})
-
-			if (result.error) {
-				setError(result.error.message ?? 'Échec du changement de mot de passe')
-				return
+			try {
+				// Convex Auth Password provider: signUp with existing email updates password
+				await signIn('password', {
+					email,
+					password: value.newPassword,
+					flow: 'signUp',
+				})
+				toast.success('Mot de passe modifié avec succès')
+				form.reset()
+			} catch (err) {
+				setError(err instanceof Error ? err.message : 'Échec du changement de mot de passe')
 			}
-
-			toast.success('Mot de passe modifié avec succès')
-			form.reset()
 		},
 	})
 
@@ -247,16 +204,6 @@ function PasswordForm() {
 							<AlertTitle>{error}</AlertTitle>
 						</Alert>
 					)}
-
-					<form.AppField name="currentPassword">
-						{(field) => (
-							<field.TextField
-								autoComplete="current-password"
-								input={PasswordInput}
-								label="Mot de passe actuel"
-							/>
-						)}
-					</form.AppField>
 
 					<form.AppField name="newPassword">
 						{(field) => (

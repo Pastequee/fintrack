@@ -9,7 +9,6 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import appCss from '~/assets/styles/app.css?url'
 import { ImpersonationBanner } from '~/components/admin/impersonation-banner'
 import { ThemeProvider } from '~/lib/clients/theme-client'
-import { fetchAuth } from '~/lib/server-fn/fetch-auth'
 import { seo } from '~/lib/utils/seo'
 
 export type RootRouteContext = {
@@ -22,19 +21,14 @@ export const Route = createRootRouteWithContext<RootRouteContext>()({
 			{ charSet: 'utf-8' },
 			{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 			...seo({
-				title: 'TanStack Start, Elysia and better-auth starter',
-				description: 'A starter for TanStack Start, Elysia and better-auth',
-				keywords: 'tanstack, elysia, better-auth, starter',
+				title: 'FinTrack',
+				description: 'Personal finance tracking app',
+				keywords: 'finance, budget, expenses, tracking',
 				image: 'https://tanstack.com/assets/splash-light-CHqMsyq8.png',
 			}),
 		],
 		links: [{ rel: 'stylesheet', href: appCss }],
 	}),
-	beforeLoad: async () => {
-		const auth = await fetchAuth()
-
-		return { auth }
-	},
 	component: RootDocument,
 })
 

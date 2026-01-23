@@ -218,7 +218,7 @@ Main balance calculation endpoint.
 - For household split: implement equal split (1/members) and income_proportional (userIncome/totalMembersIncome)
 - Return: { year, month, income, personalExpenses: { total, items }, householdShare: { total, items }, remaining }
 
-- [ ] 6.3 Implement Balance Projection Query
+- [x] 6.3 Implement Balance Projection Query
 Project balance for future months.
 
 **Requirements:**
@@ -226,7 +226,7 @@ Project balance for future months.
 - Call monthly balance calculation for each month in range
 - Return array of monthly balances
 
-- [ ] 6.4 Implement Stats Functions
+- [x] 6.4 Implement Stats Functions
 Statistics and aggregation queries.
 
 **Requirements:**

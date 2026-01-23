@@ -11,7 +11,7 @@ Migrate from Elysia/PostgreSQL/Drizzle/better-auth to Convex backend-as-a-servic
 
 ## Phase 1: Project Setup
 
-- [ ] 1.1 Create Convex Project
+- [x] 1.1 Create Convex Project
 Create Convex project and configure monorepo structure.
 
 **Requirements:**
@@ -23,7 +23,7 @@ Create Convex project and configure monorepo structure.
 - Add dev script: `"dev": "convex dev"` in packages/convex
 - Verify `bunx convex dev` runs without errors
 
-- [ ] 1.2 Configure TypeScript for Convex
+- [x] 1.2 Configure TypeScript for Convex
 Set up TypeScript integration with Convex codegen.
 
 **Requirements:**
@@ -37,7 +37,7 @@ Set up TypeScript integration with Convex codegen.
 
 ## Phase 2: Database Schema
 
-- [ ] 2.1 Create Users Schema
+- [x] 2.1 Create Users Schema
 Define users table with auth fields.
 
 **Requirements:**
@@ -45,7 +45,7 @@ Define users table with auth fields.
 - Index: `by_email` on email field
 - Matches current auth.users structure (minus better-auth specific fields)
 
-- [ ] 2.2 Create Households Schema
+- [x] 2.2 Create Households Schema
 Define household and membership tables.
 
 **Requirements:**
@@ -54,7 +54,7 @@ Define household and membership tables.
 - Indexes: `by_household` on householdId, `by_user` on userId
 - Add compound index for membership lookup
 
-- [ ] 2.3 Create Invitations Schema
+- [x] 2.3 Create Invitations Schema
 Define invitations table with status workflow.
 
 **Requirements:**
@@ -62,7 +62,7 @@ Define invitations table with status workflow.
 - Indexes: `by_household`, `by_email`, `by_token`, `by_status`
 - Token should be unique (validate in mutation)
 
-- [ ] 2.4 Create Financial Data Schemas
+- [x] 2.4 Create Financial Data Schemas
 Define expenses, incomes, tags tables.
 
 **Requirements:**
@@ -73,7 +73,7 @@ Define expenses, incomes, tags tables.
 - Table: `tags` with fields: userId, name, color
 - Index: `by_user`
 
-- [ ] 2.5 Create Snapshots Schema
+- [x] 2.5 Create Snapshots Schema
 Define snapshots table for archived monthly data.
 
 **Requirements:**
@@ -85,7 +85,7 @@ Define snapshots table for archived monthly data.
 
 ## Phase 3: Authentication
 
-- [ ] 3.1 Configure Convex Auth
+- [x] 3.1 Configure Convex Auth
 Set up authentication with email/password and Google OAuth.
 
 **Requirements:**
@@ -96,7 +96,7 @@ Set up authentication with email/password and Google OAuth.
 - Create `convex/auth.ts` with auth tables (Convex Auth generates these)
 - Export auth helpers: `getAuthUserId`, `signIn`, `signOut`
 
-- [ ] 3.2 Implement Role-Based Access Control
+- [x] 3.2 Implement Role-Based Access Control
 Add role checking helper for admin/user roles.
 
 **Requirements:**
@@ -105,7 +105,7 @@ Add role checking helper for admin/user roles.
 - Add admin-only wrapper for functions needing admin access
 - Test: regular user cannot access admin functions
 
-- [ ] 3.3 Add User Management Queries
+- [x] 3.3 Add User Management Queries
 Create user-related queries.
 
 **Requirements:**

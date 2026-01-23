@@ -1,4 +1,6 @@
 import { ConvexError, v } from 'convex/values'
+// @ts-expect-error - generated file created by `convex dev`
+import { internal } from './_generated/api'
 import type { Id } from './_generated/dataModel'
 import type { MutationCtx, QueryCtx } from './_generated/server'
 import { mutation, query } from './_generated/server'
@@ -193,6 +195,20 @@ export const send = mutation({
 			status: 'pending',
 			expiresAt,
 		})
+
+		// Get inviter and household details for email
+		const inviter = await ctx.db.get(userId)
+		const household = await ctx.db.get(membership.householdId)
+
+		// Send invitation email asynchronously (don't block mutation)
+		if (inviter && household) {
+			await ctx.scheduler.runAfter(0, internal.email.sendInvitation, {
+				to: args.email,
+				inviterName: inviter.name ?? inviter.email ?? 'Someone',
+				householdName: household.name,
+				token,
+			})
+		}
 
 		return { invitationId, token }
 	},

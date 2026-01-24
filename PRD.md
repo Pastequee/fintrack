@@ -285,7 +285,7 @@ Replace TanStack Query with Convex useQuery.
   - Snapshot views
 - Remove query option files from `apps/web/src/lib/queries/`
 
-- [ ] 8.4 Migrate Mutation Components
+- [x] 8.4 Migrate Mutation Components
 Replace TanStack mutations with Convex useMutation.
 
 **Requirements:**

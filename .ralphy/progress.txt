@@ -26,3 +26,4 @@
 - [✓] 2026-01-23 19:22 - 8.2 Update Auth Hooks
 - [✓] 2026-01-24 10:51 - 8.3 Migrate Query Components
 - [✓] 2026-01-24 09:59 - 8.3 Migrate Query Components
+- [✓] 2026-01-24 10:17 - 8.4 Migrate Mutation Components

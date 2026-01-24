@@ -1,8 +1,10 @@
-import type { Expense } from '@repo/db/types'
-import { ExpensePeriod, ExpenseType } from '@repo/db/types'
+import type { Doc, Id } from '@repo/convex/_generated/dataModel'
 import { z } from 'zod'
 import { withForm } from '~/lib/hooks/form-hook'
 import { TagSelector } from '../tag/tag-selector'
+
+const ExpenseType = ['one_time', 'recurring'] as const
+const ExpensePeriod = ['daily', 'weekly', 'monthly', 'yearly'] as const
 
 const periodLabels: Record<string, string> = {
 	daily: 'Quotidien',
@@ -42,17 +44,17 @@ export const expenseFormSchema = z
 
 export type ExpenseFormValues = z.infer<typeof expenseFormSchema>
 
-export function toExpensePayload(value: ExpenseFormValues) {
+export function toConvexExpensePayload(value: ExpenseFormValues) {
 	const isOneTime = value.type === 'one_time'
 	return {
 		name: value.name.trim(),
-		amount: value.amount,
+		amount: Number(value.amount),
 		type: value.type,
-		period: isOneTime ? null : value.period,
-		startDate: isOneTime ? null : value.startDate,
-		endDate: isOneTime ? null : value.endDate || null,
-		targetDate: isOneTime ? value.targetDate : null,
-		tagId: value.tagId,
+		period: isOneTime ? undefined : value.period,
+		startDate: isOneTime ? undefined : value.startDate,
+		endDate: isOneTime ? undefined : value.endDate || undefined,
+		targetDate: isOneTime ? value.targetDate : undefined,
+		tagId: value.tagId ? (value.tagId as Id<'tags'>) : undefined,
 	}
 }
 
@@ -71,10 +73,10 @@ export const defaultExpenseValues: ExpenseFormValues = {
 	tagId: null,
 }
 
-export function expenseToFormValues(expense: Expense): ExpenseFormValues {
+export function expenseToFormValues(expense: Doc<'expenses'>): ExpenseFormValues {
 	return {
 		name: expense.name,
-		amount: expense.amount,
+		amount: String(expense.amount),
 		type: expense.type,
 		period: expense.period ?? 'monthly',
 		startDate: expense.startDate ?? getDefaultDate(),

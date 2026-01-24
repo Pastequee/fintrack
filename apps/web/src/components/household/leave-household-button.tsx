@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Id } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import { Loader2, LogOut } from 'lucide-react'
 import { useState } from 'react'
-import { leaveHouseholdOptions } from '~/lib/mutations/households.mutations'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -15,13 +16,24 @@ import {
 import { Button } from '../ui/button'
 
 type LeaveHouseholdButtonProps = {
-	householdId: string
+	householdId: Id<'households'>
 	householdName: string
 }
 
 export const LeaveHouseholdButton = ({ householdId, householdName }: LeaveHouseholdButtonProps) => {
 	const [isOpen, setIsOpen] = useState(false)
-	const { mutate, isPending } = useMutation(leaveHouseholdOptions(householdId))
+	const [isPending, setIsPending] = useState(false)
+	const leaveMutation = useMutation(api.households.leave)
+
+	const handleLeave = async () => {
+		setIsPending(true)
+		try {
+			await leaveMutation({ id: householdId })
+			setIsOpen(false)
+		} finally {
+			setIsPending(false)
+		}
+	}
 
 	return (
 		<>
@@ -45,7 +57,7 @@ export const LeaveHouseholdButton = ({ householdId, householdName }: LeaveHouseh
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Annuler</AlertDialogCancel>
-						<AlertDialogAction onClick={() => mutate({})}>Quitter</AlertDialogAction>
+						<AlertDialogAction onClick={handleLeave}>Quitter</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

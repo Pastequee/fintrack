@@ -1,20 +1,21 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useMutation } from 'convex/react'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { createExpenseOptions } from '~/lib/mutations/expenses.mutations'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import {
 	defaultExpenseValues,
 	ExpenseFields,
 	expenseFormSchema,
-	toExpensePayload,
+	toConvexExpensePayload,
 } from './expense-fields'
 
 export const AddExpenseDialog = () => {
 	const [open, setOpen] = useState(false)
-	const { isPending, mutate } = useMutation(createExpenseOptions())
+	const createMutation = useMutation(api.expenses.create)
+	const [isPending, setIsPending] = useState(false)
 
 	const form = useAppForm({
 		defaultValues: defaultExpenseValues,
@@ -23,13 +24,15 @@ export const AddExpenseDialog = () => {
 			onMount: expenseFormSchema,
 			onSubmit: expenseFormSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate(toExpensePayload(value), {
-				onSuccess: () => {
-					form.reset()
-					setOpen(false)
-				},
-			})
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			try {
+				await createMutation(toConvexExpensePayload(value))
+				form.reset()
+				setOpen(false)
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 

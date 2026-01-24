@@ -1,5 +1,6 @@
-import type { Expense, SplitMode } from '@repo/db/types'
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Doc } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import {
 	AlertTriangle,
 	CalendarDays,
@@ -10,10 +11,6 @@ import {
 	Trash2,
 } from 'lucide-react'
 import { useState } from 'react'
-import {
-	deleteHouseholdExpenseOptions,
-	updateHouseholdExpenseOptions,
-} from '~/lib/mutations/households.mutations'
 import { cn } from '~/lib/utils/cn'
 import {
 	formatExpenseAmount,
@@ -34,8 +31,10 @@ import {
 import { Button } from '../ui/button'
 import { EditHouseholdExpenseDialog } from './edit-household-expense-dialog'
 
+type SplitMode = 'equal' | 'income_proportional'
+
 type HouseholdExpenseItemProps = {
-	expense: Expense
+	expense: Doc<'expenses'>
 	memberCount: number
 	splitMode: SplitMode
 }
@@ -53,13 +52,30 @@ export const HouseholdExpenseItem = ({
 }: HouseholdExpenseItemProps) => {
 	const [isEditOpen, setIsEditOpen] = useState(false)
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const [isReenabling, setIsReenabling] = useState(false)
 
-	const { isPending: isDeleting, mutate: deleteMutation } = useMutation(
-		deleteHouseholdExpenseOptions(expense.id)
-	)
-	const { isPending: isReenabling, mutate: reenableMutation } = useMutation(
-		updateHouseholdExpenseOptions(expense.id)
-	)
+	const deleteMutation = useMutation(api.household_expenses.remove)
+	const updateMutation = useMutation(api.household_expenses.update)
+
+	const handleDelete = async () => {
+		setIsDeleting(true)
+		try {
+			await deleteMutation({ id: expense._id })
+			setIsDeleteOpen(false)
+		} finally {
+			setIsDeleting(false)
+		}
+	}
+
+	const handleReenable = async () => {
+		setIsReenabling(true)
+		try {
+			await updateMutation({ id: expense._id, active: true })
+		} finally {
+			setIsReenabling(false)
+		}
+	}
 
 	const isOneTime = expense.type === 'one_time'
 	const isDisabled = !expense.active
@@ -99,12 +115,7 @@ export const HouseholdExpenseItem = ({
 			</div>
 
 			{isDisabled ? (
-				<Button
-					disabled={isReenabling}
-					onClick={() => reenableMutation({ active: true })}
-					size="icon"
-					variant="outline"
-				>
+				<Button disabled={isReenabling} onClick={handleReenable} size="icon" variant="outline">
 					{isReenabling ? <Loader2 className="animate-spin" size={16} /> : <RefreshCcw size={16} />}
 				</Button>
 			) : (
@@ -138,7 +149,7 @@ export const HouseholdExpenseItem = ({
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Annuler</AlertDialogCancel>
-						<AlertDialogAction onClick={() => deleteMutation({})}>Supprimer</AlertDialogAction>
+						<AlertDialogAction onClick={handleDelete}>Supprimer</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

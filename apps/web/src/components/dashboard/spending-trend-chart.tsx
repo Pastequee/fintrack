@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { TrendingUp } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts'
-import { monthlyTrendOptions } from '~/lib/queries/stats.queries'
 import { formatCurrency } from '~/lib/utils/format-currency'
 import { formatMonth } from '~/lib/utils/format-date'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
@@ -61,7 +61,8 @@ const ChartContent = ({ data }: { data: ChartDataItem[] }) => (
 )
 
 export const SpendingTrendChart = () => {
-	const { data: trendData, isLoading } = useQuery(monthlyTrendOptions(6))
+	const trendData = useQuery(api.stats.monthlyTrend, { monthsBack: 6 })
+	const isLoading = trendData === undefined
 
 	const chartData: ChartDataItem[] =
 		trendData?.map((item) => ({

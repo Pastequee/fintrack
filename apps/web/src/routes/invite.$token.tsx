@@ -1,5 +1,6 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { useMutation, useQuery } from 'convex/react'
 import { AlertCircle, Home, Users } from 'lucide-react'
 import { useState } from 'react'
 import { Footer } from '~/components/footer'
@@ -9,11 +10,6 @@ import { Button } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
 import { Loader } from '~/components/ui/loader'
 import { useAuth } from '~/lib/hooks/use-auth'
-import {
-	acceptInvitationOptions,
-	declineInvitationOptions,
-} from '~/lib/mutations/households.mutations'
-import { invitationByTokenOptions } from '~/lib/queries/households.queries'
 
 export const Route = createFileRoute('/invite/$token')({
 	component: InvitationPage,
@@ -30,30 +26,48 @@ function InvitationPage() {
 
 	const { user } = useAuth()
 	const [error, setError] = useState<string | null>(null)
+	const [isAccepting, setIsAccepting] = useState(false)
+	const [isDeclining, setIsDeclining] = useState(false)
 
-	const { data: invitation, isLoading, isError } = useQuery(invitationByTokenOptions(token))
+	const invitation = useQuery(api.invitations.byToken, { token })
+	const isLoading = invitation === undefined
 
-	const acceptMutation = useMutation({
-		...acceptInvitationOptions(token),
-		onSuccess: () => navigate({ to: '/' }),
-		onError: (err) => {
+	const acceptMutation = useMutation(api.invitations.accept)
+	const declineMutation = useMutation(api.invitations.decline)
+
+	const handleAccept = async () => {
+		setIsAccepting(true)
+		setError(null)
+		try {
+			await acceptMutation({ token })
+			navigate({ to: '/' })
+		} catch (err) {
 			const message = getErrorMessage(err, "Échec de l'acceptation de l'invitation")
 			if (message.includes('Already a member')) {
 				setError("Vous êtes déjà membre d'un foyer. Quittez d'abord votre foyer actuel.")
 			} else {
 				setError(message)
 			}
-		},
-	})
+		} finally {
+			setIsAccepting(false)
+		}
+	}
 
-	const declineMutation = useMutation({
-		...declineInvitationOptions(token),
-		onSuccess: () => navigate({ to: '/' }),
-		onError: (err) => setError(getErrorMessage(err, "Échec du refus de l'invitation")),
-	})
+	const handleDecline = async () => {
+		setIsDeclining(true)
+		setError(null)
+		try {
+			await declineMutation({ token })
+			navigate({ to: '/' })
+		} catch (err) {
+			setError(getErrorMessage(err, "Échec du refus de l'invitation"))
+		} finally {
+			setIsDeclining(false)
+		}
+	}
 
-	const isPending = acceptMutation.isPending || declineMutation.isPending
-	const isInvalidInvitation = isError || !invitation || !invitation.household
+	const isPending = isAccepting || isDeclining
+	const isInvalidInvitation = !isLoading && (!invitation || !invitation.household)
 
 	return (
 		<div className="flex min-h-screen flex-col">
@@ -77,12 +91,12 @@ function InvitationPage() {
 								error={error}
 								householdName={invitation.household.name}
 								inviterName={invitation.inviter?.name || invitation.inviter?.email}
-								isAccepting={acceptMutation.isPending}
+								isAccepting={isAccepting}
 								isAuthenticated={!!user}
-								isDeclining={declineMutation.isPending}
+								isDeclining={isDeclining}
 								isPending={isPending}
-								onAccept={() => acceptMutation.mutate({})}
-								onDecline={() => declineMutation.mutate({})}
+								onAccept={handleAccept}
+								onDecline={handleDecline}
 								onLogin={() =>
 									navigate({ to: '/login', search: { redirect: router.state.location.href } })
 								}

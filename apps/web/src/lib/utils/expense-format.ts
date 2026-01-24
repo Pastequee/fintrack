@@ -1,4 +1,5 @@
-import type { Expense, ExpensePeriod } from '@repo/db/types'
+type ExpenseType = 'one_time' | 'recurring'
+type ExpensePeriod = 'daily' | 'weekly' | 'monthly' | 'yearly'
 
 export const periodLabels: Record<ExpensePeriod, string> = {
 	daily: '/day',
@@ -8,17 +9,16 @@ export const periodLabels: Record<ExpensePeriod, string> = {
 }
 
 export const formatExpenseAmount = (
-	amount: string,
-	type: Expense['type'],
-	period: ExpensePeriod | null
+	amount: number,
+	type: ExpenseType,
+	period: ExpensePeriod | undefined
 ) => {
-	const num = Number.parseFloat(amount)
-	const formatted = `€${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+	const formatted = `€${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 	if (type === 'one_time') return formatted
 	return `${formatted}${period ? periodLabels[period] : ''}`
 }
 
-export const formatShortDate = (date: string) => {
+export const formatShortDate = (date: string | number) => {
 	return new Date(date).toLocaleDateString('en-US', {
 		month: 'short',
 		day: 'numeric',
@@ -26,7 +26,7 @@ export const formatShortDate = (date: string) => {
 	})
 }
 
-export const getRemainingDuration = (endDate: string | null) => {
+export const getRemainingDuration = (endDate: string | number | undefined) => {
 	if (!endDate) return null
 	const end = new Date(endDate)
 	const now = new Date()
@@ -36,9 +36,8 @@ export const getRemainingDuration = (endDate: string | null) => {
 	return `${months} months left`
 }
 
-export const getSplitAmount = (amount: string, memberCount: number) => {
+export const getSplitAmount = (amount: number, memberCount: number) => {
 	if (memberCount <= 1) return null
-	const num = Number.parseFloat(amount)
-	const split = num / memberCount
+	const split = amount / memberCount
 	return `€${split.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} each`
 }

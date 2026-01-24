@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { householdMeOptions } from '~/lib/queries/households.queries'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { Card, CardContent } from '../ui/card'
 import { Loader } from '../ui/loader'
 import { Separator } from '../ui/separator'
@@ -7,9 +7,9 @@ import { AddHouseholdExpenseForm } from './add-household-expense-form'
 import { HouseholdExpenseList } from './household-expense-list'
 
 export const HouseholdExpenseCard = () => {
-	const { data: household, isLoading } = useQuery(householdMeOptions())
+	const household = useQuery(api.households.me)
 
-	if (isLoading) {
+	if (household === undefined) {
 		return (
 			<Card className="mx-auto w-[90vw] max-w-md">
 				<CardContent className="flex flex-col gap-4">

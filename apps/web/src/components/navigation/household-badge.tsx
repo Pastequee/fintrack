@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
 import { Link } from '@tanstack/react-router'
+import { useQuery } from 'convex/react'
 import { Home } from 'lucide-react'
-import { householdMeOptions } from '~/lib/queries/households.queries'
 import { Badge } from '../ui/badge'
 
 export function HouseholdBadge() {
-	const { data: household } = useQuery(householdMeOptions())
+	const household = useQuery(api.households.me)
 
 	if (!household) return null
 

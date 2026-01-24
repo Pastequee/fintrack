@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { PieChart as PieChartIcon } from 'lucide-react'
 import { Cell, Pie, PieChart, Tooltip } from 'recharts'
-import { expensesByTagOptions } from '~/lib/queries/stats.queries'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { ChartContainer } from '../ui/chart'
 import {
@@ -51,13 +51,14 @@ const ChartContent = ({ data }: { data: ChartDataItem[] }) => (
 )
 
 export const SpendingPieChart = ({ year, month }: SpendingPieChartProps) => {
-	const { data: expensesByTag, isLoading } = useQuery(expensesByTagOptions(year, month))
+	const expensesByTag = useQuery(api.stats.expensesByTag, { year, month })
+	const isLoading = expensesByTag === undefined
 
 	const chartData: ChartDataItem[] =
 		expensesByTag?.map((item) => ({
-			name: item.tagName ?? UNTAGGED_LABEL,
+			name: item.name ?? UNTAGGED_LABEL,
 			value: item.total,
-			color: item.tagColor ?? UNTAGGED_COLOR,
+			color: item.color ?? UNTAGGED_COLOR,
 		})) ?? []
 
 	const hasData = chartData.length > 0 && chartData.some((d) => d.value > 0)

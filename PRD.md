@@ -272,7 +272,7 @@ Replace better-auth hooks with Convex auth.
 - Update protected route logic with new auth state
 - Remove `apps/web/src/lib/clients/auth-client.ts`
 
-- [ ] 8.3 Migrate Query Components
+- [x] 8.3 Migrate Query Components
 Replace TanStack Query with Convex useQuery.
 
 **Requirements:**

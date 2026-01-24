@@ -1,9 +1,8 @@
-import type { Tag } from '@repo/db/types'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Doc } from '@repo/convex/_generated/dataModel'
+import { useMutation, useQuery } from 'convex/react'
 import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react'
 import { useState } from 'react'
-import { deleteTagOptions, updateTagOptions } from '~/lib/mutations/tags.mutations'
-import { tagListOptions } from '~/lib/queries/tags.queries'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -28,10 +27,10 @@ type ManageTagsDialogProps = {
 }
 
 export function ManageTagsDialog({ open, onOpenChange }: ManageTagsDialogProps) {
-	const { data: tags = [] } = useQuery(tagListOptions())
+	const tags = useQuery(api.tags.list) ?? []
 	const [addOpen, setAddOpen] = useState(false)
-	const [editingTag, setEditingTag] = useState<Tag | null>(null)
-	const [deletingTag, setDeletingTag] = useState<Tag | null>(null)
+	const [editingTag, setEditingTag] = useState<Doc<'tags'> | null>(null)
+	const [deletingTag, setDeletingTag] = useState<Doc<'tags'> | null>(null)
 
 	return (
 		<>
@@ -50,7 +49,7 @@ export function ManageTagsDialog({ open, onOpenChange }: ManageTagsDialogProps) 
 							tags.map((tag) => (
 								<div
 									className="flex items-center gap-3 rounded-md border border-border px-3 py-2"
-									key={tag.id}
+									key={tag._id}
 								>
 									<TagBadge color={tag.color} name={tag.name} size="md" />
 									<span className="flex-1" />
@@ -88,7 +87,7 @@ export function ManageTagsDialog({ open, onOpenChange }: ManageTagsDialogProps) 
 }
 
 type EditTagDialogProps = {
-	tag: Tag
+	tag: Doc<'tags'>
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
@@ -96,15 +95,22 @@ type EditTagDialogProps = {
 function EditTagDialog({ tag, open, onOpenChange }: EditTagDialogProps) {
 	const [name, setName] = useState(tag.name)
 	const [color, setColor] = useState(tag.color)
+	const [isPending, setIsPending] = useState(false)
 
-	const { isPending, mutate } = useMutation(updateTagOptions(tag.id))
+	const updateMutation = useMutation(api.tags.update)
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		const trimmedName = name.trim()
 		if (!trimmedName) return
 
-		mutate({ name: trimmedName, color }, { onSuccess: () => onOpenChange(false) })
+		setIsPending(true)
+		try {
+			await updateMutation({ id: tag._id, name: trimmedName, color })
+			onOpenChange(false)
+		} finally {
+			setIsPending(false)
+		}
 	}
 
 	const isValid = name.trim().length > 0
@@ -144,16 +150,23 @@ function EditTagDialog({ tag, open, onOpenChange }: EditTagDialogProps) {
 }
 
 type DeleteTagDialogProps = {
-	tag: Tag
+	tag: Doc<'tags'>
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
 
 function DeleteTagDialog({ tag, open, onOpenChange }: DeleteTagDialogProps) {
-	const { isPending, mutate } = useMutation(deleteTagOptions(tag.id))
+	const [isPending, setIsPending] = useState(false)
+	const deleteMutation = useMutation(api.tags.remove)
 
-	const handleDelete = () => {
-		mutate(undefined, { onSuccess: () => onOpenChange(false) })
+	const handleDelete = async () => {
+		setIsPending(true)
+		try {
+			await deleteMutation({ id: tag._id })
+			onOpenChange(false)
+		} finally {
+			setIsPending(false)
+		}
 	}
 
 	return (

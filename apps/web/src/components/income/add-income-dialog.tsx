@@ -1,20 +1,21 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useMutation } from 'convex/react'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { createIncomeOptions } from '~/lib/mutations/incomes.mutations'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog'
 import {
 	defaultIncomeValues,
 	IncomeFields,
 	incomeFormSchema,
-	toIncomePayload,
+	toConvexIncomePayload,
 } from './income-fields'
 
 export const AddIncomeDialog = () => {
 	const [open, setOpen] = useState(false)
-	const { isPending, mutate } = useMutation(createIncomeOptions())
+	const createMutation = useMutation(api.incomes.create)
+	const [isPending, setIsPending] = useState(false)
 
 	const form = useAppForm({
 		defaultValues: defaultIncomeValues,
@@ -23,13 +24,15 @@ export const AddIncomeDialog = () => {
 			onMount: incomeFormSchema,
 			onSubmit: incomeFormSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate(toIncomePayload(value), {
-				onSuccess: () => {
-					form.reset()
-					setOpen(false)
-				},
-			})
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			try {
+				await createMutation(toConvexIncomePayload(value))
+				form.reset()
+				setOpen(false)
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 

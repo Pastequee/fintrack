@@ -1,12 +1,15 @@
-import type { SplitMode } from '@repo/db/types'
+import { api } from '@repo/convex/_generated/api'
+import type { Id } from '@repo/convex/_generated/dataModel'
 import { typedObjectEntries } from '@repo/utils'
-import { useMutation } from '@tanstack/react-query'
-import { updateHouseholdOptions } from '~/lib/mutations/households.mutations'
+import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import { Label } from '../ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 
+type SplitMode = 'equal' | 'income_proportional'
+
 type SplitModeToggleProps = {
-	householdId: string
+	householdId: Id<'households'>
 	currentMode: SplitMode
 }
 
@@ -27,17 +30,23 @@ const splitModeOptions = typedObjectEntries(splitModeConfig).map(([value, { labe
 }))
 
 export const SplitModeToggle = ({ householdId, currentMode }: SplitModeToggleProps) => {
-	const { mutate, isPending } = useMutation(updateHouseholdOptions(householdId))
+	const updateMutation = useMutation(api.households.update)
+	const [isPending, setIsPending] = useState(false)
+
+	const handleChange = async (value: string | null) => {
+		if (!value) return
+		setIsPending(true)
+		try {
+			await updateMutation({ id: householdId, splitMode: value as SplitMode })
+		} finally {
+			setIsPending(false)
+		}
+	}
 
 	return (
 		<div className="flex flex-col gap-2">
 			<Label>Mode de partage</Label>
-			<Select
-				disabled={isPending}
-				items={splitModeOptions}
-				onValueChange={(value) => mutate({ splitMode: value as SplitMode })}
-				value={currentMode}
-			>
+			<Select disabled={isPending} onValueChange={handleChange} value={currentMode}>
 				<SelectTrigger>
 					<SelectValue />
 				</SelectTrigger>

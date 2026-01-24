@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { Users, Wallet } from 'lucide-react'
-import { balanceOptions } from '~/lib/queries/balance.queries'
-import { householdMeOptions } from '~/lib/queries/households.queries'
 import { cn } from '~/lib/utils/cn'
 import { formatCurrency } from '~/lib/utils/format-currency'
 import { LoggedIn } from '../auth/logged-in'
@@ -43,13 +42,14 @@ const ShareCard = ({ amount, memberCount }: { amount: number; memberCount: numbe
 )
 
 export const HouseholdSettings = () => {
-	const { data: household, isLoading } = useQuery(householdMeOptions())
+	const household = useQuery(api.households.me)
+	const isLoading = household === undefined
 
 	const now = new Date()
-	const { data: balance } = useQuery({
-		...balanceOptions(now.getFullYear(), now.getMonth() + 1),
-		enabled: !!household,
-	})
+	const balance = useQuery(
+		api.balance.monthly,
+		household ? { year: now.getFullYear(), month: now.getMonth() + 1 } : 'skip'
+	)
 
 	if (!household) {
 		return (
@@ -106,7 +106,7 @@ export const HouseholdSettings = () => {
 							</span>
 						</div>
 
-						<SplitModeToggle currentMode={household.splitMode} householdId={household.id} />
+						<SplitModeToggle currentMode={household.splitMode} householdId={household._id} />
 
 						<Separator />
 
@@ -120,7 +120,7 @@ export const HouseholdSettings = () => {
 
 						<Separator />
 
-						<LeaveHouseholdButton householdId={household.id} householdName={household.name} />
+						<LeaveHouseholdButton householdId={household._id} householdName={household.name} />
 					</CardContent>
 				</Card>
 

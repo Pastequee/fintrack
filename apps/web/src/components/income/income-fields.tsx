@@ -1,7 +1,8 @@
-import type { Income } from '@repo/db/types'
-import { IncomePeriod } from '@repo/db/types'
+import type { Doc } from '@repo/convex/_generated/dataModel'
 import { z } from 'zod'
 import { withForm } from '~/lib/hooks/form-hook'
+
+const IncomePeriod = ['daily', 'weekly', 'monthly', 'yearly'] as const
 
 const periodLabels: Record<string, string> = {
 	daily: 'Quotidien',
@@ -33,20 +34,20 @@ export const defaultIncomeValues: IncomeFormValues = {
 	endDate: '',
 }
 
-export function toIncomePayload(value: IncomeFormValues) {
+export function toConvexIncomePayload(value: IncomeFormValues) {
 	return {
 		name: value.name.trim(),
-		amount: value.amount,
+		amount: Number(value.amount),
 		period: value.period,
 		startDate: value.startDate,
-		endDate: value.endDate || null,
+		endDate: value.endDate || undefined,
 	}
 }
 
-export function incomeToFormValues(income: Income): IncomeFormValues {
+export function incomeToFormValues(income: Doc<'incomes'>): IncomeFormValues {
 	return {
 		name: income.name,
-		amount: income.amount,
+		amount: String(income.amount),
 		period: income.period,
 		startDate: income.startDate,
 		endDate: income.endDate ?? '',

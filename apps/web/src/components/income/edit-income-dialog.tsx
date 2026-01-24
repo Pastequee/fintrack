@@ -1,23 +1,25 @@
-import type { Income } from '@repo/db/types'
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Doc } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { updateIncomeOptions } from '~/lib/mutations/incomes.mutations'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 import {
 	IncomeFields,
 	incomeFormSchema,
 	incomeToFormValues,
-	toIncomePayload,
+	toConvexIncomePayload,
 } from './income-fields'
 
 type EditIncomeDialogProps = {
-	income: Income
+	income: Doc<'incomes'>
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
 
 export const EditIncomeDialog = ({ income, open, onOpenChange }: EditIncomeDialogProps) => {
-	const { isPending, mutate } = useMutation(updateIncomeOptions(income.id))
+	const updateMutation = useMutation(api.incomes.update)
+	const [isPending, setIsPending] = useState(false)
 
 	const form = useAppForm({
 		defaultValues: incomeToFormValues(income),
@@ -26,8 +28,14 @@ export const EditIncomeDialog = ({ income, open, onOpenChange }: EditIncomeDialo
 			onMount: incomeFormSchema,
 			onSubmit: incomeFormSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate(toIncomePayload(value), { onSuccess: () => onOpenChange(false) })
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			try {
+				await updateMutation({ id: income._id, ...toConvexIncomePayload(value) })
+				onOpenChange(false)
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 

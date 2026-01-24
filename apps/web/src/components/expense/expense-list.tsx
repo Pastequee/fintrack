@@ -1,19 +1,19 @@
-import { useQuery } from '@tanstack/react-query'
-import { expenseListOptions } from '~/lib/queries/expenses.queries'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { Loader } from '../ui/loader'
 import { ExpenseItem } from './expense-item'
 
 export const ExpenseList = () => {
-	const { data: expenses, isLoading, isSuccess } = useQuery(expenseListOptions())
+	const expenses = useQuery(api.expenses.list)
 
-	if (isLoading) return <Loader className="text-muted-foreground" />
+	if (expenses === undefined) return <Loader className="text-muted-foreground" />
 
-	if (!isSuccess || expenses.length === 0) return null
+	if (expenses.length === 0) return null
 
 	return (
 		<div className="flex flex-col gap-2">
 			{expenses.map((expense) => (
-				<ExpenseItem expense={expense} key={expense.id} />
+				<ExpenseItem expense={expense} key={expense._id} />
 			))}
 		</div>
 	)

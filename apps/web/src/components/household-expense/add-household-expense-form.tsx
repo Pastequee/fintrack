@@ -1,15 +1,17 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { createHouseholdExpenseOptions } from '~/lib/mutations/households.mutations'
 import {
 	defaultExpenseValues,
 	ExpenseFields,
 	expenseFormSchema,
-	toExpensePayload,
+	toConvexExpensePayload,
 } from '../expense/expense-fields'
 
 export const AddHouseholdExpenseForm = () => {
-	const { isPending, mutate } = useMutation(createHouseholdExpenseOptions())
+	const createMutation = useMutation(api.household_expenses.create)
+	const [isPending, setIsPending] = useState(false)
 
 	const form = useAppForm({
 		defaultValues: defaultExpenseValues,
@@ -18,8 +20,14 @@ export const AddHouseholdExpenseForm = () => {
 			onMount: expenseFormSchema,
 			onSubmit: expenseFormSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate(toExpensePayload(value), { onSuccess: () => form.reset() })
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			try {
+				await createMutation(toConvexExpensePayload(value))
+				form.reset()
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 

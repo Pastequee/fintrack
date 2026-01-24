@@ -1,16 +1,18 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { createIncomeOptions } from '~/lib/mutations/incomes.mutations'
 import { LoggedIn } from '../auth/logged-in'
 import {
 	defaultIncomeValues,
 	IncomeFields,
 	incomeFormSchema,
-	toIncomePayload,
+	toConvexIncomePayload,
 } from './income-fields'
 
 export const AddIncomeForm = () => {
-	const { isPending, mutate } = useMutation(createIncomeOptions())
+	const createMutation = useMutation(api.incomes.create)
+	const [isPending, setIsPending] = useState(false)
 
 	const form = useAppForm({
 		defaultValues: defaultIncomeValues,
@@ -19,8 +21,14 @@ export const AddIncomeForm = () => {
 			onMount: incomeFormSchema,
 			onSubmit: incomeFormSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate(toIncomePayload(value), { onSuccess: () => form.reset() })
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			try {
+				await createMutation(toConvexIncomePayload(value))
+				form.reset()
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 

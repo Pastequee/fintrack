@@ -1,7 +1,7 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useMutation } from 'convex/react'
 import { useState } from 'react'
 import { DEFAULT_TAG_COLOR } from '~/lib/constants/tag-colors'
-import { createTagOptions } from '~/lib/mutations/tags.mutations'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Input } from '../ui/input'
@@ -17,27 +17,25 @@ type AddTagDialogProps = {
 export function AddTagDialog({ open, onOpenChange, onCreated }: AddTagDialogProps) {
 	const [name, setName] = useState('')
 	const [color, setColor] = useState<string>(DEFAULT_TAG_COLOR)
+	const [isPending, setIsPending] = useState(false)
 
-	const { isPending, mutate } = useMutation(createTagOptions())
+	const createMutation = useMutation(api.tags.create)
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		const trimmedName = name.trim()
 		if (!trimmedName) return
 
-		mutate(
-			{ name: trimmedName, color },
-			{
-				onSuccess: (data) => {
-					setName('')
-					setColor(DEFAULT_TAG_COLOR)
-					onOpenChange(false)
-					if (data && 'id' in data) {
-						onCreated?.(data.id)
-					}
-				},
-			}
-		)
+		setIsPending(true)
+		try {
+			const tagId = await createMutation({ name: trimmedName, color })
+			setName('')
+			setColor(DEFAULT_TAG_COLOR)
+			onOpenChange(false)
+			onCreated?.(tagId)
+		} finally {
+			setIsPending(false)
+		}
 	}
 
 	const isValid = name.trim().length > 0

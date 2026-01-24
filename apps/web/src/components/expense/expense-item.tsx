@@ -1,8 +1,8 @@
-import type { Expense } from '@repo/db/types'
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Doc, Id } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import { CalendarDays, Loader2, Pencil, Repeat, Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import { deleteExpenseOptions } from '~/lib/mutations/expenses.mutations'
 import {
 	formatExpenseAmount,
 	formatShortDate,
@@ -21,8 +21,8 @@ import {
 import { Button } from '../ui/button'
 import { EditExpenseDialog } from './edit-expense-dialog'
 
-type ExpenseWithTag = Expense & {
-	tag: { id: string; name: string; color: string } | null
+export type ExpenseWithTag = Doc<'expenses'> & {
+	tag: { _id: Id<'tags'>; name: string; color: string } | null
 }
 
 type ExpenseItemProps = {
@@ -35,9 +35,18 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 	const [isEditOpen, setIsEditOpen] = useState(false)
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false)
 
-	const { isPending: isDeleting, mutate: deleteMutation } = useMutation(
-		deleteExpenseOptions(expense.id)
-	)
+	const deleteMutation = useMutation(api.expenses.remove)
+	const [isDeleting, setIsDeleting] = useState(false)
+
+	const handleDelete = async () => {
+		setIsDeleting(true)
+		try {
+			await deleteMutation({ id: expense._id })
+		} finally {
+			setIsDeleting(false)
+			setIsDeleteOpen(false)
+		}
+	}
 
 	const isOneTime = expense.type === 'one_time'
 	const remaining = isOneTime ? null : getRemainingDuration(expense.endDate)
@@ -105,7 +114,7 @@ export const ExpenseItem = ({ expense }: ExpenseItemProps) => {
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Annuler</AlertDialogCancel>
-						<AlertDialogAction onClick={() => deleteMutation({})}>Supprimer</AlertDialogAction>
+						<AlertDialogAction onClick={handleDelete}>Supprimer</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

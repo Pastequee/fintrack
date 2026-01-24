@@ -1,13 +1,15 @@
-import type { Income, IncomePeriod } from '@repo/db/types'
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Doc } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import { Loader2, Pencil, Trash2 } from 'lucide-react'
 import { useState } from 'react'
-import { deleteIncomeOptions } from '~/lib/mutations/incomes.mutations'
 import { Button } from '../ui/button'
 import { EditIncomeDialog } from './edit-income-dialog'
 
+type IncomePeriod = 'daily' | 'weekly' | 'monthly' | 'yearly'
+
 type IncomeItemProps = {
-	income: Income
+	income: Doc<'incomes'>
 }
 
 const periodLabels: Record<IncomePeriod, string> = {
@@ -17,17 +19,24 @@ const periodLabels: Record<IncomePeriod, string> = {
 	yearly: '/an',
 }
 
-const formatAmount = (amount: string, period: IncomePeriod) => {
-	const num = Number.parseFloat(amount)
-	return `${num.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €${periodLabels[period]}`
+const formatAmount = (amount: number, period: IncomePeriod) => {
+	return `${amount.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €${periodLabels[period]}`
 }
 
 export const IncomeItem = ({ income }: IncomeItemProps) => {
 	const [isEditOpen, setIsEditOpen] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
 
-	const { isPending: isDeleting, mutate: deleteMutation } = useMutation(
-		deleteIncomeOptions(income.id)
-	)
+	const deleteMutation = useMutation(api.incomes.remove)
+
+	const handleDelete = async () => {
+		setIsDeleting(true)
+		try {
+			await deleteMutation({ id: income._id })
+		} finally {
+			setIsDeleting(false)
+		}
+	}
 
 	return (
 		<div className="flex items-center gap-4">
@@ -42,12 +51,7 @@ export const IncomeItem = ({ income }: IncomeItemProps) => {
 				<Pencil size={16} />
 			</Button>
 
-			<Button
-				disabled={isDeleting}
-				onClick={() => deleteMutation({})}
-				size="icon"
-				variant="destructive"
-			>
+			<Button disabled={isDeleting} onClick={handleDelete} size="icon" variant="destructive">
 				{isDeleting ? <Loader2 className="animate-spin" size={16} /> : <Trash2 size={16} />}
 			</Button>
 

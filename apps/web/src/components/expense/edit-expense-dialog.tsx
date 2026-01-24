@@ -1,23 +1,25 @@
-import type { Expense } from '@repo/db/types'
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Doc } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { updateExpenseOptions } from '~/lib/mutations/expenses.mutations'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
 import {
 	ExpenseFields,
 	expenseFormSchema,
 	expenseToFormValues,
-	toExpensePayload,
+	toConvexExpensePayload,
 } from './expense-fields'
 
 type EditExpenseDialogProps = {
-	expense: Expense
+	expense: Doc<'expenses'>
 	open: boolean
 	onOpenChange: (open: boolean) => void
 }
 
 export const EditExpenseDialog = ({ expense, open, onOpenChange }: EditExpenseDialogProps) => {
-	const { isPending, mutate } = useMutation(updateExpenseOptions(expense.id))
+	const updateMutation = useMutation(api.expenses.update)
+	const [isPending, setIsPending] = useState(false)
 
 	const form = useAppForm({
 		defaultValues: expenseToFormValues(expense),
@@ -26,8 +28,14 @@ export const EditExpenseDialog = ({ expense, open, onOpenChange }: EditExpenseDi
 			onMount: expenseFormSchema,
 			onSubmit: expenseFormSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate(toExpensePayload(value), { onSuccess: () => onOpenChange(false) })
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			try {
+				await updateMutation({ id: expense._id, ...toConvexExpensePayload(value) })
+				onOpenChange(false)
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 

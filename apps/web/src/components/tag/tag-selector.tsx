@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { PlusIcon, SettingsIcon } from 'lucide-react'
 import { useState } from 'react'
-import { tagListOptions } from '~/lib/queries/tags.queries'
 import { Label } from '../ui/label'
 import {
 	Select,
@@ -26,11 +26,11 @@ type TagSelectorProps = {
 }
 
 export function TagSelector({ value, onChange, label = 'Tag' }: TagSelectorProps) {
-	const { data: tags = [] } = useQuery(tagListOptions())
+	const tags = useQuery(api.tags.list) ?? []
 	const [addOpen, setAddOpen] = useState(false)
 	const [manageOpen, setManageOpen] = useState(false)
 
-	const selectedTag = tags.find((t) => t.id === value)
+	const selectedTag = tags.find((t) => t._id === value)
 
 	const handleValueChange = (v: string | null) => {
 		if (!v) return
@@ -69,7 +69,7 @@ export function TagSelector({ value, onChange, label = 'Tag' }: TagSelectorProps
 						</SelectItem>
 
 						{tags.map((tag) => (
-							<SelectItem key={tag.id} value={tag.id}>
+							<SelectItem key={tag._id} value={tag._id}>
 								<TagBadge color={tag.color} name={tag.name} />
 							</SelectItem>
 						))}

@@ -1,4 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import type { Id } from '@repo/convex/_generated/dataModel'
+import { useMutation } from 'convex/react'
 import { Clock, Mail, X } from 'lucide-react'
 import {
 	AlertDialog,
@@ -12,25 +14,28 @@ import {
 	AlertDialogTrigger,
 } from '~/components/ui/alert-dialog'
 import { Button } from '~/components/ui/button'
-import { revokeInvitationOptions } from '~/lib/mutations/households.mutations'
 
 type PendingInvitationItemProps = {
 	invitation: {
-		id: string
+		_id: Id<'invitations'>
 		email: string
-		expiresAt: Date
+		expiresAt: number
 	}
 }
 
-function formatExpiry(date: Date) {
+function formatExpiry(timestamp: number) {
 	const msPerDay = 1000 * 60 * 60 * 24
-	const days = Math.ceil((new Date(date).getTime() - Date.now()) / msPerDay)
+	const days = Math.ceil((timestamp - Date.now()) / msPerDay)
 	if (days <= 0) return 'Expiré'
 	return `${days} jour${days === 1 ? '' : 's'} restant${days === 1 ? '' : 's'}`
 }
 
 export const PendingInvitationItem = ({ invitation }: PendingInvitationItemProps) => {
-	const revoke = useMutation(revokeInvitationOptions(invitation.id))
+	const revokeMutation = useMutation(api.invitations.revoke)
+
+	const handleRevoke = () => {
+		revokeMutation({ id: invitation._id })
+	}
 
 	return (
 		<div className="flex items-center gap-3">
@@ -61,7 +66,7 @@ export const PendingInvitationItem = ({ invitation }: PendingInvitationItemProps
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel>Annuler</AlertDialogCancel>
-						<AlertDialogAction onClick={() => revoke.mutate({})}>Révoquer</AlertDialogAction>
+						<AlertDialogAction onClick={handleRevoke}>Révoquer</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>

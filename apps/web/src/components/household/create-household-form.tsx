@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useMutation } from 'convex/react'
+import { useState } from 'react'
 import z from 'zod'
 import { useAppForm } from '~/lib/hooks/form-hook'
-import { createHouseholdOptions } from '~/lib/mutations/households.mutations'
 
 const createSchema = z.object({
 	name: z.string().nonempty('Nom requis'),
@@ -12,7 +13,9 @@ type CreateFormValues = z.infer<typeof createSchema>
 const defaultValues: CreateFormValues = { name: '' }
 
 export const CreateHouseholdForm = () => {
-	const { isPending, mutate, error } = useMutation(createHouseholdOptions())
+	const createMutation = useMutation(api.households.create)
+	const [isPending, setIsPending] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 
 	const form = useAppForm({
 		defaultValues,
@@ -21,8 +24,16 @@ export const CreateHouseholdForm = () => {
 			onMount: createSchema,
 			onSubmit: createSchema,
 		},
-		onSubmit: ({ value }) => {
-			mutate({ name: value.name.trim() })
+		onSubmit: async ({ value }) => {
+			setIsPending(true)
+			setError(null)
+			try {
+				await createMutation({ name: value.name.trim(), splitMode: 'equal' })
+			} catch (e) {
+				setError(e instanceof Error ? e.message : 'Échec de la création du foyer')
+			} finally {
+				setIsPending(false)
+			}
 		},
 	})
 
@@ -42,11 +53,7 @@ export const CreateHouseholdForm = () => {
 					{(field) => <field.TextField label="Nom du foyer" />}
 				</form.AppField>
 
-				{error && (
-					<p className="text-destructive text-xs">
-						{(error as { error?: string })?.error || 'Échec de la création du foyer'}
-					</p>
-				)}
+				{error && <p className="text-destructive text-xs">{error}</p>}
 
 				<form.AppForm>
 					<form.SubmitButton disabled={isPending} label="Créer le foyer" />

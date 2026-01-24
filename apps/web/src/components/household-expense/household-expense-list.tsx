@@ -1,8 +1,9 @@
-import type { SplitMode } from '@repo/db/types'
-import { useQuery } from '@tanstack/react-query'
-import { householdExpenseListOptions } from '~/lib/queries/households.queries'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { Loader } from '../ui/loader'
 import { HouseholdExpenseItem } from './household-expense-item'
+
+type SplitMode = 'equal' | 'income_proportional'
 
 type HouseholdExpenseListProps = {
 	memberCount: number
@@ -10,18 +11,18 @@ type HouseholdExpenseListProps = {
 }
 
 export const HouseholdExpenseList = ({ memberCount, splitMode }: HouseholdExpenseListProps) => {
-	const { data: expenses, isLoading, isSuccess } = useQuery(householdExpenseListOptions())
+	const expenses = useQuery(api.household_expenses.list)
 
-	if (isLoading) return <Loader className="text-muted-foreground" />
+	if (expenses === undefined) return <Loader className="text-muted-foreground" />
 
-	if (!isSuccess || expenses.length === 0) return null
+	if (expenses.length === 0) return null
 
 	return (
 		<div className="flex flex-col gap-2">
 			{expenses.map((expense) => (
 				<HouseholdExpenseItem
 					expense={expense}
-					key={expense.id}
+					key={expense._id}
 					memberCount={memberCount}
 					splitMode={splitMode}
 				/>

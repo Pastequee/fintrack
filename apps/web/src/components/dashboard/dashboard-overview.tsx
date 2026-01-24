@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { api } from '@repo/convex/_generated/api'
+import { useQuery } from 'convex/react'
 import { AlertTriangle, Archive, ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
-import { balanceOptions, snapshotOptions } from '~/lib/queries/balance.queries'
 import { formatCurrency } from '~/lib/utils/format-currency'
 import { Alert, AlertDescription } from '../ui/alert'
 import { Badge } from '../ui/badge'
@@ -58,20 +58,11 @@ export const DashboardOverview = () => {
 	const viewingFuture = monthOffset > 0
 
 	// Use snapshot for past months, live balance for current/future
-	const {
-		data: balance,
-		isLoading: balanceLoading,
-		isError: balanceError,
-	} = useQuery({ ...balanceOptions(year, month), enabled: !viewingPast })
+	const balance = useQuery(api.balance.monthly, viewingPast ? 'skip' : { year, month })
+	const snapshot = useQuery(api.snapshots.getByMonth, viewingPast ? { year, month } : 'skip')
 
-	const {
-		data: snapshot,
-		isLoading: snapshotLoading,
-		isError: snapshotError,
-	} = useQuery({ ...snapshotOptions(year, month), enabled: viewingPast })
-
-	const isLoading = viewingPast ? snapshotLoading : balanceLoading
-	const isError = viewingPast ? snapshotError : balanceError
+	const isLoading = viewingPast ? snapshot === undefined : balance === undefined
+	const isError = false // Convex handles errors differently
 
 	const data = viewingPast ? snapshot?.data : balance
 
@@ -180,13 +171,7 @@ export const DashboardOverview = () => {
 					label="Dépenses personnelles"
 				>
 					{data.personalExpenses.items.map((item) => (
-						<BalanceItem
-							amount={item.amount}
-							endDate={item.endDate}
-							key={item.name}
-							name={item.name}
-							type={item.type as 'one_time' | 'recurring'}
-						/>
+						<BalanceItem amount={item.amount} key={item.name} name={item.name} />
 					))}
 				</BalanceRow>
 

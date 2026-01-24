@@ -23,6 +23,6 @@
 - [✓] 2026-01-23 17:57 - 6.4 Implement Stats Functions
 - [✓] 2026-01-23 17:59 - 7.1 Implement Snapshot CRUD
 - [✓] 2026-01-23 18:02 - 8.1 Set Up Convex Provider
-- [✗] 2026-01-23 19:22 - 8.2 Update Auth Hooks
-- [✗] 2026-01-23 19:22 - 8.2 Update Auth Hooks
-- [✗] 2026-01-23 19:22 - 8.2 Update Auth Hooks
+- [✓] 2026-01-23 19:22 - 8.2 Update Auth Hooks
+- [✓] 2026-01-24 10:51 - 8.3 Migrate Query Components
+- [✓] 2026-01-24 09:59 - 8.3 Migrate Query Components
